@@ -40,7 +40,7 @@
     <!-- Navigation -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="index.html">Inventory System</a>
+            <a class="navbar-brand" href="mop-index.php">Inventory System</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -48,16 +48,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
+                        <a class="nav-link" href="mop-index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="inventory.html">Inventory</a>
+                        <a class="nav-link" href="mop-inventory.php">Inventory</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="reports.html">Reports</a>
+                        <a class="nav-link" href="mop-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html">Logout</a>
+                        <a class="nav-link" href="index.php">Logout</a>
                     </li>
                 </ul>
             </div>

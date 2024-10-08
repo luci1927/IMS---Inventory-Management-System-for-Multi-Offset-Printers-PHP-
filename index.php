@@ -8,39 +8,42 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background-color: #f8f9fa;
         }
 
         .login-container {
-            max-width: 400px;
-            margin: 50px auto;
+            background-color: #ffffff;
             padding: 30px;
-            background-color: #fff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px; /* Responsive width */
         }
 
-        .form-group label {
-            font-weight: bold;
-        }
-
-        .login-title {
-            text-align: center;
-            margin-bottom: 30px;
+        /* Media query to adjust padding on smaller screens */
+        @media (max-width: 576px) {
+            .login-container {
+                padding: 20px;
+            }
         }
 
         .error-message {
-            color: red;
-            font-size: 0.875rem;
             display: none;
+            color: red;
+            font-size: 12px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="login-container">
+    <div class="login-container ">
         <h2 class="login-title">Inventory Management System</h2>
 
         <!-- Login Form -->
@@ -72,7 +75,7 @@
             </div>
 
             <!-- Login Button -->
-            <button type="submit" class="btn btn-success btn-block" onclick="location.href='index.html'">Login</button>
+            <button type="submit" class="btn btn-success btn-block" onclick="location.href='rmi-index.php'">Login</button>
         </form>
     </div>
 
