@@ -79,11 +79,12 @@
                             <div class="form-group">
                                 <label for="unit">Unit</label>
                                 <select class="form-control" id="unit">
-                                    <option value="0" disabled selected>Select a unit</option>
+                                <option value="0" disabled selected>Select a unit</option>
                                     <?php
 
                                     require "connection.php";
-                                    $unit_rs = Database::search("SELECT * FROM `mop_measurements`");
+
+                                    $unit_rs = Database::search("SELECT * FROM `units`");
                                     $unit_num = $unit_rs->num_rows;
 
                                     for ($x = 0; $x < $unit_num; $x++) {
@@ -91,7 +92,7 @@
 
                                     ?>
 
-                                        <option value="<?php echo $unit_data["mop_m_id"]; ?>"><?php echo $unit_data["mop_m_name"]; ?></option>
+                                        <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
 
                                     <?php
                                     }
@@ -123,7 +124,7 @@
             <div class="form-group row mt-3">
                 <label for="item" class="col-sm-2 col-form-label">Item</label>
                 <div class="col-sm-10">
-                    <select class="selectpicker" data-live-search="true" id="item" title="Choose an Item">
+                    <select class="selectpicker" data-live-search="true" id="item" onchange="load_mop_unit();" title="Choose an Item">
                         <?php
 
                         $item_rs = Database::search("SELECT * FROM `mop_inventory`");
@@ -133,8 +134,8 @@
                         for ($x = 0; $x < $item_num; $x++) {
                             $item_data = $item_rs->fetch_assoc();
                         ?>
-                            <option value="<?php echo $item_data['mop_i_item_code']; ?>">
-                                <?php echo $item_data['mop_i_description']; ?>
+                            <option value="<?php echo $item_data['item_code']; ?>">
+                                <?php echo $item_data['description']; ?>
                             </option>
                         <?php
                         }
@@ -144,21 +145,45 @@
             </div>
 
             <div class="form-group row">
-                <label for="quantity" class="col-sm-2 col-form-label">Quantity</label>
+                <label for="quantity2" class="col-sm-2 col-form-label">Quantity</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="quantity" placeholder="Enter quantity" step="0.001"
+                    <input type="number" class="form-control" id="quantity2" placeholder="Enter quantity" step="0.001"
                         min="0" max="10000" required />
                 </div>
             </div>
             <div class="form-group row">
-                <label for="exampleFormControlTextarea1" class="col-sm-2 col-form-label">Remarks</label>
+                <label for="unit2" class="col-sm-2 col-form-label">Unit</label>
                 <div class="col-sm-10">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <select class="form-control" id="unit2">
+                        <option value="0" disabled selected>Select a unit</option>
+                        <?php
+
+                        $unit_rs = Database::search("SELECT * FROM `units`");
+                        $unit_num = $unit_rs->num_rows;
+
+                        for ($x = 0; $x < $unit_num; $x++) {
+                            $unit_data = $unit_rs->fetch_assoc();
+
+                        ?>
+
+                            <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
+
+                        <?php
+                        }
+
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="remarks2" class="col-sm-2 col-form-label">Remarks</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="remarks2" rows="3"></textarea>
                 </div>
             </div>
 
 
-            <button type="submit" class="btn btn-success btn-block">
+            <button type="submit" class="btn btn-success btn-block" onclick="mop_update_qty();">
                 Update Quantity
             </button>
         </form>
@@ -171,13 +196,21 @@
                     <th>Item Description</th>
                     <th>Qty in System</th>
                     <th>Qty on Hand</th>
+                    <th>Unit</th>
                     <th>Remarks</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
 
-                $query = "SELECT * FROM `mop_inventory` WHERE `status_status_id`='1'";
+                $query = "SELECT mop_inventory.item_code AS item_code, 
+                mop_inventory.`description` AS descr, 
+                mop_stock.qty_system AS qsystem, 
+                mop_stock.qty_hand AS qhand, 
+                units.`name` AS unit_name, 
+                mop_stock.remarks AS remarks FROM mop_inventory INNER JOIN mop_stock ON 
+                mop_inventory.item_code = mop_stock.mop_inventory_item_code INNER JOIN units ON 
+                mop_inventory.units_id = units.id WHERE status_status_id = '1'";
 
                 $item_table_rs = Database::search($query);
                 $item_table_num = $item_table_rs->num_rows;
@@ -188,11 +221,12 @@
 
                 ?>
                     <tr>
-                        <td><?php echo $item_table_data['mop_i_item_code']; ?></td>
-                        <td><?php echo $item_table_data['mop_i_description']; ?></td>
-                        <td><?php echo $item_table_data['mop_i_qty_system']; ?></td>
-                        <td><?php echo $item_table_data['mop_i_qty_hand']; ?></td>
-                        <td><?php echo $item_table_data['mop_i_remarks']; ?></td>
+                        <td><?php echo $item_table_data['item_code']; ?></td>
+                        <td><?php echo $item_table_data['descr']; ?></td>
+                        <td><?php echo $item_table_data['qsystem']; ?></td>
+                        <td><?php echo $item_table_data['qhand']; ?></td>
+                        <td><?php echo $item_table_data['unit_name']; ?></td>
+                        <td><?php echo $item_table_data['remarks']; ?></td>
                     </tr>
 
                 <?php

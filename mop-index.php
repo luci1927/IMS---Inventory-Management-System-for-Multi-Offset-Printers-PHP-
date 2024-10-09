@@ -56,15 +56,15 @@
                         require "connection.php";
 
                         $today_rs = Database::search("SELECT COUNT(*) AS daily_count
-                        FROM mop_inventory
-                        WHERE DATE(mop_i_datetime) = CURDATE();");
+                        FROM mop_stock 
+                        WHERE DATE(date_time) = CURDATE();");
                         $today_data = $today_rs->fetch_assoc();
                         $today_updated = $today_data['daily_count'];
 
                         $month_rs = Database::search("SELECT COUNT(*) AS monthly_count 
-                        FROM mop_inventory 
-                        WHERE MONTH(mop_i_datetime) = MONTH(CURDATE()) 
-                        AND YEAR(mop_i_datetime) = YEAR(CURDATE());");
+                        FROM mop_stock 
+                        WHERE MONTH(date_time) = MONTH(CURDATE()) 
+                        AND YEAR(date_time) = YEAR(CURDATE());");
 
                         $month_data = $month_rs->fetch_assoc();
                         $this_month_updated = $month_data['monthly_count'];
@@ -143,7 +143,7 @@
                                 <option value="0" disabled selected>Select a unit</option>
                                     <?php
 
-                                    $unit_rs = Database::search("SELECT * FROM `mop_measurements`");
+                                    $unit_rs = Database::search("SELECT * FROM `units`");
                                     $unit_num = $unit_rs->num_rows;
 
                                     for ($x = 0; $x < $unit_num; $x++) {
@@ -151,7 +151,7 @@
 
                                     ?>
 
-                                        <option value="<?php echo $unit_data["mop_m_id"]; ?>"><?php echo $unit_data["mop_m_name"]; ?></option>
+                                        <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
 
                                     <?php
                                     }
