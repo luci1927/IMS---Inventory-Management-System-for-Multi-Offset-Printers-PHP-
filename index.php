@@ -8,7 +8,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        html, body {
+        html,
+        body {
             height: 100%;
             margin: 0;
             display: flex;
@@ -23,7 +24,8 @@
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px; /* Responsive width */
+            max-width: 400px;
+            /* Responsive width */
         }
 
         /* Media query to adjust padding on smaller screens */
@@ -67,21 +69,36 @@
                 <label for="department">Department</label>
                 <select class="form-control" id="department" required>
                     <option value="" disabled selected>Select your department</option>
-                    <option value="1">Multi Offset Printers</option>
-                    <option value="2">Fair Trading House (Pvt) Ltd</option>
-                    <option value="3">Rajah Multi Industries</option>
+                    <?php
+
+                    require "connection.php";
+
+                    $dep_rs = Database::search("SELECT * FROM `departments`");
+                    $dep_num = $dep_rs->num_rows;
+
+                    for ($x = 0; $x < $dep_num; $x++) {
+                        $dep_data = $dep_rs->fetch_assoc();
+
+                    ?>
+
+                        <option value="<?php echo $dep_data["dep_id"]; ?>"><?php echo $dep_data["dep_name"]; ?></option>
+
+                    <?php
+                    }
+
+                    ?>
                 </select>
                 <div class="error-message" id="departmentError">Please select a department.</div>
             </div>
 
             <!-- Login Button -->
-            <button type="submit" class="btn btn-success btn-block" onclick="location.href='rmi-index.php'">Login</button>
+            <button type="submit" class="btn btn-success btn-block" onclick="signIn();">Login</button>
         </form>
     </div>
 
     <!-- JavaScript for validation -->
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function (event) {
+    <!-- <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
             let isValid = true;
 
             // Username Validation
@@ -119,9 +136,10 @@
                 event.preventDefault();
             }
         });
-    </script>
+    </script> -->
 
     <!-- Bootstrap JS and dependencies (Optional) -->
+     <script src="assets/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -67,37 +67,52 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Item Code</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1"
+                                <label for="item_code">Item Code</label>
+                                <input type="text" class="form-control" id="item_code"
                                     placeholder="Item Code">
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlInput2">Item Description</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput2"
+                                <label for="description">Item Description</label>
+                                <input type="text" class="form-control" id="description"
                                     placeholder="Item Description">
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlSelect1">Unit</label>
-                                <select class="form-control" id="exampleFormControlSelect1">
-                                    <option>Packets</option>
-                                    <option>Kg</option>
-                                    <option>Item</option>
+                                <label for="unit">Unit</label>
+                                <select class="form-control" id="unit">
+                                    <option value="0" disabled selected>Select a unit</option>
+                                    <?php
+
+                                    require "connection.php";
+                                    $unit_rs = Database::search("SELECT * FROM `mop_measurements`");
+                                    $unit_num = $unit_rs->num_rows;
+
+                                    for ($x = 0; $x < $unit_num; $x++) {
+                                        $unit_data = $unit_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $unit_data["mop_m_id"]; ?>"><?php echo $unit_data["mop_m_name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="quantity">Quantity</label>
                                 <input type="number" class="form-control" id="quantity" placeholder="Enter quantity"
-                                    step="0.01" min="0" max="10000" required />
+                                    step="0.001" min="0" max="10000" required />
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlTextarea1">Remarks</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <label for="remarks">Remarks</label>
+                                <textarea class="form-control" id="remarks" rows="3"></textarea>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success">Save changes</button>
+                        <button type="button" class="btn btn-success" onclick="mop_new_item();">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -109,11 +124,21 @@
                 <label for="item" class="col-sm-2 col-form-label">Item</label>
                 <div class="col-sm-10">
                     <select class="selectpicker" data-live-search="true" id="item" title="Choose an Item">
-                        <option>Bearing 6002</option>
-                        <option>Bearing 6001</option>
-                        <option>Bearing 6206</option>
-                        <option> Needle Bearing HK 2216</option>
+                        <?php
 
+                        $item_rs = Database::search("SELECT * FROM `mop_inventory`");
+                        $item_num = $item_rs->num_rows;
+
+
+                        for ($x = 0; $x < $item_num; $x++) {
+                            $item_data = $item_rs->fetch_assoc();
+                        ?>
+                            <option value="<?php echo $item_data['mop_i_item_code']; ?>">
+                                <?php echo $item_data['mop_i_description']; ?>
+                            </option>
+                        <?php
+                        }
+                        ?>
                     </select>
                 </div>
             </div>
@@ -121,14 +146,14 @@
             <div class="form-group row">
                 <label for="quantity" class="col-sm-2 col-form-label">Quantity</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="quantity" placeholder="Enter quantity" step="0.01"
+                    <input type="number" class="form-control" id="quantity" placeholder="Enter quantity" step="0.001"
                         min="0" max="10000" required />
                 </div>
             </div>
             <div class="form-group row">
                 <label for="exampleFormControlTextarea1" class="col-sm-2 col-form-label">Remarks</label>
                 <div class="col-sm-10">
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                 </div>
             </div>
 
@@ -150,31 +175,36 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>MS0001</td>
-                    <td>Bearing 6002</td>
-                    <td>10</td>
-                    <td>9</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>MS0001</td>
-                    <td>Bearing 6002</td>
-                    <td>10</td>
-                    <td>9</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>MS0001</td>
-                    <td>Bearing 6002</td>
-                    <td>10</td>
-                    <td>9</td>
-                    <td></td>
-                </tr>
+                <?php
+
+                $query = "SELECT * FROM `mop_inventory` WHERE `status_status_id`='1'";
+
+                $item_table_rs = Database::search($query);
+                $item_table_num = $item_table_rs->num_rows;
+
+
+                for ($x = 0; $x < $item_table_num; $x++) {
+                    $item_table_data = $item_table_rs->fetch_assoc();
+
+                ?>
+                    <tr>
+                        <td><?php echo $item_table_data['mop_i_item_code']; ?></td>
+                        <td><?php echo $item_table_data['mop_i_description']; ?></td>
+                        <td><?php echo $item_table_data['mop_i_qty_system']; ?></td>
+                        <td><?php echo $item_table_data['mop_i_qty_hand']; ?></td>
+                        <td><?php echo $item_table_data['mop_i_remarks']; ?></td>
+                    </tr>
+
+                <?php
+
+                }
+
+                ?>
             </tbody>
         </table>
     </main>
 
+    <script src="assets/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

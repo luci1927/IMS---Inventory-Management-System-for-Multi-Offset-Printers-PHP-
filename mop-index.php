@@ -17,7 +17,7 @@
     <!-- Navigation -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="mop-index.php">Inventory System</a>
+            <a class="navbar-brand" href="mop-index.php">Inventory System | Multi Offset Printers</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -51,7 +51,29 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title">00</h3>
+                        <?php
+
+                        require "connection.php";
+
+                        $today_rs = Database::search("SELECT COUNT(*) AS daily_count
+                        FROM mop_inventory
+                        WHERE DATE(mop_i_datetime) = CURDATE();");
+                        $today_data = $today_rs->fetch_assoc();
+                        $today_updated = $today_data['daily_count'];
+
+                        $month_rs = Database::search("SELECT COUNT(*) AS monthly_count 
+                        FROM mop_inventory 
+                        WHERE MONTH(mop_i_datetime) = MONTH(CURDATE()) 
+                        AND YEAR(mop_i_datetime) = YEAR(CURDATE());");
+
+                        $month_data = $month_rs->fetch_assoc();
+                        $this_month_updated = $month_data['monthly_count'];
+
+                        ?>
+
+                        <h3 class="card-title">0<?php echo $today_updated; ?></h3>
+
+
                         <p class="card-text" style="font-size: large;">Updated items today</p>
                         <i class="fa-solid fa-calendar-day fa-2xl"></i>
                     </div>
@@ -60,7 +82,7 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="card-title">00</h3>
+                        <h3 class="card-title">0<?php echo $this_month_updated; ?></h3>
                         <p class="card-text" style="font-size: large;">Updated items this month</p>
                         <i class="fa-solid fa-calendar-week fa-2xl"></i>
                     </div>
@@ -106,37 +128,51 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Item Code</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput1"
+                                <label for="item_code">Item Code</label>
+                                <input type="text" class="form-control" id="item_code"
                                     placeholder="Item Code">
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlInput2">Item Description</label>
-                                <input type="text" class="form-control" id="exampleFormControlInput2"
+                                <label for="description">Item Description</label>
+                                <input type="text" class="form-control" id="description"
                                     placeholder="Item Description">
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlSelect1">Unit</label>
-                                <select class="form-control" id="exampleFormControlSelect1">
-                                    <option>Packets</option>
-                                    <option>Kg</option>
-                                    <option>Item</option>
+                                <label for="unit">Unit</label>
+                                <select class="form-control" id="unit">
+                                <option value="0" disabled selected>Select a unit</option>
+                                    <?php
+
+                                    $unit_rs = Database::search("SELECT * FROM `mop_measurements`");
+                                    $unit_num = $unit_rs->num_rows;
+
+                                    for ($x = 0; $x < $unit_num; $x++) {
+                                        $unit_data = $unit_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $unit_data["mop_m_id"]; ?>"><?php echo $unit_data["mop_m_name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="quantity">Quantity</label>
                                 <input type="number" class="form-control" id="quantity" placeholder="Enter quantity"
-                                    step="0.01" min="0" max="10000" required />
+                                    step="0.001" min="0" max="10000" required />
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlTextarea1">Remarks</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <label for="remarks">Remarks</label>
+                                <textarea class="form-control" id="remarks" rows="3"></textarea>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success">Save changes</button>
+                        <button type="button" class="btn btn-success" onclick="mop_new_item();">Save changes</button>
                     </div>
                 </div>
             </div>
