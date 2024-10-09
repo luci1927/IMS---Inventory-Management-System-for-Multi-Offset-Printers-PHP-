@@ -125,6 +125,12 @@
                         min="0" max="10000" required />
                 </div>
             </div>
+            <div class="form-group row">
+                <label for="exampleFormControlTextarea1" class="col-sm-2 col-form-label">Remarks</label>
+                <div class="col-sm-10">
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+            </div>
 
             <button type="submit" class="btn btn-success btn-block">
                 Update Quantity
