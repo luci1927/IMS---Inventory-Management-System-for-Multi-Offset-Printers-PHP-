@@ -50,7 +50,7 @@
                         <a class="nav-link" href="rmi-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Logout</a>
+                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -98,6 +98,8 @@
                                     <?php
 
                                     require "connection.php";
+
+                                    if (isset($_SESSION["u"])){
 
                                     $unit_rs = Database::search("SELECT * FROM `units`");
                                     $unit_num = $unit_rs->num_rows;
@@ -254,7 +256,12 @@
 
                 <?php
 
+
                 }
+
+            } else {
+                header("Location:index.php");
+            }
 
                 ?>
             </tbody>

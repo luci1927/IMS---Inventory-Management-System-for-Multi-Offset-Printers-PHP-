@@ -49,7 +49,7 @@
                         <a class="nav-link" href="fth-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Logout</a>
+                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -93,25 +93,27 @@
                             <div class="form-group">
                                 <label for="unit">Unit</label>
                                 <select class="form-control" id="unit">
-                                <option value="0" disabled selected>Select a unit</option>
+                                    <option value="0" disabled selected>Select a unit</option>
                                     <?php
 
                                     require "connection.php";
 
-                                    $unit_rs = Database::search("SELECT * FROM `units`");
-                                    $unit_num = $unit_rs->num_rows;
+                                    if (isset($_SESSION["u"])) {
 
-                                    for ($x = 0; $x < $unit_num; $x++) {
-                                        $unit_data = $unit_rs->fetch_assoc();
+                                        $unit_rs = Database::search("SELECT * FROM `units`");
+                                        $unit_num = $unit_rs->num_rows;
 
-                                    ?>
-
-                                        <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
-
-                                    <?php
-                                    }
+                                        for ($x = 0; $x < $unit_num; $x++) {
+                                            $unit_data = $unit_rs->fetch_assoc();
 
                                     ?>
+
+                                            <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
+
+                                        <?php
+                                        }
+
+                                        ?>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -141,18 +143,18 @@
                     <select class="selectpicker" data-live-search="true" id="item" onchange="load_fth_unit();" title="Choose an Item">
                         <?php
 
-                        $item_rs = Database::search("SELECT * FROM `fth_inventory`");
-                        $item_num = $item_rs->num_rows;
+                                        $item_rs = Database::search("SELECT * FROM `fth_inventory`");
+                                        $item_num = $item_rs->num_rows;
 
 
-                        for ($x = 0; $x < $item_num; $x++) {
-                            $item_data = $item_rs->fetch_assoc();
+                                        for ($x = 0; $x < $item_num; $x++) {
+                                            $item_data = $item_rs->fetch_assoc();
                         ?>
                             <option value="<?php echo $item_data['item_code']; ?>">
                                 <?php echo $item_data['description']; ?>
                             </option>
                         <?php
-                        }
+                                        }
                         ?>
                     </select>
                 </div>
@@ -172,18 +174,18 @@
                         <option value="0" disabled selected>Select a unit</option>
                         <?php
 
-                        $unit_rs = Database::search("SELECT * FROM `units`");
-                        $unit_num = $unit_rs->num_rows;
+                                        $unit_rs = Database::search("SELECT * FROM `units`");
+                                        $unit_num = $unit_rs->num_rows;
 
-                        for ($x = 0; $x < $unit_num; $x++) {
-                            $unit_data = $unit_rs->fetch_assoc();
+                                        for ($x = 0; $x < $unit_num; $x++) {
+                                            $unit_data = $unit_rs->fetch_assoc();
 
                         ?>
 
                             <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
 
                         <?php
-                        }
+                                        }
 
                         ?>
                     </select>
@@ -217,7 +219,7 @@
             <tbody>
                 <?php
 
-                $query = "SELECT fth_inventory.item_code AS item_code, 
+                                        $query = "SELECT fth_inventory.item_code AS item_code, 
                     fth_inventory.`description` AS descr, 
                     fth_stock.qty_system AS qsystem, 
                     fth_stock.qty_hand AS qhand, 
@@ -233,12 +235,12 @@
                 ) latest_stock ON fth_stock.id = latest_stock.latest_id
                 WHERE fth_inventory.status_status_id = '1'";
 
-                $item_table_rs = Database::search($query);
-                $item_table_num = $item_table_rs->num_rows;
+                                        $item_table_rs = Database::search($query);
+                                        $item_table_num = $item_table_rs->num_rows;
 
 
-                for ($x = 0; $x < $item_table_num; $x++) {
-                    $item_table_data = $item_table_rs->fetch_assoc();
+                                        for ($x = 0; $x < $item_table_num; $x++) {
+                                            $item_table_data = $item_table_rs->fetch_assoc();
 
                 ?>
                     <tr>
@@ -250,11 +252,14 @@
                         <td><?php echo $item_table_data['remarks']; ?></td>
                     </tr>
 
-                <?php
+            <?php
 
-                }
+                                        }
+                                    } else {
+                                        header("Location:index.php");
+                                    }
 
-                ?>
+            ?>
             </tbody>
         </table>
     </main>

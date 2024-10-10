@@ -30,6 +30,24 @@ function signIn() {
     r.send(f);
 }
 
+function signout() {
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText;
+            if (t == "success") {
+                window.location.reload();
+            }
+        }
+    };
+
+    r.open("GET", "signoutProcess.php", true);
+    r.send();
+
+}
+
 
 function mop_new_item() {
 
@@ -296,6 +314,7 @@ function load_rmi_unit(){
 }
 
 
+
 $(document).ready(function () {
 
     $('#datepicker2').datepicker({
@@ -311,7 +330,7 @@ $(document).ready(function () {
 });
 
 function searchmop() {
-    var selectedDate = $('#datepicker2').val(); t
+    var selectedDate = $('#datepicker2').val(); 
 
     console.log("Selected date: " + selectedDate);
 

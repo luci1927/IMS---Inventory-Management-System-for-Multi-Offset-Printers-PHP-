@@ -48,7 +48,7 @@
                         <a class="nav-link" href="rmi-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Logout</a>
+                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -136,6 +136,8 @@
 
                 require "connection.php";
 
+                if (isset($_SESSION["u"])){
+
                 $query = "SELECT rmi_inventory.item_code AS item_code, 
                     rmi_stock.date_time AS datetime,
                     rmi_inventory.`description` AS descr, 
@@ -172,6 +174,10 @@
                 <?php
 
                 }
+
+            } else {
+                header("Location:index.php");
+            }
 
                 ?>
             </tbody>

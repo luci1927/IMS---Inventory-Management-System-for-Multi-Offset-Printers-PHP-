@@ -22,6 +22,7 @@
             font-size: 18px;
             z-index: 1000;
         }
+        
     </style>
 </head>
 
@@ -47,7 +48,7 @@
                         <a class="nav-link" href="rmi-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Logout</a>
+                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -68,6 +69,9 @@
                     <div class="card-body">
                         <?php
                         require "connection.php";
+
+                        session_start();
+                        if (isset($_SESSION["u"])){
 
                         $today_rs = Database::search("SELECT COUNT(*) AS daily_count
                         FROM rmi_stock 
@@ -162,6 +166,11 @@
                                         <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
                                     <?php
                                     }
+
+                                } else {
+                                    header("Location:index.php");
+                                }
+
                                     ?>
                                 </select>
                             </div>

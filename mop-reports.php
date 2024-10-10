@@ -48,7 +48,7 @@
                         <a class="nav-link" href="mop-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Logout</a>
+                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -136,6 +136,8 @@
 
                 require "connection.php";
 
+                if (isset($_SESSION["u"])){
+
                 $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_stock.date_time AS datetime,
                     mop_inventory.`description` AS descr, 
@@ -173,6 +175,9 @@
 
                 }
 
+            } else {
+                header("Location:index.php");
+            }
                 ?>
             </tbody>
         </table>

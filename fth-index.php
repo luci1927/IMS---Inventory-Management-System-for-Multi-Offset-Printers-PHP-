@@ -47,7 +47,7 @@
                         <a class="nav-link" href="fth-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Logout</a>
+                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -69,24 +69,27 @@
                         <?php
                         require "connection.php";
 
-                        $today_rs = Database::search("SELECT COUNT(*) AS daily_count
+                        session_start();
+                        if (isset($_SESSION["u"])) {
+
+                            $today_rs = Database::search("SELECT COUNT(*) AS daily_count
                         FROM fth_stock 
                         WHERE DATE(date_time) = CURDATE();");
-                        $today_data = $today_rs->fetch_assoc();
-                        $today_updated = $today_data['daily_count'];
+                            $today_data = $today_rs->fetch_assoc();
+                            $today_updated = $today_data['daily_count'];
 
-                        $month_rs = Database::search("SELECT COUNT(*) AS monthly_count 
+                            $month_rs = Database::search("SELECT COUNT(*) AS monthly_count 
                         FROM fth_stock 
                         WHERE MONTH(date_time) = MONTH(CURDATE()) 
                         AND YEAR(date_time) = YEAR(CURDATE());");
 
-                        $month_data = $month_rs->fetch_assoc();
-                        $this_month_updated = $month_data['monthly_count'];
+                            $month_data = $month_rs->fetch_assoc();
+                            $this_month_updated = $month_data['monthly_count'];
                         ?>
 
-                        <h3 class="card-title">0<?php echo $today_updated; ?></h3>
-                        <p class="card-text" style="font-size: large;">Updated items today</p>
-                        <i class="fa-solid fa-calendar-day fa-2xl"></i>
+                            <h3 class="card-title">0<?php echo $today_updated; ?></h3>
+                            <p class="card-text" style="font-size: large;">Updated items today</p>
+                            <i class="fa-solid fa-calendar-day fa-2xl"></i>
                     </div>
                 </div>
             </div>
@@ -160,9 +163,12 @@
                                         $unit_data = $unit_rs->fetch_assoc();
                                     ?>
                                         <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
-                                    <?php
+                                <?php
                                     }
-                                    ?>
+                                } else {
+                                    header("Location:index.php");
+                                }
+                                ?>
                                 </select>
                             </div>
                             <div class="form-group">

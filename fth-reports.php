@@ -48,7 +48,7 @@
                         <a class="nav-link" href="fth-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Logout</a>
+                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -136,7 +136,10 @@
 
                 require "connection.php";
 
-                $query = "SELECT fth_inventory.item_code AS item_code, 
+                if (isset($_SESSION["u"])) {
+
+
+                    $query = "SELECT fth_inventory.item_code AS item_code, 
                     fth_stock.date_time AS datetime,
                     fth_inventory.`description` AS descr, 
                     fth_stock.qty_system AS qsystem, 
@@ -151,27 +154,30 @@
                 ORDER BY fth_stock.date_time DESC;
 ";
 
-                $item_table_rs = Database::search($query);
-                $item_table_num = $item_table_rs->num_rows;
+                    $item_table_rs = Database::search($query);
+                    $item_table_num = $item_table_rs->num_rows;
 
 
-                for ($x = 0; $x < $item_table_num; $x++) {
-                    $item_table_data = $item_table_rs->fetch_assoc();
+                    for ($x = 0; $x < $item_table_num; $x++) {
+                        $item_table_data = $item_table_rs->fetch_assoc();
 
                 ?>
-                    <tr>
-                        <td><?php echo $item_table_data['datetime']; ?></td>
-                        <td><?php echo $item_table_data['item_code']; ?></td>
-                        <td><?php echo $item_table_data['descr']; ?></td>
-                        <td><?php echo $item_table_data['qsystem']; ?></td>
-                        <td><?php echo $item_table_data['qhand']; ?></td>
-                        <td><?php echo $item_table_data['diff']; ?></td>
-                        <td><?php echo $item_table_data['unit_name']; ?></td>
-                        <td><?php echo $item_table_data['remarks']; ?></td>
-                    </tr>
+                        <tr>
+                            <td><?php echo $item_table_data['datetime']; ?></td>
+                            <td><?php echo $item_table_data['item_code']; ?></td>
+                            <td><?php echo $item_table_data['descr']; ?></td>
+                            <td><?php echo $item_table_data['qsystem']; ?></td>
+                            <td><?php echo $item_table_data['qhand']; ?></td>
+                            <td><?php echo $item_table_data['diff']; ?></td>
+                            <td><?php echo $item_table_data['unit_name']; ?></td>
+                            <td><?php echo $item_table_data['remarks']; ?></td>
+                        </tr>
 
                 <?php
 
+                    }
+                } else {
+                    header("Location:index.php");
                 }
 
                 ?>
@@ -198,7 +204,7 @@
                 format: 'yyyy-mm-dd',
                 todayHighlight: true,
                 autoclose: true,
-                endDate: new Date()              
+                endDate: new Date()
             });
         });
 
