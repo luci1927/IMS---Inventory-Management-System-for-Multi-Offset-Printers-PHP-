@@ -259,6 +259,42 @@ function load_mop_unit(){
     r.send();
 }
 
+function load_fth_unit(){
+    var item = document.getElementById("item").value;
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText;
+
+            document.getElementById("unit2").innerHTML = t;
+
+        }
+    }
+
+    r.open("GET", "load_fth_unit.php?i=" + item, true);
+    r.send();
+}
+
+function load_rmi_unit(){
+    var item = document.getElementById("item").value;
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText;
+
+            document.getElementById("unit2").innerHTML = t;
+
+        }
+    }
+
+    r.open("GET", "load_rmi_unit.php?i=" + item, true);
+    r.send();
+}
+
 
 $(document).ready(function () {
     // Initialize the datepicker

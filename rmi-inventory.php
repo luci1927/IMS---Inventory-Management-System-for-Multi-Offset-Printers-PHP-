@@ -41,7 +41,7 @@
     <!-- Navigation -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="rmi-index.php">Inventory System</a>
+            <a class="navbar-brand" href="rmi-index.php">Inventory System | Rajah Multi Industries</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -102,7 +102,7 @@
                             <div class="form-group">
                                 <label for="unit">Unit</label>
                                 <select class="form-control" id="unit">
-                                <option value="0" disabled selected>Select a unit</option>
+                                    <option value="0" disabled selected>Select a unit</option>
                                     <?php
 
                                     require "connection.php";
@@ -147,7 +147,7 @@
             <div class="form-group row mt-3">
                 <label for="item" class="col-sm-2 col-form-label">Item</label>
                 <div class="col-sm-10">
-                    <select class="selectpicker" data-live-search="true" id="item" onchange="load_mop_unit();" title="Choose an Item">
+                    <select class="selectpicker" data-live-search="true" id="item" onchange="load_rmi_unit();" title="Choose an Item">
                         <?php
 
                         $item_rs = Database::search("SELECT * FROM `rmi_inventory`");
@@ -227,13 +227,21 @@
                 <?php
 
                 $query = "SELECT rmi_inventory.item_code AS item_code, 
-                rmi_inventory.`description` AS descr, 
-                rmi_stock.qty_system AS qsystem, 
-                rmi_stock.qty_hand AS qhand, 
-                units.`name` AS unit_name, 
-                rmi_stock.remarks AS remarks FROM rmi_inventory INNER JOIN rmi_stock ON 
-                rmi_inventory.item_code = rmi_stock.rmi_inventory_item_code INNER JOIN units ON 
-                rmi_inventory.units_id = units.id WHERE status_status_id = '1'";
+                    rmi_inventory.`description` AS descr, 
+                    rmi_stock.qty_system AS qsystem, 
+                    rmi_stock.qty_hand AS qhand, 
+                    units.`name` AS unit_name, 
+                    rmi_stock.remarks AS remarks 
+                FROM rmi_inventory
+                INNER JOIN rmi_stock ON rmi_inventory.item_code = rmi_stock.rmi_inventory_item_code
+                INNER JOIN units ON rmi_inventory.units_id = units.id
+                INNER JOIN (
+                    -- Subquery to get the latest record (highest ID) for each item_code
+                    SELECT rmi_stock.rmi_inventory_item_code, MAX(id) AS latest_id
+                    FROM rmi_stock
+                    GROUP BY rmi_inventory_item_code
+                ) latest_stock ON rmi_stock.id = latest_stock.latest_id
+                WHERE rmi_inventory.status_status_id = '1'";
 
                 $item_table_rs = Database::search($query);
                 $item_table_num = $item_table_rs->num_rows;

@@ -147,7 +147,7 @@
             <div class="form-group row mt-3">
                 <label for="item" class="col-sm-2 col-form-label">Item</label>
                 <div class="col-sm-10">
-                    <select class="selectpicker" data-live-search="true" id="item" onchange="load_mop_unit();" title="Choose an Item">
+                    <select class="selectpicker" data-live-search="true" id="item" onchange="load_fth_unit();" title="Choose an Item">
                         <?php
 
                         $item_rs = Database::search("SELECT * FROM `fth_inventory`");
@@ -227,13 +227,21 @@
                 <?php
 
                 $query = "SELECT fth_inventory.item_code AS item_code, 
-                fth_inventory.`description` AS descr, 
-                fth_stock.qty_system AS qsystem, 
-                fth_stock.qty_hand AS qhand, 
-                units.`name` AS unit_name, 
-                fth_stock.remarks AS remarks FROM fth_inventory INNER JOIN fth_stock ON 
-                fth_inventory.item_code = fth_stock.fth_inventory_item_code INNER JOIN units ON 
-                fth_inventory.units_id = units.id WHERE status_status_id = '1'";
+                    fth_inventory.`description` AS descr, 
+                    fth_stock.qty_system AS qsystem, 
+                    fth_stock.qty_hand AS qhand, 
+                    units.`name` AS unit_name, 
+                    fth_stock.remarks AS remarks 
+                FROM fth_inventory
+                INNER JOIN fth_stock ON fth_inventory.item_code = fth_stock.fth_inventory_item_code
+                INNER JOIN units ON fth_inventory.units_id = units.id
+                INNER JOIN (
+                    -- Subquery to get the latest record (highest ID) for each item_code
+                    SELECT fth_inventory_item_code, MAX(id) AS latest_id
+                    FROM fth_stock
+                    GROUP BY fth_inventory_item_code
+                ) latest_stock ON fth_stock.id = latest_stock.latest_id
+                WHERE fth_inventory.status_status_id = '1'";
 
                 $item_table_rs = Database::search($query);
                 $item_table_num = $item_table_rs->num_rows;
