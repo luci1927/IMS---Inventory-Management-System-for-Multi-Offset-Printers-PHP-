@@ -227,13 +227,20 @@
                 <?php
 
                 $query = "SELECT mop_inventory.item_code AS item_code, 
-                mop_inventory.`description` AS descr, 
-                mop_stock.qty_system AS qsystem, 
-                mop_stock.qty_hand AS qhand, 
-                units.`name` AS unit_name, 
-                mop_stock.remarks AS remarks FROM mop_inventory INNER JOIN mop_stock ON 
-                mop_inventory.item_code = mop_stock.mop_inventory_item_code INNER JOIN units ON 
-                mop_inventory.units_id = units.id WHERE status_status_id = '1'";
+                    mop_inventory.`description` AS descr, 
+                    mop_stock.qty_system AS qsystem, 
+                    mop_stock.qty_hand AS qhand, 
+                    units.`name` AS unit_name, 
+                    mop_stock.remarks AS remarks 
+                FROM mop_inventory
+                INNER JOIN mop_stock ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                INNER JOIN units ON mop_inventory.units_id = units.id
+                INNER JOIN (
+                    SELECT mop_stock.mop_inventory_item_code, MAX(id) AS latest_id
+                    FROM mop_stock
+                    GROUP BY mop_inventory_item_code
+                ) latest_stock ON mop_stock.id = latest_stock.latest_id
+                WHERE mop_inventory.status_status_id = '1';";
 
                 $item_table_rs = Database::search($query);
                 $item_table_num = $item_table_rs->num_rows;

@@ -134,6 +134,7 @@
                     <th scope="col">Item Description</th>
                     <th scope="col">Qty in System</th>
                     <th scope="col">Qty on Hand</th>
+                    <th scope="col">Diff</th>
                     <th scope="col">Unit</th>
                     <th scope="col">Remarks</th>
                 </tr>
@@ -144,17 +145,19 @@
                 require "connection.php";
 
                 $query = "SELECT fth_inventory.item_code AS item_code, 
-                fth_stock.date_time AS datetime,
-                fth_inventory.`description` AS descr, 
-                fth_stock.qty_system AS qsystem, 
-                fth_stock.qty_hand AS qhand, 
-                units.`name` AS unit_name, 
-                fth_stock.remarks AS remarks
+                    fth_stock.date_time AS datetime,
+                    fth_inventory.`description` AS descr, 
+                    fth_stock.qty_system AS qsystem, 
+                    fth_stock.qty_hand AS qhand, 
+                    (fth_stock.qty_system - fth_stock.qty_hand) AS diff, 
+                    units.`name` AS unit_name, 
+                    fth_stock.remarks AS remarks
                 FROM fth_stock
                 INNER JOIN fth_inventory ON fth_inventory.item_code = fth_stock.fth_inventory_item_code
                 INNER JOIN units ON fth_inventory.units_id = units.id
-                WHERE status_status_id = '1'
-                ORDER BY fth_stock.date_time DESC;";
+                WHERE fth_inventory.status_status_id = '1'  
+                ORDER BY fth_stock.date_time DESC;
+";
 
                 $item_table_rs = Database::search($query);
                 $item_table_num = $item_table_rs->num_rows;
@@ -170,6 +173,7 @@
                         <td><?php echo $item_table_data['descr']; ?></td>
                         <td><?php echo $item_table_data['qsystem']; ?></td>
                         <td><?php echo $item_table_data['qhand']; ?></td>
+                        <td><?php echo $item_table_data['diff']; ?></td>
                         <td><?php echo $item_table_data['unit_name']; ?></td>
                         <td><?php echo $item_table_data['remarks']; ?></td>
                     </tr>
