@@ -136,7 +136,6 @@
 
                 require "connection.php";
 
-                if (isset($_SESSION["u"])) {
 
 
                     $query = "SELECT fth_inventory.item_code AS item_code, 
@@ -176,9 +175,6 @@
                 <?php
 
                     }
-                } else {
-                    header("Location:index.php");
-                }
 
                 ?>
             </tbody>

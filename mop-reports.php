@@ -136,7 +136,6 @@
 
                 require "connection.php";
 
-                if (isset($_SESSION["u"])){
 
                 $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_stock.date_time AS datetime,
@@ -175,9 +174,6 @@
 
                 }
 
-            } else {
-                header("Location:index.php");
-            }
                 ?>
             </tbody>
         </table>

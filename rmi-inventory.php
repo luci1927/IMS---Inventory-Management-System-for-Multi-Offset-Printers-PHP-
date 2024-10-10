@@ -99,7 +99,6 @@
 
                                     require "connection.php";
 
-                                    if (isset($_SESSION["u"])){
 
                                     $unit_rs = Database::search("SELECT * FROM `units`");
                                     $unit_num = $unit_rs->num_rows;
@@ -258,10 +257,6 @@
 
 
                 }
-
-            } else {
-                header("Location:index.php");
-            }
 
                 ?>
             </tbody>

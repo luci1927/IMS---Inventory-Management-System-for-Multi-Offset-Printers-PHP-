@@ -9,6 +9,8 @@ if(isset($_SESSION["u"])){
 
     echo ("success");
 
+    header("Location:index.php");
+
 }
 
 ?>
