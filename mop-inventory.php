@@ -14,6 +14,26 @@
             width: 100%;
             /* Make the select dropdown full width */
         }
+
+        .fixed-date-time {
+            position: fixed;
+            top: 60px;
+            /* Distance from the top (adjust as necessary) */
+            right: 20px;
+            /* Distance from the right */
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Slightly transparent background */
+            padding: 10px 15px;
+            /* Padding around the text */
+            border-radius: 5px;
+            /* Rounded corners */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            /* Subtle shadow */
+            font-size: 18px;
+            /* Increased font size */
+            z-index: 1000;
+            /* Make sure it is above other content */
+        }
     </style>
 </head>
 
@@ -21,7 +41,7 @@
     <!-- Navigation -->
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="mop-index.php">Inventory System</a>
+            <a class="navbar-brand" href="mop-index.php">Inventory System | Multi Offset Printers</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -44,6 +64,9 @@
             </div>
         </nav>
     </header>
+
+    <div id="dateTimeDisplay" class="fixed-date-time"></div>
+
     <!-- Main Content -->
     <main class="container mt-5">
         <div class="d-flex justify-content-between align-items-center">
@@ -244,6 +267,34 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="assets/js/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
+    <script>
+        function updateDateTime() {
+            const dateTimeDisplay = document.getElementById('dateTimeDisplay');
+            const now = new Date();
+
+            // Format date to 'Today is YYYY Month DD'
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            const formattedDate = now.toLocaleDateString('en-US', options);
+
+            // Format time to 'HH:MM:SS'
+            const formattedTime = now.toLocaleTimeString('en-US', {
+                hour12: false
+            });
+
+            dateTimeDisplay.innerHTML = `Today is ${formattedDate} - ${formattedTime}`;
+        }
+
+        // Update date and time every second
+        setInterval(updateDateTime, 1000);
+
+        // Initial call to display the date and time immediately
+        updateDateTime();
+    </script>
 </body>
 
 </html>

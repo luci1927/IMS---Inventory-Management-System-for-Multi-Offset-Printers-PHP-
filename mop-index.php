@@ -10,6 +10,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .fixed-date-time {
+            position: fixed;
+            top: 60px;
+            /* Distance from the top (adjust as necessary) */
+            right: 20px;
+            /* Distance from the right */
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Slightly transparent background */
+            padding: 10px 15px;
+            /* Padding around the text */
+            border-radius: 5px;
+            /* Rounded corners */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            /* Subtle shadow */
+            font-size: 18px;
+            /* Increased font size */
+            z-index: 1000;
+            /* Make sure it is above other content */
+        }
+    </style>
 </head>
 
 <body>
@@ -41,18 +62,19 @@
         </nav>
     </header>
 
+    <!-- Date and Time Display -->
+    <div id="dateTimeDisplay" class="fixed-date-time"></div>
+
     <!-- Main Content -->
     <main class="container mt-5">
         <h1 class="text-center">Welcome to the Inventory Management System</h1>
         <p class="text-center lead">Manage your inventory, track stock, and view daily reports easily.</p>
-
 
         <div class="row text-center mt-5">
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
                         <?php
-
                         require "connection.php";
 
                         $today_rs = Database::search("SELECT COUNT(*) AS daily_count
@@ -68,12 +90,9 @@
 
                         $month_data = $month_rs->fetch_assoc();
                         $this_month_updated = $month_data['monthly_count'];
-
                         ?>
 
                         <h3 class="card-title">0<?php echo $today_updated; ?></h3>
-
-
                         <p class="card-text" style="font-size: large;">Updated items today</p>
                         <i class="fa-solid fa-calendar-day fa-2xl"></i>
                     </div>
@@ -140,22 +159,17 @@
                             <div class="form-group">
                                 <label for="unit">Unit</label>
                                 <select class="form-control" id="unit">
-                                <option value="0" disabled selected>Select a unit</option>
+                                    <option value="0" disabled selected>Select a unit</option>
                                     <?php
-
                                     $unit_rs = Database::search("SELECT * FROM `units`");
                                     $unit_num = $unit_rs->num_rows;
 
                                     for ($x = 0; $x < $unit_num; $x++) {
                                         $unit_data = $unit_rs->fetch_assoc();
-
                                     ?>
-
                                         <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
-
                                     <?php
                                     }
-
                                     ?>
                                 </select>
                             </div>
@@ -185,6 +199,34 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="assets/js/script.js"></script>
+
+    <script>
+        function updateDateTime() {
+            const dateTimeDisplay = document.getElementById('dateTimeDisplay');
+            const now = new Date();
+
+            // Format date to 'Today is YYYY Month DD'
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            const formattedDate = now.toLocaleDateString('en-US', options);
+
+            // Format time to 'HH:MM:SS'
+            const formattedTime = now.toLocaleTimeString('en-US', {
+                hour12: false
+            });
+
+            dateTimeDisplay.innerHTML = `Today is ${formattedDate} - ${formattedTime}`;
+        }
+
+        // Update date and time every second
+        setInterval(updateDateTime, 1000);
+
+        // Initial call to display the date and time immediately
+        updateDateTime();
+    </script>
 </body>
 
 </html>
