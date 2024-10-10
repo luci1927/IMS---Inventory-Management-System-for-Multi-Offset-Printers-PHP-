@@ -14,21 +14,13 @@
         .fixed-date-time {
             position: fixed;
             top: 60px;
-            /* Distance from the top (adjust as necessary) */
             right: 20px;
-            /* Distance from the right */
             background-color: rgba(255, 255, 255, 0.8);
-            /* Slightly transparent background */
             padding: 10px 15px;
-            /* Padding around the text */
             border-radius: 5px;
-            /* Rounded corners */
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            /* Subtle shadow */
             font-size: 18px;
-            /* Increased font size */
             z-index: 1000;
-            /* Make sure it is above other content */
         }
     </style>
 </head>

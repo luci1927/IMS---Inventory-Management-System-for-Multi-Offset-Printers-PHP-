@@ -28,11 +28,11 @@ if (empty($qhand)) {
 } else {
 
     $stock_rs = Database::search("SELECT * FROM `mop_stock` 
-WHERE `mop_inventory_item_code` = '" . $item_code . "' ORDER BY `date_time` DESC LIMIT 1;");
+    WHERE `mop_inventory_item_code` = '" . $item_code . "' ORDER BY `date_time` DESC LIMIT 1;");
     $stock_n = $stock_rs->num_rows;
     $stock_data = $stock_rs->fetch_assoc();
 
-    $qsystem = $stock_data["qty_system"];
+    $qsystem = $stock_data["qty_hand"];
 
 
 

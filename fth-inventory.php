@@ -12,27 +12,18 @@
     <style>
         .selectpicker {
             width: 100%;
-            /* Make the select dropdown full width */
         }
 
         .fixed-date-time {
             position: fixed;
             top: 60px;
-            /* Distance from the top (adjust as necessary) */
             right: 20px;
-            /* Distance from the right */
             background-color: rgba(255, 255, 255, 0.8);
-            /* Slightly transparent background */
             padding: 10px 15px;
-            /* Padding around the text */
             border-radius: 5px;
-            /* Rounded corners */
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            /* Subtle shadow */
             font-size: 18px;
-            /* Increased font size */
             z-index: 1000;
-            /* Make sure it is above other content */
         }
     </style>
 </head>
@@ -236,7 +227,6 @@
                 INNER JOIN fth_stock ON fth_inventory.item_code = fth_stock.fth_inventory_item_code
                 INNER JOIN units ON fth_inventory.units_id = units.id
                 INNER JOIN (
-                    -- Subquery to get the latest record (highest ID) for each item_code
                     SELECT fth_inventory_item_code, MAX(id) AS latest_id
                     FROM fth_stock
                     GROUP BY fth_inventory_item_code
@@ -281,7 +271,6 @@
             const dateTimeDisplay = document.getElementById('dateTimeDisplay');
             const now = new Date();
 
-            // Format date to 'Today is YYYY Month DD'
             const options = {
                 year: 'numeric',
                 month: 'long',
@@ -289,7 +278,6 @@
             };
             const formattedDate = now.toLocaleDateString('en-US', options);
 
-            // Format time to 'HH:MM:SS'
             const formattedTime = now.toLocaleTimeString('en-US', {
                 hour12: false
             });
@@ -297,10 +285,8 @@
             dateTimeDisplay.innerHTML = `Today is ${formattedDate} - ${formattedTime}`;
         }
 
-        // Update date and time every second
         setInterval(updateDateTime, 1000);
 
-        // Initial call to display the date and time immediately
         updateDateTime();
     </script>
 </body>

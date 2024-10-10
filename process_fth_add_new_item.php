@@ -37,8 +37,8 @@ if (empty($item_code)) {
     VALUES ('" . $item_code . "','" . $description . "','" . $unit . "','1')");
 
         Database::iud("INSERT INTO `fth_stock` 
-    (`fth_inventory_item_code`,`qty_system`,`remarks`,`date_time`)
-    VALUES ('" . $item_code . "','" . $quantity . "','".$remarks."','" . $date . "')");
+    (`fth_inventory_item_code`,`qty_system`,`qty_hand`.`remarks`,`date_time`)
+    VALUES ('" . $item_code . "','" . $quantity . "','" . $quantity . "','".$remarks."','" . $date . "')");
 
         echo ("success");
     }

@@ -32,7 +32,7 @@ WHERE `rmi_inventory_item_code` = '" . $item_code . "' ORDER BY `date_time` DESC
     $stock_n = $stock_rs->num_rows;
     $stock_data = $stock_rs->fetch_assoc();
 
-    $qsystem = $stock_data["qty_system"];
+    $qsystem = $stock_data["qty_hand"];
 
 
 

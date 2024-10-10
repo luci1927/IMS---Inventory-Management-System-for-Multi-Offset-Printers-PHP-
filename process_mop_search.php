@@ -1,13 +1,10 @@
-<?php
-require "connection.php"; // Database connection
+<?php require "connection.php";
 
 if (isset($_POST['date']) && !empty($_POST['date'])) {
     $selectedDate = $_POST['date'];
 
-    // Debugging: Log the received date
-    error_log("Received date: " . $selectedDate); // Log to PHP error log
+    error_log("Received date: " . $selectedDate); 
 
-    // Your SQL query...
     $query = "SELECT mop_inventory.item_code AS item_code, 
                 mop_stock.date_time AS datetime,
                 mop_inventory.`description` AS descr, 
@@ -41,6 +38,6 @@ if (isset($_POST['date']) && !empty($_POST['date'])) {
         echo "<tr><td colspan='7'>No data available for the selected date.</td></tr>";
     }
 } else {
-    echo "<tr><td colspan='7'>Please select a valid date.</td></tr>"; // Handle the error for empty date
+    echo "<tr><td colspan='7'>Please select a valid date.</td></tr>"; 
 }
 ?>

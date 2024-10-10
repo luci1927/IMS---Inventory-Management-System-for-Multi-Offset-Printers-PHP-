@@ -25,10 +25,8 @@
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
-            /* Responsive width */
         }
 
-        /* Media query to adjust padding on smaller screens */
         @media (max-width: 576px) {
             .login-container {
                 padding: 20px;
@@ -95,50 +93,6 @@
             <button type="submit" class="btn btn-success btn-block" onclick="signIn();">Login</button>
         </form>
     </div>
-
-    <!-- JavaScript for validation -->
-    <!-- <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            let isValid = true;
-
-            // Username Validation
-            const username = document.getElementById('username').value.trim();
-            const usernameError = document.getElementById('usernameError');
-            if (username.length < 3) {
-                usernameError.style.display = 'block';
-                isValid = false;
-            } else {
-                usernameError.style.display = 'none';
-            }
-
-            // Password Validation
-            const password = document.getElementById('password').value.trim();
-            const passwordError = document.getElementById('passwordError');
-            if (password.length < 6) {
-                passwordError.style.display = 'block';
-                isValid = false;
-            } else {
-                passwordError.style.display = 'none';
-            }
-
-            // Department Validation
-            const department = document.getElementById('department').value;
-            const departmentError = document.getElementById('departmentError');
-            if (!department) {
-                departmentError.style.display = 'block';
-                isValid = false;
-            } else {
-                departmentError.style.display = 'none';
-            }
-
-            // Prevent form submission if validation fails
-            if (!isValid) {
-                event.preventDefault();
-            }
-        });
-    </script> -->
-
-    <!-- Bootstrap JS and dependencies (Optional) -->
      <script src="assets/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
