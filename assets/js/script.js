@@ -54,14 +54,20 @@ function mop_new_item() {
     var i = document.getElementById("item_code");
     var d = document.getElementById("description");
     var u = document.getElementById("unit");
-    var q = document.getElementById("quantity");
-    var re = document.getElementById("remarks");
+    var q = document.getElementById("quantity1");
+    var g = document.getElementById("grn1");
+    var gt = document.getElementById("grn_type1");
+    var s = document.getElementById("supplier1");
+    var re = document.getElementById("remarks1");
 
     var form = new FormData();
     form.append("i", i.value);
     form.append("d", d.value);
     form.append("u", u.value);
     form.append("q", q.value);
+    form.append("g", g.value);
+    form.append("gt", gt.value);
+    form.append("s", s.value);
     form.append("re", re.value);
 
     var r = new XMLHttpRequest();
@@ -84,6 +90,44 @@ function mop_new_item() {
     r.open("POST", "process_mop_add_new_item.php", true);
     r.send(form);
 
+}
+
+function mop_new_stock(){
+
+    var i = document.getElementById("item3");
+    var q = document.getElementById("quantity");
+    var g = document.getElementById("grn2");
+    var gt = document.getElementById("grn_type3");
+    var s = document.getElementById("supplier2");
+    var re = document.getElementById("remarks");
+
+    var form = new FormData();
+    form.append("i", i.value);
+    form.append("q", q.value);
+    form.append("g", g.value);
+    form.append("gt", gt.value);
+    form.append("s", s.value);
+    form.append("re", re.value);
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var text = r.responseText;
+
+            if (text == "success") {
+                alert("Stock added successfully.");
+                window.location.reload();
+            } else {
+                alert(text);
+            }
+
+
+        }
+    }
+
+    r.open("POST", "process_mop_add_new_stock.php", true);
+    r.send(form);
 }
 
 function fth_new_item() {
@@ -266,7 +310,7 @@ function load_mop_unit(){
 
     r.onreadystatechange = function () {
         if (r.readyState == 4) {
-            var t = r.responseText;
+            var t = r.responseText; 
 
             document.getElementById("unit2").innerHTML = t;
 
@@ -274,6 +318,43 @@ function load_mop_unit(){
     }
 
     r.open("GET", "load_mop_unit.php?i=" + item, true);
+    r.send();
+}
+
+function load_mop_unit_update(){
+    var item = document.getElementById("item3").value;
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText; 
+
+            document.getElementById("unit3").innerHTML = t;
+
+        }
+    }
+
+    r.open("GET", "load_mop_unit_update.php?i=" + item, true);
+    r.send();
+}
+
+
+function load_mop_grn_type_update(){
+    var item = document.getElementById("item3").value;
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText; 
+
+            document.getElementById("grn_type3").innerHTML = t;
+
+        }
+    }
+
+    r.open("GET", "load_mop_grn_type_update.php?i=" + item, true);
     r.send();
 }
 

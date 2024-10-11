@@ -131,6 +131,8 @@
                     <th scope="col">Qty on Hand</th>
                     <th scope="col">Diff</th>
                     <th scope="col">Unit</th>
+                    <th scope="col">GRN No</th>
+                    <th scope="col">GRN Date</th>
                     <th scope="col">Remarks</th>
                 </tr>
             </thead>
@@ -147,12 +149,15 @@
                     mop_stock.qty_hand AS qhand, 
                     (mop_stock.qty_system - mop_stock.qty_hand) AS diff, 
                     units.`name` AS unit_name, 
+                    mop_grn.grn_no AS grn_number,
+                    mop_grn.date_time AS grn_date,
                     mop_stock.remarks AS remarks
-                FROM mop_stock
-                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                INNER JOIN units ON mop_inventory.units_id = units.id
-                WHERE mop_inventory.status_status_id = '1'  
-                ORDER BY mop_stock.date_time DESC;";
+                    FROM mop_stock
+                    INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                    INNER JOIN units ON mop_inventory.units_id = units.id 
+                    INNER JOIN mop_grn ON mop_stock.mop_grn_id = mop_grn.id 
+                    WHERE mop_inventory.status_status_id = '1'
+                    ORDER BY mop_stock.date_time DESC;";
 
                 $item_table_rs = Database::search($query);
                 $item_table_num = $item_table_rs->num_rows;
@@ -170,6 +175,8 @@
                         <td><?php echo $item_table_data['qhand']; ?></td>
                         <td><?php echo $item_table_data['diff']; ?></td>
                         <td><?php echo $item_table_data['unit_name']; ?></td>
+                        <td><?php echo $item_table_data['grn_number']; ?></td>
+                        <td><?php echo $item_table_data['grn_date']; ?></td>
                         <td><?php echo $item_table_data['remarks']; ?></td>
                     </tr>
 
