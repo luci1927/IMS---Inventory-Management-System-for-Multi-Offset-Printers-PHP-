@@ -62,13 +62,147 @@
     <main class="container mt-5">
         <div class="d-flex justify-content-between align-items-center">
             <h2>Manage Inventory</h2>
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">
-                Add New Item
-            </button>
+            <div>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter1">
+                    Add Stock
+                </button>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter2">
+                    Add New Item
+                </button>
+            </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        <!-- Modal1 -->
+        <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add Stock</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="item3" >Item</label>
+                                <div >
+                                    <select class="selectpicker" data-live-search="true" id="item3" onchange="load_fth_unit_update(); load_fth_grn_type_update();" title="Choose an Item">
+                                        <?php
+
+                                        require "connection.php";
+                                        $item3_rs = Database::search("SELECT * FROM `fth_inventory`");
+                                        $item3_num = $item3_rs->num_rows;
+
+
+                                        for ($x = 0; $x < $item3_num; $x++) {
+                                            $item3_data = $item3_rs->fetch_assoc();
+                                        ?>
+                                            <option value="<?php echo $item3_data['item_code']; ?>">
+                                                <?php echo $item3_data['description']; ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="unit3">Unit</label>
+                                <select class="form-control" id="unit3">
+                                    <option value="0" disabled selected>Select a unit</option>
+                                    <?php
+
+
+
+                                    $unit3_rs = Database::search("SELECT * FROM `units`");
+                                    $unit3_num = $unit3_rs->num_rows;
+
+                                    for ($x = 0; $x < $unit3_num; $x++) {
+                                        $unit3_data = $unit3_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $unit3_data["id"]; ?>"><?php echo $unit3_data["name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" class="form-control" id="quantity" placeholder="Enter quantity"
+                                    step="0.001" min="0" max="10000" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="grn2">GRN No</label>
+                                <input type="text" class="form-control" id="grn2"
+                                    placeholder="GRN No">
+                            </div>
+                            <div class="form-group">
+                                <label for="grn_type3">GRN Type</label>
+                                <select class="form-control" id="grn_type3">
+                                    <option value="0" disabled selected>Select GRN Type</option>
+                                    <?php
+
+                                    $grn_type2_rs = Database::search("SELECT * FROM `grn_type`");
+                                    $grn_type2_num = $grn_type1_rs->num_rows;
+
+                                    for ($x = 0; $x < $grn_type2_num; $x++) {
+                                        $grn_type2_data = $grn_type2_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $grn_type2_data["id"]; ?>"><?php echo $grn_type2_data["name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="supplier2">Supplier</label>
+                                <select class="form-control" id="supplier2">
+                                    <option value="0" disabled selected>Select supplier</option>
+                                    <?php
+
+                                    $supplier2_rs = Database::search("SELECT * FROM `supplier`");
+                                    $supplier2_num = $supplier2_rs->num_rows;
+
+                                    for ($x = 0; $x < $supplier2_num; $x++) {
+                                        $supplier2_data = $supplier2_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $supplier2_data["id"]; ?>"><?php echo $supplier2_data["name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="remarks">Remarks</label>
+                                <textarea class="form-control" id="remarks" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onclick="fth_new_stock();">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal1 -->
+        <!-- Modal2 -->
+        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -96,33 +230,80 @@
                                     <option value="0" disabled selected>Select a unit</option>
                                     <?php
 
-                                    require "connection.php";
+                                    $unit_rs = Database::search("SELECT * FROM `units`");
+                                    $unit_num = $unit_rs->num_rows;
 
-
-                                        $unit_rs = Database::search("SELECT * FROM `units`");
-                                        $unit_num = $unit_rs->num_rows;
-
-                                        for ($x = 0; $x < $unit_num; $x++) {
-                                            $unit_data = $unit_rs->fetch_assoc();
+                                    for ($x = 0; $x < $unit_num; $x++) {
+                                        $unit_data = $unit_rs->fetch_assoc();
 
                                     ?>
 
-                                            <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
+                                        <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
 
-                                        <?php
-                                        }
+                                    <?php
+                                    }
 
-                                        ?>
+                                    ?>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="quantity">Quantity</label>
-                                <input type="number" class="form-control" id="quantity" placeholder="Enter quantity"
+                                <label for="quantity1">Quantity</label>
+                                <input type="number" class="form-control" id="quantity1" placeholder="Enter quantity1"
                                     step="0.001" min="0" max="10000" required />
                             </div>
                             <div class="form-group">
-                                <label for="remarks">Remarks</label>
-                                <textarea class="form-control" id="remarks" rows="3"></textarea>
+                                <label for="grn1">GRN No</label>
+                                <input type="text" class="form-control" id="grn1"
+                                    placeholder="GRN No">
+                            </div>
+                            <div class="form-group">
+                                <label for="grn_type1">GRN Type</label>
+                                <select class="form-control" id="grn_type1">
+                                    <option value="0" disabled selected>Select GRN Type</option>
+                                    <?php
+
+                                    $grn_type1_rs = Database::search("SELECT * FROM `grn_type`");
+                                    $grn_type1_num = $grn_type1_rs->num_rows;
+
+                                    for ($x = 0; $x < $grn_type1_num; $x++) {
+                                        $grn_type1_data = $grn_type1_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $grn_type1_data["id"]; ?>"><?php echo $grn_type1_data["name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="supplier1">Supplier</label>
+                                <select class="form-control" id="supplier1">
+                                    <option value="0" disabled selected>Select supplier</option>
+                                    <?php
+
+                                    $supplier1_rs = Database::search("SELECT * FROM `supplier`");
+                                    $supplier1_num = $supplier1_rs->num_rows;
+
+                                    for ($x = 0; $x < $supplier1_num; $x++) {
+                                        $supplier1_data = $supplier1_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $supplier1_data["id"]; ?>"><?php echo $supplier1_data["name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="remarks1">Remarks</label>
+                                <textarea class="form-control" id="remarks1" rows="3"></textarea>
                             </div>
                         </form>
                     </div>
@@ -133,7 +314,7 @@
                 </div>
             </div>
         </div>
-        <!-- Modal -->
+        <!-- Modal2 -->
 
         <form id="inventoryForm">
             <div class="form-group row mt-3">
@@ -142,18 +323,18 @@
                     <select class="selectpicker" data-live-search="true" id="item" onchange="load_fth_unit();" title="Choose an Item">
                         <?php
 
-                                        $item_rs = Database::search("SELECT * FROM `fth_inventory`");
-                                        $item_num = $item_rs->num_rows;
+                        $item_rs = Database::search("SELECT * FROM `fth_inventory`");
+                        $item_num = $item_rs->num_rows;
 
 
-                                        for ($x = 0; $x < $item_num; $x++) {
-                                            $item_data = $item_rs->fetch_assoc();
+                        for ($x = 0; $x < $item_num; $x++) {
+                            $item_data = $item_rs->fetch_assoc();
                         ?>
                             <option value="<?php echo $item_data['item_code']; ?>">
                                 <?php echo $item_data['description']; ?>
                             </option>
                         <?php
-                                        }
+                        }
                         ?>
                     </select>
                 </div>
@@ -173,18 +354,18 @@
                         <option value="0" disabled selected>Select a unit</option>
                         <?php
 
-                                        $unit_rs = Database::search("SELECT * FROM `units`");
-                                        $unit_num = $unit_rs->num_rows;
+                        $unit_rs = Database::search("SELECT * FROM `units`");
+                        $unit_num = $unit_rs->num_rows;
 
-                                        for ($x = 0; $x < $unit_num; $x++) {
-                                            $unit_data = $unit_rs->fetch_assoc();
+                        for ($x = 0; $x < $unit_num; $x++) {
+                            $unit_data = $unit_rs->fetch_assoc();
 
                         ?>
 
                             <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
 
                         <?php
-                                        }
+                        }
 
                         ?>
                     </select>
@@ -218,7 +399,7 @@
             <tbody>
                 <?php
 
-                                        $query = "SELECT fth_inventory.item_code AS item_code, 
+                $query = "SELECT fth_inventory.item_code AS item_code, 
                     fth_inventory.`description` AS descr, 
                     fth_stock.qty_system AS qsystem, 
                     fth_stock.qty_hand AS qhand, 
@@ -234,12 +415,12 @@
                 ) latest_stock ON fth_stock.id = latest_stock.latest_id
                 WHERE fth_inventory.status_status_id = '1'";
 
-                                        $item_table_rs = Database::search($query);
-                                        $item_table_num = $item_table_rs->num_rows;
+                $item_table_rs = Database::search($query);
+                $item_table_num = $item_table_rs->num_rows;
 
 
-                                        for ($x = 0; $x < $item_table_num; $x++) {
-                                            $item_table_data = $item_table_rs->fetch_assoc();
+                for ($x = 0; $x < $item_table_num; $x++) {
+                    $item_table_data = $item_table_rs->fetch_assoc();
 
                 ?>
                     <tr>
@@ -251,11 +432,11 @@
                         <td><?php echo $item_table_data['remarks']; ?></td>
                     </tr>
 
-            <?php
+                <?php
 
-                                        }
+                }
 
-            ?>
+                ?>
             </tbody>
         </table>
     </main>

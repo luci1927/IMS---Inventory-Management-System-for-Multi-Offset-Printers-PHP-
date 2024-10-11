@@ -121,13 +121,15 @@
         <table class="table table-bordered table-hover mt-3" id="reportsTablefth">
             <thead>
                 <tr>
-                    <th scope="col">Date/Time Updated</th>
+                <th scope="col">Date/Time Updated</th>
                     <th scope="col">Item Code</th>
                     <th scope="col">Item Description</th>
                     <th scope="col">Qty in System</th>
                     <th scope="col">Qty on Hand</th>
                     <th scope="col">Diff</th>
                     <th scope="col">Unit</th>
+                    <th scope="col">GRN No</th>
+                    <th scope="col">GRN Date</th>
                     <th scope="col">Remarks</th>
                 </tr>
             </thead>
@@ -145,12 +147,15 @@
                     fth_stock.qty_hand AS qhand, 
                     (fth_stock.qty_system - fth_stock.qty_hand) AS diff, 
                     units.`name` AS unit_name, 
+                    fth_grn.grn_no AS grn_number,
+                    fth_grn.date_time AS grn_date,
                     fth_stock.remarks AS remarks
-                FROM fth_stock
-                INNER JOIN fth_inventory ON fth_inventory.item_code = fth_stock.fth_inventory_item_code
-                INNER JOIN units ON fth_inventory.units_id = units.id
-                WHERE fth_inventory.status_status_id = '1'  
-                ORDER BY fth_stock.date_time DESC;
+                    FROM fth_stock
+                    INNER JOIN fth_inventory ON fth_inventory.item_code = fth_stock.fth_inventory_item_code
+                    INNER JOIN units ON fth_inventory.units_id = units.id 
+                    INNER JOIN fth_grn ON fth_stock.fth_grn_id = fth_grn.id 
+                    WHERE fth_inventory.status_status_id = '1'
+                    ORDER BY fth_stock.date_time DESC;
 ";
 
                     $item_table_rs = Database::search($query);
@@ -162,14 +167,16 @@
 
                 ?>
                         <tr>
-                            <td><?php echo $item_table_data['datetime']; ?></td>
-                            <td><?php echo $item_table_data['item_code']; ?></td>
-                            <td><?php echo $item_table_data['descr']; ?></td>
-                            <td><?php echo $item_table_data['qsystem']; ?></td>
-                            <td><?php echo $item_table_data['qhand']; ?></td>
-                            <td><?php echo $item_table_data['diff']; ?></td>
-                            <td><?php echo $item_table_data['unit_name']; ?></td>
-                            <td><?php echo $item_table_data['remarks']; ?></td>
+                        <td><?php echo $item_table_data['datetime']; ?></td>
+                        <td><?php echo $item_table_data['item_code']; ?></td>
+                        <td><?php echo $item_table_data['descr']; ?></td>
+                        <td><?php echo $item_table_data['qsystem']; ?></td>
+                        <td><?php echo $item_table_data['qhand']; ?></td>
+                        <td><?php echo $item_table_data['diff']; ?></td>
+                        <td><?php echo $item_table_data['unit_name']; ?></td>
+                        <td><?php echo $item_table_data['grn_number']; ?></td>
+                        <td><?php echo $item_table_data['grn_date']; ?></td>
+                        <td><?php echo $item_table_data['remarks']; ?></td>
                         </tr>
 
                 <?php

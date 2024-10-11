@@ -28,11 +28,12 @@ if (empty($qhand)) {
 } else {
 
     $stock_rs = Database::search("SELECT * FROM `fth_stock` 
-WHERE `fth_inventory_item_code` = '" . $item_code . "' ORDER BY `date_time` DESC LIMIT 1;");
+    WHERE `fth_inventory_item_code` = '" . $item_code . "' ORDER BY `date_time` DESC LIMIT 1;");
     $stock_n = $stock_rs->num_rows;
     $stock_data = $stock_rs->fetch_assoc();
 
     $qsystem = $stock_data["qty_hand"];
+    $grn_id = $stock_data["fth_grn_id"];
 
 
 
@@ -43,8 +44,8 @@ WHERE `fth_inventory_item_code` = '" . $item_code . "' ORDER BY `date_time` DESC
 
 
     Database::iud("INSERT INTO `fth_stock` 
-    (`fth_inventory_item_code`,`qty_system`,`qty_hand`,`remarks`,`date_time`)
-    VALUES ('" . $item_code . "','" . $qsystem . "','" . $qhand . "','" . $remarks . "','" . $date . "')");
+    (`fth_inventory_item_code`,`qty_system`,`qty_hand`,`remarks`,`date_time`,`fth_grn_id`)
+    VALUES ('" . $item_code . "','" . $qsystem . "','" . $qhand . "','" . $remarks . "','" . $date . "','". $grn_id ."')");
 
 
     echo ("success");
