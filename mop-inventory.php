@@ -47,6 +47,9 @@
                         <a class="nav-link" href="mop-inventory.php">Inventory</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="mop-inventory-out.php">Inventory Out</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="mop-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
@@ -120,6 +123,56 @@
                                 <input type="number" class="form-control" id="quantity" placeholder="Enter quantity"
                                     step="0.001" min="0" max="10000" required />
                             </div>
+                            <div class="form-group">
+                                <label for="grn1">GRN No</label>
+                                <input type="text" class="form-control" id="grn1"
+                                    placeholder="GRN No">
+                            </div>
+                            <div class="form-group">
+                                <label for="grn_type1">GRN Type</label>
+                                <select class="form-control" id="grn_type1">
+                                    <option value="0" disabled selected>Select GRN Type</option>
+                                    <?php
+
+                                        $grn_type1_rs = Database::search("SELECT * FROM `grn_type`");
+                                        $grn_type1_num = $grn_type1_rs->num_rows;
+
+                                        for ($x = 0; $x < $grn_type1_num; $x++) {
+                                            $grn_type1_data = $grn_type1_rs->fetch_assoc();
+
+                                    ?>
+
+                                            <option value="<?php echo $grn_type1_data["id"]; ?>"><?php echo $grn_type1_data["name"]; ?></option>
+
+                                        <?php
+                                        }
+
+                                        ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="supplier1">Supplier</label>
+                                <select class="form-control" id="supplier1">
+                                    <option value="0" disabled selected>Select supplier</option>
+                                    <?php
+
+                                        $supplier1_rs = Database::search("SELECT * FROM `supplier`");
+                                        $supplier1_num = $supplier1_rs->num_rows;
+
+                                        for ($x = 0; $x < $supplier1_num; $x++) {
+                                            $supplier1_data = $supplier1_rs->fetch_assoc();
+
+                                    ?>
+
+                                            <option value="<?php echo $supplier1_data["id"]; ?>"><?php echo $supplier1_data["name"]; ?></option>
+
+                                        <?php
+                                        }
+
+                                        ?>
+                                </select>
+                            </div>
+                            
                             <div class="form-group">
                                 <label for="remarks">Remarks</label>
                                 <textarea class="form-control" id="remarks" rows="3"></textarea>
