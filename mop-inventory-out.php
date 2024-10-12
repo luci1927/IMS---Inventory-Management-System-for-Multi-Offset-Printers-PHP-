@@ -65,7 +65,7 @@
     <!-- Main Content -->
     <main class="container mt-5">
         <div class="d-flex justify-content-between align-items-center">
-            <h2>Manage Inventory</h2>
+            <h2>Inventory | Issuing Process</h2>
 
         </div>
 
@@ -74,7 +74,7 @@
             <div class="form-group row mt-3">
                 <label for="item" class="col-sm-2 col-form-label">Item</label>
                 <div class="col-sm-10">
-                    <select class="selectpicker" data-live-search="true" id="item" onchange="load_mop_unit();" title="Choose an Item">
+                    <select class="selectpicker" data-live-search="true" id="item" onchange="load_mop_unit(); load_mop_out_table();"  title="Choose an Item">
                         <?php
 
                         require "connection.php";
@@ -97,34 +97,16 @@
             </div>
 
             <div class="form-group row">
-                <label for="quantity2" class="col-sm-2 col-form-label">Quantity</label>
+                <label for="quantity2" class="col-sm-2 col-form-label">Issuing Quantity</label>
                 <div class="col-sm-10">
                     <input type="number" class="form-control" id="quantity2" placeholder="Enter quantity" step="0.001"
                         min="0" max="10000" required />
                 </div>
             </div>
             <div class="form-group row">
-                <label for="unit2" class="col-sm-2 col-form-label">Unit</label>
+                <label for="issue_no" class="col-sm-2 col-form-label">Issue No</label>
                 <div class="col-sm-10">
-                    <select class="form-control" id="unit2">
-                        <option value="0" disabled selected>Select a unit</option>
-                        <?php
-
-                        $unit_rs = Database::search("SELECT * FROM `units`");
-                        $unit_num = $unit_rs->num_rows;
-
-                        for ($x = 0; $x < $unit_num; $x++) {
-                            $unit_data = $unit_rs->fetch_assoc();
-
-                        ?>
-
-                            <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
-
-                        <?php
-                        }
-
-                        ?>
-                    </select>
+                    <input type="number" class="form-control" id="issue_no" placeholder="Enter Issue Number" required />
                 </div>
             </div>
 
@@ -136,7 +118,7 @@
             </div>
 
             <button type="submit" class="btn btn-success btn-block" onclick="mop_update_qty();">
-                Update Quantity
+                Issue Item
             </button>
 
 

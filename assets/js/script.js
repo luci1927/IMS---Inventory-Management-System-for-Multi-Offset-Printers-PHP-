@@ -976,6 +976,26 @@ $(document).ready(function() {
     });
 });
 
+ 
+function load_mop_out_table(){
+
+    var item = document.getElementById("item").value;
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText; 
+
+            document.getElementById("inventoryTable").innerHTML = t;
+
+        }
+    }
+
+    r.open("GET", "load_mop_out_table.php?i=" + item, true);
+    r.send();
+}
+
 
 
 
