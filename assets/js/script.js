@@ -996,6 +996,40 @@ function load_mop_out_table(){
     r.send();
 }
 
+ function mop_inventory_out(){
+
+    var i = document.getElementById("item");
+    var q = document.getElementById("quantity2");
+    var u = document.getElementById("issue_no");
+    var re = document.getElementById("remarks2");
+
+    var form = new FormData();
+    form.append("i", i.value);
+    form.append("q", q.value);
+    form.append("u", u.value);
+    form.append("re", re.value);
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var text = r.responseText;
+
+            if (text == "success") {
+                alert(text);
+                window.location.reload();
+            } else {
+                alert(text);
+            }
+
+        }
+    }
+
+    r.open("POST", "process_mop_inventory_out.php", true);
+    r.send(form);
+
+ }
+
 
 
 

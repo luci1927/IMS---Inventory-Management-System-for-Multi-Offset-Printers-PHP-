@@ -106,7 +106,7 @@
             <div class="form-group row">
                 <label for="issue_no" class="col-sm-2 col-form-label">Issue No</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="issue_no" placeholder="Enter Issue Number" required />
+                    <input type="text" class="form-control" id="issue_no" placeholder="Enter Issue Number" required />
                 </div>
             </div>
 
@@ -117,7 +117,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-success btn-block" onclick="mop_update_qty();">
+            <button type="submit" class="btn btn-success btn-block" onclick="mop_inventory_out();">
                 Issue Item
             </button>
 
