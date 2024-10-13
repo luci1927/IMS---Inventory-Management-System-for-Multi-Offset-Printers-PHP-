@@ -1,25 +1,30 @@
 function signIn() {
-    var username = document.getElementById("username");
-    var password = document.getElementById("password");
-    var department = document.getElementById("department");
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    var department = document.getElementById("department").value;
 
     var f = new FormData();
-    f.append("e", username.value);
-    f.append("p", password.value);
-    f.append("d", department.value);
+    f.append("e", username);
+    f.append("p", password);
+    f.append("d", department);
 
     var r = new XMLHttpRequest();
 
     r.onreadystatechange = function () {
         if (r.readyState === 4) {
             var t = r.responseText;
-
-            if (t === "multi") {
-                window.location = "mop-index.php";
-            } else if (t === "fair") {
-                window.location = "fth-index.php";
-            } else if (t === "rajah") {
-                window.location = "rmi-index.php";
+            console.log("Response from server:", t); // Log the response
+    
+            // Convert the response to an integer
+            var departmentId = parseInt(t, 10);
+    
+            // Check the department ID and redirect accordingly
+            if (departmentId === 1) {
+                window.location = "mop-index.php"; // Multi
+            } else if (departmentId === 2) {
+                window.location = "fth-index.php"; // Fair
+            } else if (departmentId === 3) {
+                window.location = "rmi-index.php"; // Rajah
             } else {
                 alert("Invalid credentials or department");
             }
@@ -1032,4 +1037,43 @@ function load_mop_out_table(){
 
 
 
+ $(document).ready(function () {
+
+    $('#datepicker2').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true
+    });
+
+
+    $('#searchButton1').click(function () {
+        searchmopissue();
+    });
+});
+
+function searchmopissue() {
+    var selectedDate = $('#datepicker2').val(); 
+
+    console.log("Selected date: " + selectedDate);
+
+    if (!selectedDate) {
+        alert("Please select a valid date.");
+        return; 
+    }
+
+    $.ajax({
+        url: 'process_mop_search_issue.php',
+        type: 'POST',
+        data: { date: selectedDate },
+        success: function (response) {
+            console.log("Response from server: " + response); 
+            $('#reportsTable tbody').empty(); 
+            $('#reportsTable tbody').html(response); 
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error: " + status + ", " + error); 
+            alert('Error fetching data.');
+        }
+    });
+}
 

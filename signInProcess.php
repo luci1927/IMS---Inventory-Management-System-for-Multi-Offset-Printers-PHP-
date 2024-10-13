@@ -2,36 +2,38 @@
 session_start();
 require "connection2.php"; 
 
-
-
+// Get POST data
 $username = $_POST["e"];
 $password = $_POST["p"];
 $department = $_POST["d"];
 
-
-$stmt = $conn->prepare("SELECT * FROM `user` WHERE `username`=? AND `password`=? AND `departments_dep_id`=?");
-$stmt->bind_param("sss", $username, $password, $department);
+// Prepare the SQL statement to prevent SQL injection
+$stmt = $conn->prepare("SELECT * FROM `user` WHERE `username`=? AND `departments_dep_id`=?");
+$stmt->bind_param("ss", $username, $department);
 $stmt->execute();
 $rs = $stmt->get_result();
-$n = $rs->num_rows;
 
-if ($n == 1) {
-    $d = $rs->fetch_assoc();
-    $dep_id = $d["departments_dep_id"];
+if ($rs->num_rows == 1) {
+    $user = $rs->fetch_assoc();
 
-    if ($dep_id == 1) {
-        echo "multi";
-    } else if ($dep_id == 2) {
-        echo "fair";
-    } else if ($dep_id == 3) {
-        echo "rajah";
+    // Compare the plain text password directly
+    if ($password === $user['password']) {
+        $_SESSION['username'] = $username;
+        $_SESSION['department'] = $user['departments_dep_id'];
+
+        // Echo the department ID for redirection
+        echo $user['departments_dep_id']; // This will be 1, 2, or 3
+    } else {
+        // Invalid password
+        echo "Invalid Username or Password";
     }
-
-
-    $_SESSION["u"] = $d;
-
 } else {
-
+    // Invalid username or department
     echo "Invalid Username or Password";
 }
+
+// Close the statement and connection
+$stmt->close();
+$conn->close();
 ?>
+

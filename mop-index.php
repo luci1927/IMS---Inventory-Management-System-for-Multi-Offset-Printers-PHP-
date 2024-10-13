@@ -13,15 +13,22 @@
     <style>
         .fixed-date-time {
             position: fixed;
-            top: 60px;
-            right: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px 15px;
+            top: 60px; 
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
             border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            font-size: 18px;
-            z-index: 1000;
+            font-size: 14px; 
+            z-index: 9999; 
         }
+
+        @media (max-width: 768px) {  
+    .fixed-date-time {
+        display: none; 
+    }
+}
+
     </style>
 </head>
 
@@ -29,7 +36,7 @@
 
     <!-- Navigation -->
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <a class="navbar-brand" href="mop-index.php">Inventory System | Multi Offset Printers</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +54,10 @@
                         <a class="nav-link" href="mop-inventory-out.php">Inventory Out</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="mop-reports.php">Reports</a>
+                        <a class="nav-link" href="mop-reports.php">Stock Update reports</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="mop-issue-reports.php">Issue Reports</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
@@ -71,9 +81,6 @@
                     <div class="card-body">
                         <?php
                         require "connection.php";
-
-                        session_start();
-                        if (isset($_SESSION["u"])){
                         
                         $today_rs = Database::search("SELECT COUNT(*) AS daily_count
                         FROM mop_stock 
@@ -168,10 +175,6 @@
                                         <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
                                     <?php
                                     }
-
-                                } else {
-                                    header("Location:index.php");
-                                }
                                     ?>
                                 </select>
                             </div>

@@ -19,8 +19,15 @@ if ($item_code == "") {
     echo ("Please select a supplier!");
 } else {
 
+
+    $qty_rs = Database::search("SELECT * FROM `mop_stock` WHERE `mop_inventory_item_code`='" . $item_code . "'");
+    $qty_data = $qty_rs->fetch_assoc();
+    $qty_in_hand = $qty_data["qty_hand"];
+
     $rs = Database::search("SELECT * FROM `mop_inventory` WHERE `item_code`='" . $item_code . "'");
     $n = $rs->num_rows;
+
+
 
     if ($n == 1) {
 
@@ -28,6 +35,7 @@ if ($item_code == "") {
         $tz = new DateTimeZone("Asia/Colombo");
         $d->setTimezone($tz);
         $date = $d->format("Y-m-d H:i:s");
+
 
 
         Database::iud("INSERT INTO `mop_grn` 
@@ -40,14 +48,8 @@ if ($item_code == "") {
 
         $grn_id = $grn_data["id"];
 
-        $qty_rs = Database::search("SELECT * FROM `mop_stock` WHERE `mop_inventory_item_code`='" . $item_code . "'");
-
-        $qty_data = $qty_rs->fetch_assoc();
-
-        $qty_in_hand = $qty_data["qty_hand"];
-
-        $qty_in_hand = (float)$qty_data["qty_hand"];
-        $quantity = (float)$quantity;
+        $qty_in_hand = floatval($qty_data["qty_hand"]);
+        $quantity = floatval($quantity);
 
         $new_qty = $quantity + $qty_in_hand;
 

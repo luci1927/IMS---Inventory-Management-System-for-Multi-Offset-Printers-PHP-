@@ -47,7 +47,7 @@
         <h2 class="login-title">Inventory Management System</h2>
 
         <!-- Login Form -->
-        <form id="loginForm">
+        <form id="loginForm" onsubmit="event.preventDefault(); signIn();">
             <!-- Username Field -->
             <div class="form-group">
                 <label for="username">Username</label>
@@ -90,7 +90,7 @@
             </div>
 
             <!-- Login Button -->
-            <button type="submit" class="btn btn-success btn-block" onclick="signIn();">Login</button>
+            <button type="submit" class="btn btn-success btn-block" >Login</button>
         </form>
     </div>
      <script src="assets/js/script.js"></script>

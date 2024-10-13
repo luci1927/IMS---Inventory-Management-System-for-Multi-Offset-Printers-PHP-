@@ -40,14 +40,18 @@ if ($item_code == "") {
 
         $grn_id = $grn_data["id"];
 
-        $qty_rs = Database::search("SELECT * FROM `fth_stock` WHERE `fth_inventory_item_code`='" . $item_code . "'");
+        $qty_rs = Database::search("SELECT * 
+                            FROM `fth_stock` 
+                            WHERE `fth_inventory_item_code` = '" . $item_code . "' 
+                            ORDER BY `date_time` DESC 
+                            LIMIT 1;");
 
         $qty_data = $qty_rs->fetch_assoc();
 
         $qty_in_hand = $qty_data["qty_hand"];
 
-        $qty_in_hand = (float)$qty_data["qty_hand"];
-        $quantity = (float)$quantity;
+        //$qty_in_hand = (float)$qty_data["qty_hand"];
+        //$quantity = (float)$quantity;
 
         $new_qty = $quantity + $qty_in_hand;
 
