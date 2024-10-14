@@ -210,7 +210,6 @@
             const dateTimeDisplay = document.getElementById('dateTimeDisplay');
             const now = new Date();
 
-            // Format date to 'Today is YYYY Month DD'
             const options = {
                 year: 'numeric',
                 month: 'long',
@@ -218,7 +217,6 @@
             };
             const formattedDate = now.toLocaleDateString('en-US', options);
 
-            // Format time to 'HH:MM:SS'
             const formattedTime = now.toLocaleTimeString('en-US', {
                 hour12: false
             });
@@ -226,10 +224,8 @@
             dateTimeDisplay.innerHTML = `Today is ${formattedDate} - ${formattedTime}`;
         }
 
-        // Update date and time every second
         setInterval(updateDateTime, 1000);
 
-        // Initial call to display the date and time immediately
         updateDateTime();
     </script>
 </body>

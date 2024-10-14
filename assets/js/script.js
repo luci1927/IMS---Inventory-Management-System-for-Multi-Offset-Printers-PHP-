@@ -15,16 +15,14 @@ function signIn() {
             var t = r.responseText;
             console.log("Response from server:", t); 
     
-            // Convert the response to an integer
             var departmentId = parseInt(t, 10);
     
-            // Check the department ID and redirect accordingly
             if (departmentId === 1) {
-                window.location = "mop-index.php"; // Multi
+                window.location = "mop-index.php"; 
             } else if (departmentId === 2) {
-                window.location = "fth-index.php"; // Fair
+                window.location = "fth-index.php";
             } else if (departmentId === 3) {
-                window.location = "rmi-index.php"; // Rajah
+                window.location = "rmi-index.php"; 
             } else {
                 alert("Invalid credentials or department");
             }

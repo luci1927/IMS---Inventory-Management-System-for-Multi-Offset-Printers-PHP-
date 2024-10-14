@@ -415,17 +415,13 @@
             </thead>
             <?php
 
-            // Number of results per page
             $results_per_page = 10;
 
-            // Get the current page number from the URL, default to 1 if not set
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             if ($page <= 0) $page = 1;
 
-            // Determine the SQL LIMIT starting number
             $offset = ($page - 1) * $results_per_page;
 
-            // Get the total number of records
             $query_total = "SELECT COUNT(*) AS total FROM mop_inventory
                 INNER JOIN mop_stock ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
                 INNER JOIN units ON mop_inventory.units_id = units.id
@@ -439,10 +435,8 @@
             $total_row = $total_result->fetch_assoc();
             $total_records = $total_row['total'];
 
-            // Calculate total pages
             $total_pages = ceil($total_records / $results_per_page);
 
-            // Retrieve the data for the current page
             $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_inventory.`description` AS descr, 
                     mop_stock.qty_system AS qsystem, 
@@ -522,7 +516,6 @@
             const dateTimeDisplay = document.getElementById('dateTimeDisplay');
             const now = new Date();
 
-            // Format date to 'Today is YYYY Month DD'
             const options = {
                 year: 'numeric',
                 month: 'long',
@@ -530,7 +523,6 @@
             };
             const formattedDate = now.toLocaleDateString('en-US', options);
 
-            // Format time to 'HH:MM:SS'
             const formattedTime = now.toLocaleTimeString('en-US', {
                 hour12: false
             });
@@ -538,10 +530,8 @@
             dateTimeDisplay.innerHTML = `Today is ${formattedDate} - ${formattedTime}`;
         }
 
-        // Update date and time every second
         setInterval(updateDateTime, 1000);
 
-        // Initial call to display the date and time immediately
         updateDateTime();
     </script>
 </body>
