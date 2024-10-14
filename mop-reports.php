@@ -107,11 +107,34 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter1">
                         <i class="fa-solid fa-file-export"></i> Export
                     </button>
 
                 </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Export Reports</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" id="exportCSVButton1" class="btn btn-success"><i class="fa-solid fa-file-csv"></i> Export
+                                    Csv</button>
+                                <button type="button" id="exportPDFButton1" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i> Export
+                                    Pdf</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
 
                 <!-- Report Table -->
                 <table class="table table-bordered table-hover mt-3" id="reportsTable1">
@@ -132,7 +155,7 @@
                     <?php
                     require "connection.php";
 
-                    $results_per_page = 10;
+                    $results_per_page = 20;
 
                     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                     if ($page <= 0) $page = 1;
@@ -234,7 +257,7 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter2">
                         <i class="fa-solid fa-file-export"></i> Export
                     </button>
 
@@ -243,12 +266,12 @@
                 <!-- Date Picker -->
 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Add New Item</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle">Export Reports</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -259,8 +282,6 @@
                                     Csv</button>
                                 <button type="button" id="exportPDFButton2" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i> Export
                                     Pdf</button>
-                                <button type="button" id="exportTXTButton2" class="btn btn-secondary"><i class="fa-solid fa-file"></i> Export
-                                    txt</button>
                             </div>
                         </div>
                     </div>
@@ -286,7 +307,7 @@
 
                     <?php
 
-                    $results_per_page2 = 10;
+                    $results_per_page2 = 20;
 
                     $page2 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                     if ($page2 <= 0) $page2 = 1;
@@ -386,7 +407,7 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter">
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter3">
                         <i class="fa-solid fa-file-export"></i> Export
                     </button>
 
@@ -395,12 +416,12 @@
                 <!-- Date Picker -->
 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Add New Item</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle">Export Reports</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -411,8 +432,6 @@
                                     Csv</button>
                                 <button type="button" id="exportPDFButton3" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i> Export
                                     Pdf</button>
-                                <button type="button" id="exportTXTButton" class="btn btn-secondary"><i class="fa-solid fa-file"></i> Export
-                                    txt</button>
                             </div>
                         </div>
                     </div>
@@ -436,7 +455,7 @@
                     </thead>
                     <?php
 
-                    $results_per_page3 = 10;
+                    $results_per_page3 = 20;
 
                     $page3 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                     if ($page3 <= 0) $page = 1;

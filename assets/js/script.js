@@ -607,6 +607,17 @@ function search(datepickerId, tableId) {
     });
 }
 
+$('#exportCSVButton1').click(function () {
+    exportTableToCSV('reportsTable1', 'Inventory_Reports');
+});
+
+$('#exportCSVButton2').click(function () {
+    exportTableToCSV('reportsTable2', 'Inventory_Reports');
+});
+
+$('#exportCSVButton3').click(function () {
+    exportTableToCSV('reportsTable3', 'Inventory_Reports');
+});
 
 function exportTableToCSV(tableId, filename = '') {
     const csv = [];
@@ -639,17 +650,7 @@ function exportTableToCSV(tableId, filename = '') {
     document.body.removeChild(downloadLink);
 }
 
-$('#exportCSVButton1').click(function () {
-    exportTableToCSV('reportsTable11', 'Inventory_Reports');
-});
 
-$('#exportCSVButton2').click(function () {
-    exportTableToCSV('reportsTable12', 'Inventory_Reports');
-});
-
-$('#exportCSVButton3').click(function () {
-    exportTableToCSV('reportsTable13', 'Inventory_Reports');
-});
 
 
 $('#exportPDFButton1').click(function () {
@@ -703,55 +704,12 @@ function exportTableToPDF(tableId, title = '') {
 }
 
 
-
-
-function exportTableToTXT(tableId, filenameBase = 'Inventory_Data_Sheet') {
-    const table = document.getElementById(tableId);
-    let txtData = '';
-
-    const columnWidths = [20, 15, 30, 15, 15, 10, 30]; 
-
-    const header = Array.from(table.querySelectorAll('thead th')).map(th => th.innerText);
-    txtData += formatRow(header, columnWidths) + '\n'; 
-
-    const tableRows = table.querySelectorAll('tbody tr');
-    tableRows.forEach(row => {
-        const cols = row.querySelectorAll('td');
-        const rowData = Array.from(cols).map(td => td.innerText);
-        txtData += formatRow(rowData, columnWidths) + '\n';
-    });
-
-
-    const blob = new Blob([txtData], { type: 'text/plain' });
-    const link = document.createElement('a');
-    const date = new Date();
-    
-    const formattedDate = date.toISOString().replace(/:/g, '-').split('.')[0]; 
-    const filename = `${filenameBase}_${formattedDate}.txt`;
-
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
-    URL.revokeObjectURL(link.href); 
-}
-
 function formatRow(data, columnWidths) {
     return data.map((item, index) => {
         return item.toString().padEnd(columnWidths[index] || 10, ' '); 
     }).join(''); 
 }
 
-$(document).ready(function() {
-    $('#exportTXTButton1').click(function () {
-        exportTableToTXT('reportsTable1');
-    });
-});
-
-$(document).ready(function() {
-    $('#exportTXTButton2').click(function () {
-        exportTableToTXT('reportsTable2');
-    });
-});
 
 function exportTableToCSV(tableId, filename = '') {
     const csv = [];
@@ -831,34 +789,6 @@ function exportTableToPDF(tableId, title = '') {
     pdf.save('Inventory_Data_Sheet.pdf');
 }
 
-function exportTableToTXT(tableId, filenameBase = 'Inventory_Data_Sheet') {
-    const table = document.getElementById(tableId);
-    let txtData = '';
-
-    const columnWidths = [20, 15, 30, 15, 15, 10, 30]; 
-
-    const header = Array.from(table.querySelectorAll('thead th')).map(th => th.innerText);
-    txtData += formatRow(header, columnWidths) + '\n'; 
-
-    const tableRows = table.querySelectorAll('tbody tr');
-    tableRows.forEach(row => {
-        const cols = row.querySelectorAll('td');
-        const rowData = Array.from(cols).map(td => td.innerText);
-        txtData += formatRow(rowData, columnWidths) + '\n'; 
-    });
-
-    const blob = new Blob([txtData], { type: 'text/plain' });
-    const link = document.createElement('a');
-    const date = new Date();
-    
-    const formattedDate = date.toISOString().replace(/:/g, '-').split('.')[0]; 
-    const filename = `${filenameBase}_${formattedDate}.txt`;
-
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
-    URL.revokeObjectURL(link.href);
-}
 
 function formatRow(data, columnWidths) {
     return data.map((item, index) => {
@@ -866,11 +796,6 @@ function formatRow(data, columnWidths) {
     }).join('');
 }
 
-$(document).ready(function() {
-    $('#exportTXTButtonfth').click(function () {
-        exportTableToTXT('reportsTablefth');
-    });
-});
 
 function exportTableToCSV(tableId, filename = '') {
     const csv = [];
@@ -954,37 +879,6 @@ function exportTableToPDF(tableId, title = '') {
     pdf.save('Inventory_Data_Sheet.pdf');
 }
 
-function exportTableToTXT(tableId, filenameBase = 'Inventory_Data_Sheet') {
-    const table = document.getElementById(tableId);
-    let txtData = '';
-
-
-    const columnWidths = [20, 15, 30, 15, 15, 10, 30]; 
-
-
-    const header = Array.from(table.querySelectorAll('thead th')).map(th => th.innerText);
-    txtData += formatRow(header, columnWidths) + '\n'; 
-
-
-    const tableRows = table.querySelectorAll('tbody tr');
-    tableRows.forEach(row => {
-        const cols = row.querySelectorAll('td');
-        const rowData = Array.from(cols).map(td => td.innerText);
-        txtData += formatRow(rowData, columnWidths) + '\n'; 
-    });
-
-    const blob = new Blob([txtData], { type: 'text/plain' });
-    const link = document.createElement('a');
-    const date = new Date();
-    
-    const formattedDate = date.toISOString().replace(/:/g, '-').split('.')[0]; 
-    const filename = `${filenameBase}_${formattedDate}.txt`;
-
-    link.href = URL.createObjectURL(blob);
-    link.download = filename;
-    link.click();
-    URL.revokeObjectURL(link.href);
-}
 
 function formatRow(data, columnWidths) {
     return data.map((item, index) => {
@@ -993,12 +887,6 @@ function formatRow(data, columnWidths) {
     }).join(''); 
 }
 
-
-$(document).ready(function() {
-    $('#exportTXTButtonrmi').click(function () {
-        exportTableToTXT('reportsTablermi');
-    });
-});
 
  
 function load_mop_out_table(){
