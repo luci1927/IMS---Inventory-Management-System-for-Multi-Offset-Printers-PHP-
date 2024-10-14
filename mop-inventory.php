@@ -17,21 +17,21 @@
 
         .fixed-date-time {
             position: fixed;
-            top: 60px; 
+            top: 60px;
             left: 10px;
             background-color: rgba(0, 0, 0, 0.7);
             color: white;
             padding: 10px;
             border-radius: 5px;
-            font-size: 14px; 
-            z-index: 9999; 
+            font-size: 14px;
+            z-index: 9999;
         }
 
-        @media (max-width: 768px) {  
-    .fixed-date-time {
-        display: none; 
-    }
-}
+        @media (max-width: 768px) {
+            .fixed-date-time {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -100,8 +100,8 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="item3" >Item</label>
-                                <div >
+                                <label for="item3">Item</label>
+                                <div>
                                     <select class="selectpicker" data-live-search="true" id="item3" onchange="load_mop_unit_update(); load_mop_grn_type_update();" title="Choose an Item">
                                         <?php
 
@@ -413,10 +413,37 @@
                     <th>Remarks</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php
+            <?php
 
-                $query = "SELECT mop_inventory.item_code AS item_code, 
+            // Number of results per page
+            $results_per_page = 10;
+
+            // Get the current page number from the URL, default to 1 if not set
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            if ($page <= 0) $page = 1;
+
+            // Determine the SQL LIMIT starting number
+            $offset = ($page - 1) * $results_per_page;
+
+            // Get the total number of records
+            $query_total = "SELECT COUNT(*) AS total FROM mop_inventory
+                INNER JOIN mop_stock ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                INNER JOIN units ON mop_inventory.units_id = units.id
+                INNER JOIN (
+                    SELECT mop_stock.mop_inventory_item_code, MAX(id) AS latest_id
+                    FROM mop_stock
+                    GROUP BY mop_inventory_item_code
+                ) latest_stock ON mop_stock.id = latest_stock.latest_id
+                WHERE mop_inventory.status_status_id = '1';";
+            $total_result = Database::search($query_total);
+            $total_row = $total_result->fetch_assoc();
+            $total_records = $total_row['total'];
+
+            // Calculate total pages
+            $total_pages = ceil($total_records / $results_per_page);
+
+            // Retrieve the data for the current page
+            $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_inventory.`description` AS descr, 
                     mop_stock.qty_system AS qsystem, 
                     mop_stock.qty_hand AS qhand, 
@@ -430,15 +457,17 @@
                     FROM mop_stock
                     GROUP BY mop_inventory_item_code
                 ) latest_stock ON mop_stock.id = latest_stock.latest_id
-                WHERE mop_inventory.status_status_id = '1';";
+                WHERE mop_inventory.status_status_id = '1'
+                LIMIT $results_per_page OFFSET $offset;";
 
-                $item_table_rs = Database::search($query);
-                $item_table_num = $item_table_rs->num_rows;
+            $item_table_rs = Database::search($query);
+            $item_table_num = $item_table_rs->num_rows;
+            ?>
 
-
+            <tbody>
+                <?php
                 for ($x = 0; $x < $item_table_num; $x++) {
                     $item_table_data = $item_table_rs->fetch_assoc();
-
                 ?>
                     <tr>
                         <td><?php echo $item_table_data['item_code']; ?></td>
@@ -448,13 +477,37 @@
                         <td><?php echo $item_table_data['unit_name']; ?></td>
                         <td><?php echo $item_table_data['remarks']; ?></td>
                     </tr>
-
-                <?php
-
-                }
-                ?>
+                <?php } ?>
             </tbody>
+
         </table>
+
+        <nav>
+            <ul class="pagination justify-content-center mt-4">
+                <?php if ($page > 1) { ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php } ?>
+
+                <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php } ?>
+
+                <?php if ($page < $total_pages) { ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
+        </nav>
+
     </main>
 
     <script src="assets/js/script.js"></script>
