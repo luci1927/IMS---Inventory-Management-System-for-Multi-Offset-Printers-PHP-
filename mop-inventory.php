@@ -264,7 +264,7 @@ include 'mop_session_check.php';
                             </div>
                             <div class="form-group">
                                 <label for="quantity1">Quantity</label>
-                                <input type="number" class="form-control" id="quantity1" placeholder="Enter quantity1"
+                                <input type="number" class="form-control" id="quantity1" placeholder="Enter quantity"
                                     step="0.001" min="0" max="10000" required />
                             </div>
                             <div class="form-group">
