@@ -510,8 +510,8 @@ function searchmop() {
         data: { date: selectedDate },
         success: function (response) {
             console.log("Response from server: " + response); 
-            $('#reportsTable tbody').empty(); 
-            $('#reportsTable tbody').html(response); 
+            $('#reportsTable1 tbody').empty(); 
+            $('#reportsTable1 tbody').html(response); 
         },
         error: function (xhr, status, error) {
             console.error("AJAX Error: " + status + ", " + error); 
@@ -639,14 +639,29 @@ function exportTableToCSV(tableId, filename = '') {
     document.body.removeChild(downloadLink);
 }
 
-$('#exportCSVButton').click(function () {
-    exportTableToCSV('reportsTable', 'Inventory_Reports');
+$('#exportCSVButton1').click(function () {
+    exportTableToCSV('reportsTable11', 'Inventory_Reports');
+});
+
+$('#exportCSVButton2').click(function () {
+    exportTableToCSV('reportsTable12', 'Inventory_Reports');
+});
+
+$('#exportCSVButton3').click(function () {
+    exportTableToCSV('reportsTable13', 'Inventory_Reports');
 });
 
 
+$('#exportPDFButton1').click(function () {
+    exportTableToPDF('reportsTable1', 'Inventory Data Sheet');
+});
 
-$('#exportPDFButton').click(function () {
-    exportTableToPDF('reportsTable', 'Inventory Data Sheet');
+$('#exportPDFButton2').click(function () {
+    exportTableToPDF('reportsTable2', 'Inventory Data Sheet');
+});
+
+$('#exportPDFButton3').click(function () {
+    exportTableToPDF('reportsTable3', 'Inventory Data Sheet');
 });
 
 
@@ -727,8 +742,14 @@ function formatRow(data, columnWidths) {
 }
 
 $(document).ready(function() {
-    $('#exportTXTButton').click(function () {
-        exportTableToTXT('reportsTable');
+    $('#exportTXTButton1').click(function () {
+        exportTableToTXT('reportsTable1');
+    });
+});
+
+$(document).ready(function() {
+    $('#exportTXTButton2').click(function () {
+        exportTableToTXT('reportsTable2');
     });
 });
 
@@ -1065,8 +1086,8 @@ function searchmopissue() {
         data: { date: selectedDate },
         success: function (response) {
             console.log("Response from server: " + response); 
-            $('#reportsTable tbody').empty(); 
-            $('#reportsTable tbody').html(response); 
+            $('#reportsTable2 tbody').empty(); 
+            $('#reportsTable2 tbody').html(response); 
         },
         error: function (xhr, status, error) {
             console.error("AJAX Error: " + status + ", " + error); 
@@ -1105,8 +1126,8 @@ function searchmopgrn() {
         data: { date: selectedDate },
         success: function (response) {
             console.log("Response from server: " + response); 
-            $('#reportsTable tbody').empty(); 
-            $('#reportsTable tbody').html(response); 
+            $('#reportsTable3 tbody').empty(); 
+            $('#reportsTable3 tbody').html(response); 
         },
         error: function (xhr, status, error) {
             console.error("AJAX Error: " + status + ", " + error); 

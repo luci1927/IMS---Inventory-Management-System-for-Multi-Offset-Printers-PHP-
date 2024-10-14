@@ -65,7 +65,6 @@
     </header>
     <div id="dateTimeDisplay" class="fixed-date-time"></div>
 
-
     <!-- Main Content -->
     <main class="container mt-5">
 
@@ -114,37 +113,8 @@
 
                 </div>
 
-                <!-- Date Picker -->
-
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Add New Item</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <div class="modal-footer justify-content-center">
-                                <button type="button" id="exportCSVButton" class="btn btn-success"><i class="fa-solid fa-file-csv"></i> Export
-                                    Csv</button>
-                                <button type="button" id="exportPDFButton" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i> Export
-                                    Pdf</button>
-                                <button type="button" id="exportTXTButton" class="btn btn-secondary"><i class="fa-solid fa-file"></i> Export
-                                    txt</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal -->
-
-
-
                 <!-- Report Table -->
-                <table class="table table-bordered table-hover mt-3" id="reportsTable">
+                <table class="table table-bordered table-hover mt-3" id="reportsTable1">
                     <thead>
                         <tr>
                             <th scope="col">Date/Time Updated</th>
@@ -202,8 +172,6 @@
                     $item_table_num = $item_table_rs->num_rows;
                     ?>
 
-
-
                     <tbody>
                         <?php
                         for ($x = 0; $x < $item_table_num; $x++) {
@@ -223,34 +191,21 @@
                             </tr>
                         <?php } ?>
                     </tbody>
-
+                    <nav>
+                        <ul class="pagination justify-content-center mt-4">
+                            <?php for ($page = 1; $page <= $total_pages; $page++) { ?>
+                                <li class="page-item">
+                                    <a class="page-link" href="mop-reports.php?page=<?php echo $page; ?>">
+                                        <?php echo $page; ?>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </nav>
                 </table>
 
-                <nav>
-                    <ul class="pagination justify-content-center mt-4">
-                        <?php if ($page > 1) { ?>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                        <?php } ?>
 
-                        <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php } ?>
 
-                        <?php if ($page < $total_pages) { ?>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                </nav>
             </div>
         </div>
 
@@ -300,11 +255,11 @@
                             </div>
 
                             <div class="modal-footer justify-content-center">
-                                <button type="button" id="exportCSVButton" class="btn btn-success"><i class="fa-solid fa-file-csv"></i> Export
+                                <button type="button" id="exportCSVButton2" class="btn btn-success"><i class="fa-solid fa-file-csv"></i> Export
                                     Csv</button>
-                                <button type="button" id="exportPDFButton" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i> Export
+                                <button type="button" id="exportPDFButton2" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i> Export
                                     Pdf</button>
-                                <button type="button" id="exportTXTButton" class="btn btn-secondary"><i class="fa-solid fa-file"></i> Export
+                                <button type="button" id="exportTXTButton2" class="btn btn-secondary"><i class="fa-solid fa-file"></i> Export
                                     txt</button>
                             </div>
                         </div>
@@ -315,7 +270,7 @@
 
 
                 <!-- Report Table -->
-                <table class="table table-bordered table-hover mt-3" id="reportsTable">
+                <table class="table table-bordered table-hover mt-3" id="reportsTable2">
                     <thead>
                         <tr>
                             <th scope="col">Item Code</th>
@@ -331,25 +286,25 @@
 
                     <?php
 
-                    $results_per_page = 10;
+                    $results_per_page2 = 10;
 
-                    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                    if ($page <= 0) $page = 1;
+                    $page2 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                    if ($page2 <= 0) $page2 = 1;
 
-                    $offset = ($page - 1) * $results_per_page;
+                    $offset2 = ($page2 - 1) * $results_per_page2;
 
-                    $query_total = "SELECT COUNT(*) AS total FROM mop_stock
+                    $query_total2 = "SELECT COUNT(*) AS total FROM mop_stock
                 INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
                 INNER JOIN units ON mop_inventory.units_id = units.id
                 INNER JOIN mop_issuing ON mop_issuing.mop_stock_id = mop_stock.id 
                 WHERE mop_inventory.status_status_id = '1'";
-                    $total_result = Database::search($query_total);
-                    $total_row = $total_result->fetch_assoc();
-                    $total_records = $total_row['total'];
+                    $total_result2 = Database::search($query_total2);
+                    $total_row2 = $total_result2->fetch_assoc();
+                    $total_records2 = $total_row2['total'];
 
-                    $total_pages = ceil($total_records / $results_per_page);
+                    $total_pages2 = ceil($total_records2 / $results_per_page2);
 
-                    $query = "SELECT mop_inventory.item_code AS item_code, 
+                    $query2 = "SELECT mop_inventory.item_code AS item_code, 
             mop_inventory.`description` AS descr, 
             mop_stock.qty_hand AS qhand, 
             units.`name` AS unit_name, 
@@ -363,57 +318,46 @@
             INNER JOIN mop_issuing ON mop_issuing.mop_stock_id = mop_stock.id 
             WHERE mop_inventory.status_status_id = '1'
             ORDER BY mop_stock.date_time DESC
-            LIMIT $results_per_page OFFSET $offset";
+            LIMIT $results_per_page2 OFFSET $offset2";
 
-                    $item_table_rs = Database::search($query);
-                    $item_table_num = $item_table_rs->num_rows;
+                    $item_table_rs2 = Database::search($query2);
+                    $item_table_num2 = $item_table_rs2->num_rows;
                     ?>
 
                     <tbody>
                         <?php
-                        for ($x = 0; $x < $item_table_num; $x++) {
-                            $item_table_data = $item_table_rs->fetch_assoc();
+                        for ($x = 0; $x < $item_table_num2; $x++) {
+                            $item_table_data2 = $item_table_rs2->fetch_assoc();
                         ?>
                             <tr>
-                                <td><?php echo $item_table_data['item_code']; ?></td>
-                                <td><?php echo $item_table_data['descr']; ?></td>
-                                <td><?php echo $item_table_data['issue_date']; ?></td>
-                                <td><?php echo $item_table_data['issue_number']; ?></td>
-                                <td><?php echo $item_table_data['issue_qty']; ?></td>
-                                <td><?php echo $item_table_data['qhand']; ?></td>
-                                <td><?php echo $item_table_data['unit_name']; ?></td>
-                                <td><?php echo $item_table_data['remarks']; ?></td>
+                                <td><?php echo $item_table_data2['item_code']; ?></td>
+                                <td><?php echo $item_table_data2['descr']; ?></td>
+                                <td><?php echo $item_table_data2['issue_date']; ?></td>
+                                <td><?php echo $item_table_data2['issue_number']; ?></td>
+                                <td><?php echo $item_table_data2['issue_qty']; ?></td>
+                                <td><?php echo $item_table_data2['qhand']; ?></td>
+                                <td><?php echo $item_table_data2['unit_name']; ?></td>
+                                <td><?php echo $item_table_data2['remarks']; ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
 
+                    <nav>
+                        <ul class="pagination justify-content-center mt-4">
+                            <?php for ($page2 = 1; $page2 <= $total_pages2; $page2++) { ?>
+                                <li class="page-item">
+                                    <a class="page-link" href="mop-reports.php?page=<?php echo $page2; ?>">
+                                        <?php echo $page2; ?>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </nav>
+
                 </table>
 
-                <nav>
-                    <ul class="pagination justify-content-center mt-4">
-                        <?php if ($page > 1) { ?>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                        <?php } ?>
 
-                        <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php } ?>
 
-                        <?php if ($page < $total_pages) { ?>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                </nav>
             </div>
         </div>
 
@@ -463,9 +407,9 @@
                             </div>
 
                             <div class="modal-footer justify-content-center">
-                                <button type="button" id="exportCSVButton" class="btn btn-success"><i class="fa-solid fa-file-csv"></i> Export
+                                <button type="button" id="exportCSVButton3" class="btn btn-success"><i class="fa-solid fa-file-csv"></i> Export
                                     Csv</button>
-                                <button type="button" id="exportPDFButton" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i> Export
+                                <button type="button" id="exportPDFButton3" class="btn btn-danger"><i class="fa-solid fa-file-pdf"></i> Export
                                     Pdf</button>
                                 <button type="button" id="exportTXTButton" class="btn btn-secondary"><i class="fa-solid fa-file"></i> Export
                                     txt</button>
@@ -478,15 +422,12 @@
 
 
                 <!-- Report Table -->
-                <table class="table table-bordered table-hover mt-3" id="reportsTable">
+                <table class="table table-bordered table-hover mt-3" id="reportsTable3">
                     <thead>
                         <tr>
-                            <th scope="col">Date/Time Updated</th>
                             <th scope="col">Item Code</th>
                             <th scope="col">Item Description</th>
-                            <th scope="col">Qty in System</th>
-                            <th scope="col">Qty on Hand</th>
-                            <th scope="col">Diff</th>
+                            <th scope="col">GRN Quantity</th>
                             <th scope="col">Unit</th>
                             <th scope="col">GRN No</th>
                             <th scope="col">GRN Date</th>
@@ -494,107 +435,92 @@
                         </tr>
                     </thead>
                     <?php
-                    require "connection.php";
 
-                    $results_per_page = 10;
+                    $results_per_page3 = 10;
 
-                    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                    if ($page <= 0) $page = 1;
+                    $page3 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                    if ($page3 <= 0) $page = 1;
 
-                    $offset = ($page - 1) * $results_per_page;
+                    $offset3 = ($page3 - 1) * $results_per_page3;
 
-                    $query_total = "SELECT COUNT(*) AS total FROM mop_stock
-                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                INNER JOIN units ON mop_inventory.units_id = units.id
-                INNER JOIN mop_grn ON mop_stock.mop_grn_id = mop_grn.id
-                WHERE mop_inventory.status_status_id = '1'";
-                    $total_result = Database::search($query_total);
-                    $total_row = $total_result->fetch_assoc();
-                    $total_records = $total_row['total'];
+                    $query_total3 = "SELECT COUNT(*) AS total
+                            FROM mop_grn 
+                            INNER JOIN mop_stock ON mop_grn.id = mop_stock.id 
+                            INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                            INNER JOIN units ON mop_inventory.units_id = units.id
+                            WHERE mop_inventory.status_status_id = '1'";
+                    $total_result3 = Database::search($query_total3);
+                    $total_row3 = $total_result3->fetch_assoc();
+                    $total_records3 = $total_row3['total'];
 
-                    $total_pages = ceil($total_records / $results_per_page);
+                    $total_pages3 = ceil($total_records3 / $results_per_page3);
 
-                    $query = "SELECT mop_inventory.item_code AS item_code, 
-                    mop_stock.date_time AS datetime,
+                    $query3 = "SELECT mop_inventory.item_code AS item_code, 
                     mop_inventory.`description` AS descr, 
-                    mop_stock.qty_system AS qsystem, 
-                    mop_stock.qty_hand AS qhand, 
-                    (mop_stock.qty_system - mop_stock.qty_hand) AS diff, 
+                    mop_grn.qty AS grn_qty,
                     units.`name` AS unit_name, 
                     mop_grn.grn_no AS grn_number,
                     mop_grn.date_time AS grn_date,
                     mop_stock.remarks AS remarks
-                    FROM mop_stock
+                    FROM mop_grn
+                    INNER JOIN mop_stock ON mop_grn.id = mop_stock.id 
                     INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                    INNER JOIN units ON mop_inventory.units_id = units.id 
-                    INNER JOIN mop_grn ON mop_stock.mop_grn_id = mop_grn.id 
+                    INNER JOIN units ON mop_inventory.units_id = units.id
                     WHERE mop_inventory.status_status_id = '1'
-                    ORDER BY mop_stock.date_time DESC
-                    LIMIT $results_per_page OFFSET $offset";
+                    ORDER BY grn_date DESC
+                    LIMIT $results_per_page3 OFFSET $offset3";
 
-                    $item_table_rs = Database::search($query);
-                    $item_table_num = $item_table_rs->num_rows;
+                    $item_table_rs3 = Database::search($query3);
+                    $item_table_num3 = $item_table_rs3->num_rows;
                     ?>
 
 
 
                     <tbody>
                         <?php
-                        for ($x = 0; $x < $item_table_num; $x++) {
-                            $item_table_data = $item_table_rs->fetch_assoc();
+                        for ($x = 0; $x < $item_table_num3; $x++) {
+                            $item_table_data3 = $item_table_rs3->fetch_assoc();
                         ?>
                             <tr>
-                                <td><?php echo $item_table_data['datetime']; ?></td>
-                                <td><?php echo $item_table_data['item_code']; ?></td>
-                                <td><?php echo $item_table_data['descr']; ?></td>
-                                <td><?php echo $item_table_data['qsystem']; ?></td>
-                                <td><?php echo $item_table_data['qhand']; ?></td>
-                                <td><?php echo $item_table_data['diff']; ?></td>
-                                <td><?php echo $item_table_data['unit_name']; ?></td>
-                                <td><?php echo $item_table_data['grn_number']; ?></td>
-                                <td><?php echo $item_table_data['grn_date']; ?></td>
-                                <td><?php echo $item_table_data['remarks']; ?></td>
+                                <td><?php echo $item_table_data3['item_code']; ?></td>
+                                <td><?php echo $item_table_data3['descr']; ?></td>
+                                <td><?php echo $item_table_data3['grn_qty']; ?></td>
+                                <td><?php echo $item_table_data3['unit_name']; ?></td>
+                                <td><?php echo $item_table_data3['grn_number']; ?></td>
+                                <td><?php echo $item_table_data3['grn_date']; ?></td>
+                                <td><?php echo $item_table_data3['remarks']; ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
 
+                    <nav>
+                        <ul class="pagination justify-content-center mt-4">
+                            <?php for ($page3 = 1; $page3 <= $total_pages3; $page3++) { ?>
+                                <li class="page-item">
+                                    <a class="page-link" href="mop-reports.php?page=<?php echo $page3; ?>">
+                                        <?php echo $page3; ?>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </nav>
+
+
                 </table>
 
-                <nav>
-                    <ul class="pagination justify-content-center mt-4">
-                        <?php if ($page > 1) { ?>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                        <?php } ?>
 
-                        <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php } ?>
-
-                        <?php if ($page < $total_pages) { ?>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                </nav>
             </div>
         </div>
 
-
-
+        <!-- Add similar blocks for collapseExample2 and collapseExample3 -->
 
     </main>
 
-
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -602,12 +528,42 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
-
-
-
-
-    <script src="assets/js/script.js"></script>
     <script>
+        $(document).ready(function() {
+            // Function to update collapse state in localStorage
+            function updateCollapseState(id, state) {
+                localStorage.setItem(id, state ? 'open' : 'closed');
+            }
+
+            // Function to restore collapse state from localStorage
+            function restoreCollapseState() {
+                $('.collapse').each(function() {
+                    var id = $(this).attr('id');
+                    var state = localStorage.getItem(id);
+
+                    if (state === 'open') {
+                        $(this).collapse('show');
+                    } else {
+                        $(this).collapse('hide');
+                    }
+                });
+            }
+
+            // Update collapse state when toggled
+            $('.collapse').on('shown.bs.collapse', function() {
+                var id = $(this).attr('id');
+                updateCollapseState(id, true);
+            });
+
+            $('.collapse').on('hidden.bs.collapse', function() {
+                var id = $(this).attr('id');
+                updateCollapseState(id, false);
+            });
+
+            // Restore collapse state on page load
+            restoreCollapseState();
+        });
+
         $(document).ready(function() {
             $('#datepicker').datepicker({
                 format: 'yyyy-mm-dd',
@@ -617,10 +573,10 @@
             });
         });
 
-
         function updateDateTime() {
             const dateTimeDisplay = document.getElementById('dateTimeDisplay');
             const now = new Date();
+
             const options = {
                 year: 'numeric',
                 month: 'long',
