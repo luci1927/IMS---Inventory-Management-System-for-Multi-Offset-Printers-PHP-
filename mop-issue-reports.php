@@ -14,22 +14,21 @@
     <style>
         .fixed-date-time {
             position: fixed;
-            top: 60px; 
-            left: 10px; 
+            top: 60px;
+            left: 10px;
             background-color: rgba(0, 0, 0, 0.7);
-            color: white;  
-            padding: 10px; 
+            color: white;
+            padding: 10px;
             border-radius: 5px;
-            font-size: 14px; 
-            z-index: 9999;  
+            font-size: 14px;
+            z-index: 9999;
         }
 
         @media (max-width: 768px) {
-    .fixed-date-time {
-        display: none;
-    }
-    }
-        
+            .fixed-date-time {
+                display: none;
+            }
+        }
     </style>
 
 </head>
@@ -144,34 +143,52 @@
                     <th scope="col">Remarks</th>
                 </tr>
             </thead>
+
+            <?php
+            require "connection.php";
+
+            $results_per_page = 10;
+
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            if ($page <= 0) $page = 1;
+
+            $offset = ($page - 1) * $results_per_page;
+
+            $query_total = "SELECT COUNT(*) AS total FROM mop_stock
+                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                INNER JOIN units ON mop_inventory.units_id = units.id
+                INNER JOIN mop_issuing ON mop_issuing.mop_stock_id = mop_stock.id 
+                WHERE mop_inventory.status_status_id = '1'";
+            $total_result = Database::search($query_total);
+            $total_row = $total_result->fetch_assoc();
+            $total_records = $total_row['total'];
+
+            $total_pages = ceil($total_records / $results_per_page);
+
+            $query = "SELECT mop_inventory.item_code AS item_code, 
+            mop_inventory.`description` AS descr, 
+            mop_stock.qty_hand AS qhand, 
+            units.`name` AS unit_name, 
+            mop_issuing.issue_no AS issue_number, 
+            mop_issuing.qty AS issue_qty, 
+            mop_issuing.date_time AS issue_date, 
+            mop_stock.remarks AS remarks
+            FROM mop_stock
+            INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+            INNER JOIN units ON mop_inventory.units_id = units.id
+            INNER JOIN mop_issuing ON mop_issuing.mop_stock_id = mop_stock.id 
+            WHERE mop_inventory.status_status_id = '1'
+            ORDER BY mop_stock.date_time DESC
+            LIMIT $results_per_page OFFSET $offset";
+
+            $item_table_rs = Database::search($query);
+            $item_table_num = $item_table_rs->num_rows;
+            ?>
+
             <tbody>
                 <?php
-
-                require "connection.php";
-
-
-                $query = "SELECT mop_inventory.item_code AS item_code, 
-                            mop_inventory.`description` AS descr, 
-                            mop_stock.qty_hand AS qhand, 
-                            units.`name` AS unit_name, 
-                            mop_issuing.issue_no AS issue_number, 
-                            mop_issuing.qty AS issue_qty, 
-                            mop_issuing.date_time AS issue_date, 
-                            mop_stock.remarks AS remarks
-                            FROM mop_stock
-                            INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                            INNER JOIN units ON mop_inventory.units_id = units.id
-                            INNER JOIN mop_issuing ON mop_issuing.mop_stock_id = mop_stock.id 
-                            WHERE mop_inventory.status_status_id = '1'
-                            ORDER BY mop_stock.date_time DESC;";
-
-                $item_table_rs = Database::search($query);
-                $item_table_num = $item_table_rs->num_rows;
-
-
                 for ($x = 0; $x < $item_table_num; $x++) {
                     $item_table_data = $item_table_rs->fetch_assoc();
-
                 ?>
                     <tr>
                         <td><?php echo $item_table_data['item_code']; ?></td>
@@ -183,17 +200,40 @@
                         <td><?php echo $item_table_data['unit_name']; ?></td>
                         <td><?php echo $item_table_data['remarks']; ?></td>
                     </tr>
-
-                <?php
-
-                }
-
-                ?>
+                <?php } ?>
             </tbody>
+
         </table>
+
+        <nav>
+            <ul class="pagination justify-content-center mt-4">
+                <?php if ($page > 1) { ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                <?php } ?>
+
+                <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php } ?>
+
+                <?php if ($page < $total_pages) { ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
+        </nav>
+
     </main>
 
-    
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -212,7 +252,7 @@
                 format: 'yyyy-mm-dd',
                 todayHighlight: true,
                 autoclose: true,
-                endDate: new Date()              
+                endDate: new Date()
             });
         });
 

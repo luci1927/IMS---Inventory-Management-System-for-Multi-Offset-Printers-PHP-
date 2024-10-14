@@ -1,9 +1,16 @@
 
+html {
+    overflow-y: scroll;
+}
 
 
 body {
     background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; 
 }
+
 
 .navbar {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -16,4 +23,8 @@ main {
 .table-hover tbody tr:hover {
     background-color: #f1f1f1;
 }
+
+
+
+
 

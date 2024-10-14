@@ -13,7 +13,7 @@ function signIn() {
     r.onreadystatechange = function () {
         if (r.readyState === 4) {
             var t = r.responseText;
-            console.log("Response from server:", t); // Log the response
+            console.log("Response from server:", t); 
     
             // Convert the response to an integer
             var departmentId = parseInt(t, 10);
