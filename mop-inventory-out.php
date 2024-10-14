@@ -12,6 +12,7 @@ include 'mop_session_check.php';
     <title>Inventory Management</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="icon" href="assets/favicon/favicon.png" type="image/png">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
     <style>
