@@ -1,16 +1,9 @@
 <?php
-
 session_start();
+session_unset();
+session_destroy();
 
-if(isset($_SESSION["u"])){
-
-    $_SESSION["u"] = null;
-    session_destroy();
-
-    echo ("success");
-
-    header("Location:index.php");
-
-}
-
+// Redirect to the login page after logout
+header("Location: index.php");
+exit();
 ?>

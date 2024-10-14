@@ -1,3 +1,7 @@
+<?php
+include 'mop_session_check.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

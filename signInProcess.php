@@ -16,19 +16,24 @@ $rs = $stmt->get_result();
 if ($rs->num_rows == 1) {
     $user = $rs->fetch_assoc();
 
-    // Compare the plain text password directly
+    // Compare the plain text password directly (recommended: use password hashing)
     if ($password === $user['password']) {
+
+        // Regenerate session ID to prevent session fixation attacks
+        session_regenerate_id(true);
+
+        // Store user data in session
         $_SESSION['username'] = $username;
         $_SESSION['department'] = $user['departments_dep_id'];
+        $_SESSION['last_activity'] = time(); 
+        $_SESSION['expire_time'] = 1800; // 30 minutes
 
-        // Echo the department ID for redirection
-        echo $user['departments_dep_id']; // This will be 1, 2, or 3
+        // Echo department ID to be used for redirection in JavaScript
+        echo $user['departments_dep_id']; // Returns 1, 2, or 3
     } else {
-        // Invalid password
         echo "Invalid Username or Password";
     }
 } else {
-    // Invalid username or department
     echo "Invalid Username or Password";
 }
 
@@ -36,4 +41,3 @@ if ($rs->num_rows == 1) {
 $stmt->close();
 $conn->close();
 ?>
-
