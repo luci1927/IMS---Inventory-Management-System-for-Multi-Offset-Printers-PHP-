@@ -482,20 +482,20 @@ function load_rmi_unit(){
 
 $(document).ready(function () {
 
-    $('#datepicker2').datepicker({
+    $('#datepicker1').datepicker({
         format: 'yyyy-mm-dd',
         autoclose: true,
         todayHighlight: true
     });
 
 
-    $('#searchButton').click(function () {
+    $('#searchButton1').click(function () {
         searchmop();
     });
 });
 
 function searchmop() {
-    var selectedDate = $('#datepicker2').val(); 
+    var selectedDate = $('#datepicker1').val(); 
 
     console.log("Selected date: " + selectedDate);
 
@@ -1044,7 +1044,7 @@ function load_mop_out_table(){
     });
 
 
-    $('#searchButton1').click(function () {
+    $('#searchButton2').click(function () {
         searchmopissue();
     });
 });
@@ -1061,6 +1061,46 @@ function searchmopissue() {
 
     $.ajax({
         url: 'process_mop_search_issue.php',
+        type: 'POST',
+        data: { date: selectedDate },
+        success: function (response) {
+            console.log("Response from server: " + response); 
+            $('#reportsTable tbody').empty(); 
+            $('#reportsTable tbody').html(response); 
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error: " + status + ", " + error); 
+            alert('Error fetching data.');
+        }
+    });
+}
+
+$(document).ready(function () {
+
+    $('#datepicker3').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true
+    });
+
+
+    $('#searchButton3').click(function () {
+        searchmopgrn();
+    });
+});
+
+function searchmopgrn() {
+    var selectedDate = $('#datepicker3').val(); 
+
+    console.log("Selected date: " + selectedDate);
+
+    if (!selectedDate) {
+        alert("Please select a valid date.");
+        return; 
+    }
+
+    $.ajax({
+        url: 'process_mop_search_grn.php',
         type: 'POST',
         data: { date: selectedDate },
         success: function (response) {

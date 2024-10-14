@@ -54,10 +54,7 @@
                         <a class="nav-link" href="mop-inventory-out.php">Inventory Out</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="mop-reports.php">Stock Update reports</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="mop-issue-reports.php">Issue Reports</a>
+                        <a class="nav-link" href="mop-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
