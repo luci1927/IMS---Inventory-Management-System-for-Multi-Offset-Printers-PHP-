@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Department Login</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="assets/favicon/favicon.png" type="image/png">
     <style>
@@ -47,23 +46,19 @@
     <div class="login-container ">
         <h2 class="login-title">Inventory Management System</h2>
 
-        <!-- Login Form -->
         <form id="loginForm" onsubmit="event.preventDefault(); signIn();">
-            <!-- Username Field -->
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
                 <div class="error-message" id="usernameError">Username must be at least 3 characters long.</div>
             </div>
 
-            <!-- Password Field -->
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
                 <div class="error-message" id="passwordError">Password must be at least 6 characters long.</div>
             </div>
 
-            <!-- Department Dropdown -->
             <div class="form-group">
                 <label for="department">Department</label>
                 <select class="form-control" id="department" required>
@@ -89,8 +84,6 @@
                 </select>
                 <div class="error-message" id="departmentError">Please select a department.</div>
             </div>
-
-            <!-- Login Button -->
             <button type="submit" class="btn btn-success btn-block" >Login</button>
         </form>
     </div>
