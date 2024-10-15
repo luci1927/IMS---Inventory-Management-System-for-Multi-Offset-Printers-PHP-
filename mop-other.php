@@ -148,7 +148,7 @@ include 'mop_session_check.php';
 
             </div>
 
-            <hr />
+            <hr class="mt-5 mb-5" />
 
             <h3>GRN Types</h3>
             <div class="row">
@@ -214,7 +214,7 @@ include 'mop_session_check.php';
 
             </div>
 
-            <hr />
+            <hr class="mt-5 mb-5" />
 
             <h3>Suppliers</h3>
             <div class="row">
