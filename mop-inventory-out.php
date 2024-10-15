@@ -65,6 +65,9 @@ include 'mop_session_check.php';
                         <a class="nav-link" href="mop-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="mop-other.php">Reports</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
                     </li>
                 </ul>
