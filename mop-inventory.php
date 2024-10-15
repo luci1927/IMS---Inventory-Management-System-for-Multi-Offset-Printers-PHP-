@@ -410,6 +410,7 @@ include 'mop_session_check.php';
         <table class="table table-striped table-hover mt-3" id="inventoryTable">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Item Code</th>
                     <th>Item Description</th>
                     <th>Qty in System</th>
@@ -469,6 +470,7 @@ include 'mop_session_check.php';
                     $item_table_data = $item_table_rs->fetch_assoc();
                 ?>
                     <tr>
+                        <th scope="row"><?php echo $x + 1; ?></th>
                         <td><?php echo $item_table_data['item_code']; ?></td>
                         <td><?php echo $item_table_data['descr']; ?></td>
                         <td><?php echo $item_table_data['qsystem']; ?></td>

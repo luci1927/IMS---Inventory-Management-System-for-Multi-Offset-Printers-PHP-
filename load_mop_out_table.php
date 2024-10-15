@@ -35,6 +35,7 @@ WHERE mop_inventory.status_status_id = '1' AND mop_inventory.item_code = '".$ite
 
 <thead>
                 <tr>
+                <th>#</th>
                     <th>Item Code</th>
                     <th>Item Description</th>
                     <th>Qty in System</th>
@@ -45,6 +46,7 @@ WHERE mop_inventory.status_status_id = '1' AND mop_inventory.item_code = '".$ite
             </thead>
             <tbody>
                     <tr>
+                    <th scope="row"><?php echo $x + 1; ?></th>
                     <td><?php echo $item_data['item_code']; ?></td>
                         <td><?php echo $item_data['descr']; ?></td>
                         <td><?php echo $item_data['qsystem']; ?></td>

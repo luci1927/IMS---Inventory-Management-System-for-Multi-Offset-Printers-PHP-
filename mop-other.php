@@ -78,18 +78,223 @@ include 'mop_session_check.php';
 
     <!-- Main Content -->
     <main class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2>Manage Inventory</h2>
-            <div>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter1">
-                    Add Stock
-                </button>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter2">
-                    Add New Item
-                </button>
+        <div class="d-flex justify-content-between align-items-center mt-5">
+            <h2>Other Updates</h2>
+        </div>
+        <div class="col-12 mt-4">
+            <h3>Units</h3>
+            <div class="row">
+                <div class="col-6">
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Unit Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <?php
+
+                            require "connection.php";
+
+                            $query = "SELECT * FROM units";
+
+                            $units_table_rs = Database::search($query);
+                            $units_table_num = $units_table_rs->num_rows;
+
+
+                            for ($x = 0; $x < $units_table_num; $x++) {
+                                $units_table_data = $units_table_rs->fetch_assoc();
+
+                            ?>
+                                <tr>
+                                    <th scope="row"><?php echo $x + 1; ?></th>
+                                    <td><?php echo $units_table_data['name']; ?></td>
+                                </tr>
+
+                            <?php
+
+
+                            }
+
+                            ?>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-6">
+                    <p>
+                        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="false" aria-controls="collapseWidthExample">
+                            New Unit
+                        </button>
+                    </p>
+                    <div style="min-height: 120px;">
+                        <div class="collapse width" id="collapseUnit">
+                            <div class="card card-body" style="width: 420px;">
+                                <form>
+                                    <h4>Add New Unit</h4>
+                                    <div class="form-group">
+                                        <label for="unit">Unit</label>
+                                        <input type="text" class="form-control form-control-sm" id="unit" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-sm " onclick="add_unit();">Add Unit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
+            <hr />
+
+            <h3>GRN Types</h3>
+            <div class="row">
+                <div class="col-6">
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">GRN Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <?php
+
+                            $query2 = "SELECT * FROM grn_type";
+
+                            $grn_table_rs = Database::search($query2);
+                            $grn_table_num = $grn_table_rs->num_rows;
+
+
+                            for ($x = 0; $x < $grn_table_num; $x++) {
+                                $grn_table_data = $grn_table_rs->fetch_assoc();
+
+                            ?>
+                                <tr>
+                                    <th scope="row"><?php echo $x + 1; ?></th>
+                                    <td><?php echo $grn_table_data['name']; ?></td>
+                                </tr>
+
+                            <?php
+
+
+                            }
+
+                            ?>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-6">
+                    <p>
+                        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseGRN" aria-expanded="false" aria-controls="collapseWidthExample">
+                            New GRN Type
+                        </button>
+                    </p>
+                    <div style="min-height: 120px;">
+                        <div class="collapse width" id="collapseGRN">
+                            <div class="card card-body" style="width: 420px;">
+                                <form>
+                                    <h4>Add New GRN Type</h4>
+                                    <div class="form-group">
+                                        <label for="unit">GRN Type</label>
+                                        <input type="text" class="form-control form-control-sm" id="grn" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-sm" onclick="add_grn();">Add GRN Type</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <h3>Suppliers</h3>
+            <div class="row">
+                <div class="col-8">
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Mobile</th>
+                                <th scope="col">Company</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+
+                            $query3 = "SELECT * FROM supplier";
+
+                            $sup_table_rs = Database::search($query3);
+                            $sup_table_num = $sup_table_rs->num_rows;
+
+
+                            for ($x = 0; $x < $sup_table_num; $x++) {
+                                $sup_table_data = $sup_table_rs->fetch_assoc();
+
+                            ?>
+                                <tr>
+                                    <th scope="row"><?php echo $x + 1; ?></th>
+                                    <td><?php echo $sup_table_data['sup_name']; ?></td>
+                                    <td><?php echo $sup_table_data['contact']; ?></td>
+                                    <td><?php echo $sup_table_data['name']; ?></td>
+                                </tr>
+
+                            <?php
+
+
+                            }
+
+                            ?>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-4">
+                    <p>
+                        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseSupplier" aria-expanded="false" aria-controls="collapseWidthExample">
+                            New Supplier
+                        </button>
+                    </p>
+                    <div style="min-height: 120px;">
+                        <div class="collapse width" id="collapseSupplier">
+                            <div class="card card-body" style="width: 420px;">
+                                <form>
+                                    <h4>Add New Supplier</h4>
+                                    <div class="form-group">
+                                        <label for="supplierName">Supplier Name</label>
+                                        <input type="text" class="form-control form-control-sm" id="supplierName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="company">Company Name</label>
+                                        <input type="text" class="form-control form-control-sm" id="company" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mobile">Mobile</label>
+                                        <input type="number" class="form-control form-control-sm" id="mobile" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-sm" onclick="add_supplier();">Add Supplier</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
         </div>
+
+
 
     </main>
 

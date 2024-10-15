@@ -33,6 +33,8 @@ function signIn() {
     r.send(f);
 }
 
+
+
 function signout() {
 
     var r = new XMLHttpRequest();
@@ -94,6 +96,8 @@ function mop_new_item() {
     r.send(form);
 
 }
+
+
 
 function mop_new_stock(){
 
@@ -1024,3 +1028,90 @@ function searchmopgrn() {
     });
 }
 
+
+
+
+function add_unit(){
+    var unit_name = document.getElementById("unit").value;
+
+    var form = new FormData();
+    form.append("u", unit_name);
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var text = r.responseText;
+
+            if (text == "success") {
+                alert("Unit added successfully.");
+                window.location.reload();
+            } else {
+                alert(text);
+            }
+
+
+        }
+    }
+
+    r.open("POST", "process_add_new_unit.php", true);
+    r.send(form);
+}
+
+function add_grn(){
+    var grn_type = document.getElementById("grn").value;
+
+    var form = new FormData();
+    form.append("g", grn_type);
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var text = r.responseText;
+
+            if (text == "success") {
+                alert("GRN Type added successfully.");
+                window.location.reload();
+            } else {
+                alert(text);
+            }
+
+
+        }
+    }
+
+    r.open("POST", "process_add_new_grn_type.php", true);
+    r.send(form);
+}
+
+function add_supplier(){
+    var supplier_name = document.getElementById("supplierName").value;
+    var company = document.getElementById("company").value;
+    var mobile = document.getElementById("mobile").value;
+
+    var form = new FormData();
+    form.append("s", supplier_name);
+    form.append("c", company);
+    form.append("m", mobile);
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var text = r.responseText;
+
+            if (text == "success") {
+                alert("Supplier added successfully.");
+                window.location.reload();
+            } else {
+                alert(text);
+            }
+
+
+        }
+    }
+
+    r.open("POST", "process_add_new_supplier.php", true);
+    r.send(form);
+}

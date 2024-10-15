@@ -80,13 +80,13 @@ include 'mop_session_check.php';
         <p>Here you can view daily reports about your inventory activities.</p>
 
         <p>
-            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
+            <a class="btn btn-success" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
                 Stock Update Report
             </a>
-            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
+            <a class="btn btn-success" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
                 Issue Update Report
             </a>
-            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3">
+            <a class="btn btn-success" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3">
                 GRN Reports
             </a>
         </p>
@@ -109,7 +109,7 @@ include 'mop_session_check.php';
                         </div>
 
                         <div class="col-auto">
-                            <button type="button" id="searchButton1" class="btn btn-primary">
+                            <button type="button" id="searchButton1" class="btn btn-success">
                                 <i class="fa-solid fa-magnifying-glass"></i> Search
                             </button>
                         </div>
@@ -145,9 +145,10 @@ include 'mop_session_check.php';
                 <!-- Modal -->
 
                 <!-- Report Table -->
-                <table class="table table-bordered table-hover mt-3" id="reportsTable1">
+                <table class="table table-striped table-hover mt-3" id="reportsTable1">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th scope="col">Date/Time Updated</th>
                             <th scope="col">Item Code</th>
                             <th scope="col">Item Description</th>
@@ -209,6 +210,7 @@ include 'mop_session_check.php';
                             $item_table_data = $item_table_rs->fetch_assoc();
                         ?>
                             <tr>
+                                <th scope="row"><?php echo $x + 1; ?></th>
                                 <td><?php echo $item_table_data['datetime']; ?></td>
                                 <td><?php echo $item_table_data['item_code']; ?></td>
                                 <td><?php echo $item_table_data['descr']; ?></td>
@@ -259,7 +261,7 @@ include 'mop_session_check.php';
                         </div>
 
                         <div class="col-auto">
-                            <button type="button" id="searchButton2" class="btn btn-primary">
+                            <button type="button" id="searchButton2" class="btn btn-success">
                                 <i class="fa-solid fa-magnifying-glass"></i> Search
                             </button>
                         </div>
@@ -299,9 +301,10 @@ include 'mop_session_check.php';
 
 
                 <!-- Report Table -->
-                <table class="table table-bordered table-hover mt-3" id="reportsTable2">
+                <table class="table table-striped table-hover mt-3" id="reportsTable2">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th scope="col">Item Code</th>
                             <th scope="col">Item Description</th>
                             <th scope="col">Issue Date/Time</th>
@@ -359,6 +362,7 @@ include 'mop_session_check.php';
                             $item_table_data2 = $item_table_rs2->fetch_assoc();
                         ?>
                             <tr>
+                                <th scope="row"><?php echo $x + 1; ?></th>
                                 <td><?php echo $item_table_data2['item_code']; ?></td>
                                 <td><?php echo $item_table_data2['descr']; ?></td>
                                 <td><?php echo $item_table_data2['issue_date']; ?></td>
@@ -409,7 +413,7 @@ include 'mop_session_check.php';
                         </div>
 
                         <div class="col-auto">
-                            <button type="button" id="searchButton3" class="btn btn-primary">
+                            <button type="button" id="searchButton3" class="btn btn-success">
                                 <i class="fa-solid fa-magnifying-glass"></i> Search
                             </button>
                         </div>
@@ -449,9 +453,10 @@ include 'mop_session_check.php';
 
 
                 <!-- Report Table -->
-                <table class="table table-bordered table-hover mt-3" id="reportsTable3">
+                <table class="table table-striped table-hover mt-3" id="reportsTable3">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th scope="col">Item Code</th>
                             <th scope="col">Item Description</th>
                             <th scope="col">GRN Quantity</th>
@@ -509,6 +514,7 @@ include 'mop_session_check.php';
                             $item_table_data3 = $item_table_rs3->fetch_assoc();
                         ?>
                             <tr>
+                                <th scope="row"><?php echo $x + 1; ?></th>
                                 <td><?php echo $item_table_data3['item_code']; ?></td>
                                 <td><?php echo $item_table_data3['descr']; ?></td>
                                 <td><?php echo $item_table_data3['grn_qty']; ?></td>

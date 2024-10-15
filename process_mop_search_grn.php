@@ -29,6 +29,7 @@ if (isset($_POST['date']) && !empty($_POST['date'])) {
         for ($x = 0; $x < $item_table_num; $x++) {
             $item_table_data = $item_table_rs->fetch_assoc();
             echo "<tr>
+                    <td>" . ($x + 1) . "</td>
                     <td>{$item_table_data['item_code']}</td>
                     <td>{$item_table_data['descr']}</td>
                     <td>{$item_table_data['grn_qty']}</td>
