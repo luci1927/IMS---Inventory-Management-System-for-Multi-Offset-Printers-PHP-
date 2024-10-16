@@ -305,10 +305,10 @@ include 'mop_session_check.php';
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th scope="col">Issue No</th>
+                            <th scope="col">Issue Date/Time</th>
                             <th scope="col">Item Code</th>
                             <th scope="col">Item Description</th>
-                            <th scope="col">Issue Date/Time</th>
-                            <th scope="col">Issue No</th>
                             <th scope="col">Issue Qty</th>
                             <th scope="col">Qty Remaining</th>
                             <th scope="col">Unit</th>
@@ -363,10 +363,10 @@ include 'mop_session_check.php';
                         ?>
                             <tr>
                                 <th scope="row"><?php echo $x + 1; ?></th>
+                                <td><?php echo $item_table_data2['issue_number']; ?></td>
+                                <td><?php echo $item_table_data2['issue_date']; ?></td>
                                 <td><?php echo $item_table_data2['item_code']; ?></td>
                                 <td><?php echo $item_table_data2['descr']; ?></td>
-                                <td><?php echo $item_table_data2['issue_date']; ?></td>
-                                <td><?php echo $item_table_data2['issue_number']; ?></td>
                                 <td><?php echo $item_table_data2['issue_qty']; ?></td>
                                 <td><?php echo $item_table_data2['qhand']; ?></td>
                                 <td><?php echo $item_table_data2['unit_name']; ?></td>
@@ -457,12 +457,12 @@ include 'mop_session_check.php';
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th scope="col">GRN No</th>
+                            <th scope="col">GRN Date</th>
                             <th scope="col">Item Code</th>
                             <th scope="col">Item Description</th>
                             <th scope="col">GRN Quantity</th>
                             <th scope="col">Unit</th>
-                            <th scope="col">GRN No</th>
-                            <th scope="col">GRN Date</th>
                             <th scope="col">Remarks</th>
                         </tr>
                     </thead>
@@ -515,12 +515,12 @@ include 'mop_session_check.php';
                         ?>
                             <tr>
                                 <th scope="row"><?php echo $x + 1; ?></th>
+                                <td><?php echo $item_table_data3['grn_number']; ?></td>
+                                <td><?php echo $item_table_data3['grn_date']; ?></td>
                                 <td><?php echo $item_table_data3['item_code']; ?></td>
                                 <td><?php echo $item_table_data3['descr']; ?></td>
                                 <td><?php echo $item_table_data3['grn_qty']; ?></td>
                                 <td><?php echo $item_table_data3['unit_name']; ?></td>
-                                <td><?php echo $item_table_data3['grn_number']; ?></td>
-                                <td><?php echo $item_table_data3['grn_date']; ?></td>
                                 <td><?php echo $item_table_data3['remarks']; ?></td>
                             </tr>
                         <?php } ?>
