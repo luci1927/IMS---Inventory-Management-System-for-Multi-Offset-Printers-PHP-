@@ -107,7 +107,7 @@ include 'mop_session_check.php';
                             <div class="form-group">
                                 <label for="item3">Item</label>
                                 <div>
-                                    <select class="selectpicker" data-live-search="true" id="item3" onchange="load_mop_unit_update(); load_mop_grn_type_update();" title="Choose an Item">
+                                    <select class="selectpicker" data-live-search="true" id="item3" onchange="load_mop_unit_update();" title="Choose an Item">
                                         <?php
 
                                         require "connection.php";
@@ -153,8 +153,8 @@ include 'mop_session_check.php';
                             </div>
                             <div class="form-group">
                                 <label for="quantity">Quantity</label>
-                                <input type="number" class="form-control" id="quantity" placeholder="Enter quantity"
-                                    step="0.001" min="0" max="10000" required />
+                                <input type="text" class="form-control" id="quantity" placeholder="Enter quantity"
+                                     required />
                             </div>
                             <div class="form-group">
                                 <label for="grn2">GRN No</label>
@@ -168,7 +168,7 @@ include 'mop_session_check.php';
                                     <?php
 
                                     $grn_type2_rs = Database::search("SELECT * FROM `grn_type`");
-                                    $grn_type2_num = $grn_type1_rs->num_rows;
+                                    $grn_type2_num = $grn_type2_rs->num_rows;
 
                                     for ($x = 0; $x < $grn_type2_num; $x++) {
                                         $grn_type2_data = $grn_type2_rs->fetch_assoc();
@@ -266,65 +266,6 @@ include 'mop_session_check.php';
                                     ?>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="quantity1">Quantity</label>
-                                <input type="number" class="form-control" id="quantity1" placeholder="Enter quantity"
-                                    step="0.001" min="0" max="10000" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="grn1">GRN No</label>
-                                <input type="text" class="form-control" id="grn1"
-                                    placeholder="GRN No">
-                            </div>
-                            <div class="form-group">
-                                <label for="grn_type1">GRN Type</label>
-                                <select class="form-control" id="grn_type1">
-                                    <option value="0" disabled selected>Select GRN Type</option>
-                                    <?php
-
-                                    $grn_type1_rs = Database::search("SELECT * FROM `grn_type`");
-                                    $grn_type1_num = $grn_type1_rs->num_rows;
-
-                                    for ($x = 0; $x < $grn_type1_num; $x++) {
-                                        $grn_type1_data = $grn_type1_rs->fetch_assoc();
-
-                                    ?>
-
-                                        <option value="<?php echo $grn_type1_data["id"]; ?>"><?php echo $grn_type1_data["name"]; ?></option>
-
-                                    <?php
-                                    }
-
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="supplier1">Supplier</label>
-                                <select class="form-control" id="supplier1">
-                                    <option value="0" disabled selected>Select supplier</option>
-                                    <?php
-
-                                    $supplier1_rs = Database::search("SELECT * FROM `supplier`");
-                                    $supplier1_num = $supplier1_rs->num_rows;
-
-                                    for ($x = 0; $x < $supplier1_num; $x++) {
-                                        $supplier1_data = $supplier1_rs->fetch_assoc();
-
-                                    ?>
-
-                                        <option value="<?php echo $supplier1_data["id"]; ?>"><?php echo $supplier1_data["name"]; ?></option>
-
-                                    <?php
-                                    }
-
-                                    ?>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="remarks1">Remarks</label>
-                                <textarea class="form-control" id="remarks1" rows="3"></textarea>
-                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -363,8 +304,7 @@ include 'mop_session_check.php';
             <div class="form-group row">
                 <label for="quantity2" class="col-sm-2 col-form-label">Quantity</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="quantity2" placeholder="Enter quantity" step="0.001"
-                        min="0" max="10000" required />
+                    <input type="text" class="form-control" id="quantity2" placeholder="Enter quantity"  required />
                 </div>
             </div>
             <div class="form-group row">

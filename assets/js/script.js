@@ -59,21 +59,11 @@ function mop_new_item() {
     var i = document.getElementById("item_code");
     var d = document.getElementById("description");
     var u = document.getElementById("unit");
-    var q = document.getElementById("quantity1");
-    var g = document.getElementById("grn1");
-    var gt = document.getElementById("grn_type1");
-    var s = document.getElementById("supplier1");
-    var re = document.getElementById("remarks1");
 
     var form = new FormData();
     form.append("i", i.value);
     form.append("d", d.value);
     form.append("u", u.value);
-    form.append("q", q.value);
-    form.append("g", g.value);
-    form.append("gt", gt.value);
-    form.append("s", s.value);
-    form.append("re", re.value);
 
     var r = new XMLHttpRequest();
 
