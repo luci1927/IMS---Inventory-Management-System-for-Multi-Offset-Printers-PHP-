@@ -291,6 +291,76 @@ include 'mop_session_check.php';
 
             </div>
 
+            <hr class="mt-5 mb-5" />
+
+            <h3>Item Group</h3>
+            <div class="row">
+                <div class="col-8">
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Item Group ID</th>
+                                <th scope="col">Item Group Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <?php
+
+                            $query4 = "SELECT * FROM mop_item_group";
+
+                            $item_group_table_rs = Database::search($query4);
+                            $item_group_num = $item_group_table_rs->num_rows;
+
+
+                            for ($x = 0; $x < $item_group_num; $x++) {
+                                $item_group_data = $item_group_table_rs->fetch_assoc();
+
+                            ?>
+                                <tr>
+                                    <th scope="row"><?php echo $x + 1; ?></th>
+                                    <td><?php echo $item_group_data['code']; ?></td>
+                                    <td><?php echo $item_group_data['name']; ?></td>
+                                </tr>
+
+                            <?php
+
+
+                            }
+
+                            ?>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-4">
+                    <p>
+                        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseGRN" aria-expanded="false" aria-controls="collapseWidthExample">
+                            New Item Group
+                        </button>
+                    </p>
+                    <div style="min-height: 120px;">
+                        <div class="collapse width" id="collapseGRN">
+                            <div class="card card-body" style="width: 420px;">
+                                <form>
+                                    <h4>Add New Item Group</h4>
+                                    <div class="form-group">
+                                        <label for="unit">Item Group</label>
+                                        <input type="text" class="form-control form-control-sm" id="grn" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-sm" onclick="add_grn();">Add Item Group</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="mt-5 mb-5" />
+
 
         </div>
 
