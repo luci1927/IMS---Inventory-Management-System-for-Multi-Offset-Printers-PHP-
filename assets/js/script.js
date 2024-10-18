@@ -1105,3 +1105,32 @@ function add_supplier(){
     r.open("POST", "process_add_new_supplier.php", true);
     r.send(form);
 }
+
+function mop_add_item_group(){
+    var item_group_code = document.getElementById("igc").value;
+    var item_group_name = document.getElementById("ign").value;
+
+    var form = new FormData();
+    form.append("c", item_group_code);
+    form.append("n", item_group_name);
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var text = r.responseText;
+
+            if (text == "success") {
+                alert("Item Group added successfully.");
+                window.location.reload();
+            } else {
+                alert(text);
+            }
+
+
+        }
+    }
+
+    r.open("POST", "process_mop_add_item_group.php", true);
+    r.send(form);
+}

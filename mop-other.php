@@ -347,10 +347,14 @@ include 'mop_session_check.php';
                                 <form>
                                     <h4>Add New Item Group</h4>
                                     <div class="form-group">
-                                        <label for="unit">Item Group</label>
-                                        <input type="text" class="form-control form-control-sm" id="grn" required>
+                                        <label for="igc">Item Group Code</label>
+                                        <input type="text" class="form-control form-control-sm" id="igc" required>
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-sm" onclick="add_grn();">Add Item Group</button>
+                                    <div class="form-group">
+                                        <label for="ign">Item Group Name</label>
+                                        <input type="text" class="form-control form-control-sm" id="ign" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-sm" onclick="mop_add_item_group();">Add Item Group</button>
                                 </form>
                             </div>
                         </div>
