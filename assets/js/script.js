@@ -1166,3 +1166,22 @@ function mop_add_item_sub_group(){
     r.open("POST", "process_mop_add_item_sub_group.php", true);
     r.send(form);
 }
+
+function load_item_sub_group() {
+    var item_group_code = document.getElementById("item_group1").value;
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText;
+
+            document.getElementById("item_sub_group1").innerHTML = t;
+
+        }
+    }
+
+    r.open("GET", "load_item_sub_group.php?g=" + item_group_code, true);
+    r.send();
+
+}

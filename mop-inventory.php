@@ -266,6 +266,50 @@ include 'mop_session_check.php';
                                     ?>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="item_group1">Item Group</label>
+                                <select class="form-control" id="item_group1" onchange="load_item_sub_group();">
+                                    <option value="0" disabled selected>Select a Item Group</option>
+                                    <?php
+
+                                    $item_group1_rs = Database::search("SELECT * FROM `mop_item_group`");
+                                    $item_group1_num = $item_group1_rs->num_rows;
+
+                                    for ($x = 0; $x < $item_group1_num; $x++) {
+                                        $item_group1_data = $item_group1_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $item_group1_data["code"]; ?>"><?php echo $item_group1_data["name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="item_sub_group1">Item Sub Group</label>
+                                <select class="form-control" id="item_sub_group1">
+                                    <option value="0" disabled selected>Select a Item Sub Group</option>
+                                    <?php
+
+                                    $item_sub_group1_rs = Database::search("SELECT * FROM `mop_item_sub_group`");
+                                    $item_sub_group1_num = $item_sub_group1_rs->num_rows;
+
+                                    for ($x = 0; $x < $item_sub_group1_num; $x++) {
+                                        $item_sub_group1_data = $item_sub_group1_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $item_sub_group1_data["sub_code"]; ?>"><?php echo $item_sub_group1_data["name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
