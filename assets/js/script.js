@@ -59,11 +59,15 @@ function mop_new_item() {
     var i = document.getElementById("item_code");
     var d = document.getElementById("description");
     var u = document.getElementById("unit");
+    var ig = document.getElementById("item_group1");
+    var isg = document.getElementById("item_sub_group1");
 
     var form = new FormData();
     form.append("i", i.value);
     form.append("d", d.value);
     form.append("u", u.value);
+    form.append("ig", ig.value);
+    form.append("isg", isg.value);
 
     var r = new XMLHttpRequest();
 

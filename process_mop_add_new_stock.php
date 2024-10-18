@@ -37,24 +37,26 @@ if ($item_code == "") {
 
 
 
-    $qty_rs = Database::search("SELECT *
-    FROM `mop_stock`
-    WHERE `mop_inventory_item_code` = '" . $item_code . "'
-    ORDER BY `date_time` DESC
-    LIMIT 1");
-    $qty_data = $qty_rs->fetch_assoc();
-    $qty_in_hand = $qty_data["qty_hand"];
 
-    $qty_in_hand = floatval($qty_data["qty_hand"]);
-    $quantity = floatval($quantity);
-
-    $new_qty = $quantity + $qty_in_hand;
 
 
     $rs = Database::search("SELECT * FROM `mop_stock` WHERE `mop_inventory_item_code`='" . $item_code . "'");
     $n = $rs->num_rows;
 
     if ($n >= 1) {
+
+        $qty_rs = Database::search("SELECT *
+        FROM `mop_stock`
+        WHERE `mop_inventory_item_code` = '" . $item_code . "'
+        ORDER BY `date_time` DESC
+        LIMIT 1");
+        $qty_data = $qty_rs->fetch_assoc();
+        $qty_in_hand = $qty_data["qty_hand"];
+    
+        $qty_in_hand = floatval($qty_data["qty_hand"]);
+        $quantity = floatval($quantity);
+    
+        $new_qty = $quantity + $qty_in_hand;
 
         Database::iud("UPDATE `mop_stock`
             SET `qty_hand` = '" . $new_qty . "',

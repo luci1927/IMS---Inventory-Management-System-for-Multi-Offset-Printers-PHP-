@@ -146,6 +146,7 @@ include 'mop_session_check.php';
                     <th>#</th>
                     <th>Item Code</th>
                     <th>Item Description</th>
+                    <th>Item Group</th>
                     <th>Qty in System</th>
                     <th>Qty on Hand</th>
                     <th>Unit</th>
@@ -178,6 +179,7 @@ include 'mop_session_check.php';
 
             $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_inventory.`description` AS descr, 
+                    mop_inventory.`mop_item_group_code` AS item_grp, 
                     mop_stock.qty_system AS qsystem, 
                     mop_stock.qty_hand AS qhand, 
                     units.`name` AS unit_name, 
@@ -206,6 +208,7 @@ include 'mop_session_check.php';
                         <th scope="row"><?php echo $x + 1; ?></th>
                         <td><?php echo $item_table_data['item_code']; ?></td>
                         <td><?php echo $item_table_data['descr']; ?></td>
+                        <td><?php echo $item_table_data['item_grp']; ?></td>
                         <td><?php echo $item_table_data['qsystem']; ?></td>
                         <td><?php echo $item_table_data['qhand']; ?></td>
                         <td><?php echo $item_table_data['unit_name']; ?></td>

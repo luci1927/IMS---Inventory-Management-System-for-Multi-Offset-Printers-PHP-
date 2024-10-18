@@ -8,6 +8,7 @@ if (isset($_GET["i"])) {
 
     $item_rs = Database::search("SELECT mop_inventory.item_code AS item_code, 
        mop_inventory.`description` AS descr, 
+       mop_inventory.`mop_item_group_code` AS item_grp, 
        mop_stock.qty_system AS qsystem, 
        mop_stock.qty_hand AS qhand, 
        units.`name` AS unit_name, 
@@ -38,6 +39,7 @@ WHERE mop_inventory.status_status_id = '1' AND mop_inventory.item_code = '".$ite
                 <th>#</th>
                     <th>Item Code</th>
                     <th>Item Description</th>
+                    <th>Item Group</th>
                     <th>Qty in System</th>
                     <th>Qty on Hand</th>
                     <th>Unit</th>
@@ -49,6 +51,7 @@ WHERE mop_inventory.status_status_id = '1' AND mop_inventory.item_code = '".$ite
                     <th scope="row"><?php echo $x + 1; ?></th>
                     <td><?php echo $item_data['item_code']; ?></td>
                         <td><?php echo $item_data['descr']; ?></td>
+                        <td><?php echo $item_data['item_grp']; ?></td>
                         <td><?php echo $item_data['qsystem']; ?></td>
                         <td><?php echo $item_data['qhand']; ?></td>
                         <td><?php echo $item_data['unit_name']; ?></td>
