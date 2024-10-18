@@ -161,45 +161,85 @@ include 'mop_session_check.php';
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="item_code">Item Code</label>
-                                    <input type="text" class="form-control" id="item_code"
-                                        placeholder="Item Code">
-                                </div>
-                                <div class="form-group">
-                                    <label for="description">Item Description</label>
-                                    <input type="text" class="form-control" id="description"
-                                        placeholder="Item Description">
-                                </div>
-                                <div class="form-group">
-                                    <label for="unit">Unit</label>
-                                    <select class="form-control" id="unit">
-                                        <option value="0" disabled selected>Select a unit</option>
-                                        <?php
-                                        $unit_rs = Database::search("SELECT * FROM `units`");
-                                        $unit_num = $unit_rs->num_rows;
+                        <form>
+                            <div class="form-group">
+                                <label for="item_code">Item Code</label>
+                                <input type="text" class="form-control" id="item_code"
+                                    placeholder="Item Code">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Item Description</label>
+                                <input type="text" class="form-control" id="description"
+                                    placeholder="Item Description">
+                            </div>
+                            <div class="form-group">
+                                <label for="unit">Unit</label>
+                                <select class="form-control" id="unit">
+                                    <option value="0" disabled selected>Select a unit</option>
+                                    <?php
 
-                                        for ($x = 0; $x < $unit_num; $x++) {
-                                            $unit_data = $unit_rs->fetch_assoc();
-                                        ?>
-                                            <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="quantity">Quantity</label>
-                                    <input type="number" class="form-control" id="quantity" placeholder="Enter quantity"
-                                        step="0.001" min="0" max="10000" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="remarks">Remarks</label>
-                                    <textarea class="form-control" id="remarks" rows="3"></textarea>
-                                </div>
-                            </form>
-                        </div>
+                                    $unit_rs = Database::search("SELECT * FROM `units`");
+                                    $unit_num = $unit_rs->num_rows;
+
+                                    for ($x = 0; $x < $unit_num; $x++) {
+                                        $unit_data = $unit_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="item_group1">Item Group</label>
+                                <select class="form-control" id="item_group1" onchange="load_item_sub_group();">
+                                    <option value="0" disabled selected>Select a Item Group</option>
+                                    <?php
+
+                                    $item_group1_rs = Database::search("SELECT * FROM `mop_item_group`");
+                                    $item_group1_num = $item_group1_rs->num_rows;
+
+                                    for ($x = 0; $x < $item_group1_num; $x++) {
+                                        $item_group1_data = $item_group1_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $item_group1_data["code"]; ?>"><?php echo $item_group1_data["name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="item_sub_group1">Item Sub Group</label>
+                                <select class="form-control" id="item_sub_group1">
+                                    <option value="0" disabled selected>Select a Item Sub Group</option>
+                                    <?php
+
+                                    $item_sub_group1_rs = Database::search("SELECT * FROM `mop_item_sub_group`");
+                                    $item_sub_group1_num = $item_sub_group1_rs->num_rows;
+
+                                    for ($x = 0; $x < $item_sub_group1_num; $x++) {
+                                        $item_sub_group1_data = $item_sub_group1_rs->fetch_assoc();
+
+                                    ?>
+
+                                        <option value="<?php echo $item_sub_group1_data["sub_code"]; ?>"><?php echo $item_sub_group1_data["name"]; ?></option>
+
+                                    <?php
+                                    }
+
+                                    ?>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-success" onclick="mop_new_item();">Save changes</button>
