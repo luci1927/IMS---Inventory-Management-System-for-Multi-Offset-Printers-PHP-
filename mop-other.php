@@ -337,12 +337,12 @@ include 'mop_session_check.php';
 
                 <div class="col-4">
                     <p>
-                        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseGRN" aria-expanded="false" aria-controls="collapseWidthExample">
+                        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseig" aria-expanded="false" aria-controls="collapseWidthExample">
                             New Item Group
                         </button>
                     </p>
                     <div style="min-height: 120px;">
-                        <div class="collapse width" id="collapseGRN">
+                        <div class="collapse width" id="collapseig">
                             <div class="card card-body" style="width: 420px;">
                                 <form>
                                     <h4>Add New Item Group</h4>
@@ -364,6 +364,100 @@ include 'mop_session_check.php';
             </div>
 
             <hr class="mt-5 mb-5" />
+
+            <h3>Item Sub Group</h3>
+            <div class="row">
+                <div class="col-8">
+                    <table class="table table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Item Sub Group ID</th>
+                                <th scope="col">Item Sub Group Name</th>
+                                <th scope="col">Item Group ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <?php
+
+                            $query4 = "SELECT * FROM mop_item_sub_group";
+
+                            $mop_item_group_sub_table_rs = Database::search($query4);
+                            $mop_item_group_sub_num = $mop_item_group_sub_table_rs->num_rows;
+
+
+                            for ($x = 0; $x < $mop_item_group_sub_num; $x++) {
+                                $item_sub_group_data = $mop_item_group_sub_table_rs->fetch_assoc();
+
+                            ?>
+                                <tr>
+                                    <th scope="row"><?php echo $x + 1; ?></th>
+                                    <td><?php echo $item_sub_group_data['sub_code']; ?></td>
+                                    <td><?php echo $item_sub_group_data['name']; ?></td>
+                                    <td><?php echo $item_sub_group_data['mop_item_group_code']; ?></td>
+                                </tr>
+
+                            <?php
+
+
+                            }
+
+                            ?>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-4">
+                    <p>
+                        <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseisg" aria-expanded="false" aria-controls="collapseWidthExample">
+                            New Sub Item Group
+                        </button>
+                    </p>
+                    <div style="min-height: 120px;">
+                        <div class="collapse width" id="collapseisg">
+                            <div class="card card-body" style="width: 420px;">
+                                <form>
+                                    <h4>Add New Item Sub Group</h4>
+                                    <div class="form-group">
+                                        <label for="itmgp">Item Group</label>
+                                        <select class="form-control" id="itmgp">
+                                            <option value="0" disabled selected>Select a Item Group</option>
+                                            <?php
+
+                                            $mop_item_group_rs = Database::search("SELECT * FROM `mop_item_group`");
+                                            $mop_item_group_num = $mop_item_group_rs->num_rows;
+
+                                            for ($x = 0; $x < $mop_item_group_num; $x++) {
+                                                $mop_item_group_data = $mop_item_group_rs->fetch_assoc();
+
+                                            ?>
+
+                                                <option value="<?php echo $mop_item_group_data["code"]; ?>"><?php echo $mop_item_group_data["name"]; ?></option>
+
+                                            <?php
+                                            }
+
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="igc">Item Sub Group Code</label>
+                                        <input type="text" class="form-control form-control-sm" id="igc1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ign">Item Sub Group Name</label>
+                                        <input type="text" class="form-control form-control-sm" id="ign1" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-sm" onclick="mop_add_item_sub_group();">Add Item Sub Group</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
 
         </div>

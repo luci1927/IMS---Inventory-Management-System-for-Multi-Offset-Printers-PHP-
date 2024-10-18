@@ -1134,3 +1134,35 @@ function mop_add_item_group(){
     r.open("POST", "process_mop_add_item_group.php", true);
     r.send(form);
 }
+
+function mop_add_item_sub_group(){
+
+    var item_group_code = document.getElementById("itmgp").value;
+    var item_sub_group_code = document.getElementById("igc1").value;
+    var item_sub_group_name = document.getElementById("ign1").value;
+
+    var form = new FormData();
+    form.append("g", item_group_code);
+    form.append("c", item_sub_group_code);
+    form.append("n", item_sub_group_name);
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var text = r.responseText;
+
+            if (text == "success") {
+                alert("Item Group added successfully.");
+                window.location.reload();
+            } else {
+                alert(text);
+            }
+
+
+        }
+    }
+
+    r.open("POST", "process_mop_add_item_sub_group.php", true);
+    r.send(form);
+}
