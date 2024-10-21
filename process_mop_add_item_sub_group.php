@@ -6,6 +6,8 @@ $item_group_code = $_POST["g"];
 $item_sub_group_code = $_POST["c"];
 $item_sub_group_name = $_POST["n"];
 
+
+
 if ($item_group_code == "0") {
     echo ("Please select a Item group!");
 } else if (empty($item_sub_group_code)) {
@@ -24,7 +26,11 @@ if ($item_group_code == "0") {
 
         Database::iud("INSERT INTO `mop_item_sub_group` 
     (`sub_code`,`name`,`mop_item_group_code`)
-    VALUES ('" . $item_sub_group_code . "','" . $item_sub_group_name . "','".$item_group_code."')");
+    VALUES ('" . $item_sub_group_code . "','" . $item_sub_group_name . "','" . $item_group_code . "')");
+
+        Database::iud("INSERT INTO `mop_item_group_has_mop_item_sub_group` 
+    (`mop_item_group_code`,`mop_item_sub_group_sub_code`) 
+    VALUES ('" . $item_group_code . "','" . $item_sub_group_code . "')");
 
         echo ("success");
     }

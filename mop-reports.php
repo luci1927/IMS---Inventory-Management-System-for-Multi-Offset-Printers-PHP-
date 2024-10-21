@@ -34,6 +34,17 @@ include 'mop_session_check.php';
                 display: none;
             }
         }
+
+        .vertical-line {
+            width: 1px;
+            /* Thickness */
+            height: 40px;
+            /* Height */
+            background-color: black;
+            /* Color */
+            border: none;
+            /* Remove default styling */
+        }
     </style>
 
 </head>
@@ -113,6 +124,37 @@ include 'mop_session_check.php';
                                 <i class="fa-solid fa-magnifying-glass"></i> Search
                             </button>
                         </div>
+
+                        <hr class="vertical-line" />
+
+
+                        <div class="col-auto">
+                            <select class="form-control" data-live-search="true" id="item3" onchange="load_stock_update_report_table();">
+                                <option value="0" disabled selected>Select an Item Group</option>
+                                <?php
+
+                                require "connection.php";
+                                $item3_rs = Database::search("SELECT * FROM `mop_item_group`");
+                                $item3_num = $item3_rs->num_rows;
+
+
+                                for ($x = 0; $x < $item3_num; $x++) {
+                                    $item3_data = $item3_rs->fetch_assoc();
+                                ?>
+                                    <option value="<?php echo $item3_data['code']; ?>">
+                                        <?php echo $item3_data['name']; ?>
+                                    </option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="button" id="resetButton" class="btn btn-warning" onclick="window.location.reload();">
+                                <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                            </button>
+                        </div>
                     </div>
 
                     <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter1">
@@ -162,7 +204,6 @@ include 'mop_session_check.php';
                         </tr>
                     </thead>
                     <?php
-                    require "connection.php";
 
                     $results_per_page = 20;
 
@@ -263,6 +304,33 @@ include 'mop_session_check.php';
                         <div class="col-auto">
                             <button type="button" id="searchButton2" class="btn btn-success">
                                 <i class="fa-solid fa-magnifying-glass"></i> Search
+                            </button>
+                        </div>
+
+                        <div class="col-auto">
+                            <select class="form-control" data-live-search="true" id="item4" onchange="load_issue_update_report_table();">
+                                <option value="0" disabled selected>Select an Item Group</option>
+                                <?php
+
+                                $item4_rs = Database::search("SELECT * FROM `mop_item_group`");
+                                $item4_num = $item4_rs->num_rows;
+
+
+                                for ($x = 0; $x < $item4_num; $x++) {
+                                    $item4_data = $item4_rs->fetch_assoc();
+                                ?>
+                                    <option value="<?php echo $item4_data['code']; ?>">
+                                        <?php echo $item4_data['name']; ?>
+                                    </option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="button" id="resetButton2" class="btn btn-warning" onclick="window.location.reload();">
+                                <i class="fa-solid fa-arrows-rotate"></i> Refresh
                             </button>
                         </div>
                     </div>
@@ -415,6 +483,33 @@ include 'mop_session_check.php';
                         <div class="col-auto">
                             <button type="button" id="searchButton3" class="btn btn-success">
                                 <i class="fa-solid fa-magnifying-glass"></i> Search
+                            </button>
+                        </div>
+
+                        <div class="col-auto">
+                            <select class="form-control" data-live-search="true" id="item5" onchange="load_grn_update_report_table();">
+                                <option value="0" disabled selected>Select an Item Group</option>
+                                <?php
+
+                                $item5_rs = Database::search("SELECT * FROM `mop_item_group`");
+                                $item5_num = $item5_rs->num_rows;
+
+
+                                for ($x = 0; $x < $item5_num; $x++) {
+                                    $item5_data = $item5_rs->fetch_assoc();
+                                ?>
+                                    <option value="<?php echo $item5_data['code']; ?>">
+                                        <?php echo $item5_data['name']; ?>
+                                    </option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-auto">
+                            <button type="button" id="resetButton3" class="btn btn-warning" onclick="window.location.reload();">
+                                <i class="fa-solid fa-arrows-rotate"></i> Refresh
                             </button>
                         </div>
                     </div>

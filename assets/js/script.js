@@ -1150,6 +1150,10 @@ function mop_add_item_sub_group(){
     form.append("c", item_sub_group_code);
     form.append("n", item_sub_group_name);
 
+    console.log(item_group_code);
+    console.log("--");
+    console.log(item_sub_group_code);
+
     var r = new XMLHttpRequest();
 
     r.onreadystatechange = function () {
@@ -1186,5 +1190,63 @@ function load_item_sub_group() {
     };
 
     r.open("GET", "load_item_sub_group.php?g=" + item_group_code, true);
+    r.send();
+}
+
+
+function load_stock_update_report_table(){
+
+    var item = document.getElementById("item3").value;
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText; 
+
+            document.getElementById("reportsTable1").innerHTML = t;
+
+        }
+    }
+
+    r.open("GET", "load_mop_stock_update_report_table.php?i=" + item, true);
+    r.send();
+}
+
+function load_issue_update_report_table(){
+
+    var item = document.getElementById("item4").value;
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText; 
+
+            document.getElementById("reportsTable2").innerHTML = t;
+
+        }
+    }
+
+    r.open("GET", "load_mop_issue_update_report_table.php?i=" + item, true);
+    r.send();
+}
+
+function load_grn_update_report_table(){
+
+    var item = document.getElementById("item5").value;
+
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText; 
+
+            document.getElementById("reportsTable3").innerHTML = t;
+
+        }
+    }
+
+    r.open("GET", "load_mop_grn_update_report_table.php?i=" + item, true);
     r.send();
 }
