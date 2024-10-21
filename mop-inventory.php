@@ -15,10 +15,7 @@ include 'mop_session_check.php';
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
     <style>
-        .selectpicker {
-            width: 100%;
 
-        }
 
         .fixed-date-time {
             position: fixed;
@@ -107,7 +104,7 @@ include 'mop_session_check.php';
                             <div class="form-group">
                                 <label for="item3">Item</label>
                                 <div>
-                                    <select class="selectpicker" data-live-search="true" id="item3" onchange="load_mop_unit_update();" title="Choose an Item">
+                                    <select class="form-control selectpicker" data-live-search="true" id="item3" onchange="load_mop_unit_update();" title="Choose an Item">
                                         <?php
 
                                         require "connection.php";
@@ -268,7 +265,7 @@ include 'mop_session_check.php';
                             </div>
                             <div class="form-group">
                                 <label for="item_group1">Item Group</label>
-                                <select class="form-control" id="item_group1" onchange="load_item_sub_group();">
+                                <select class="form-control selectpicker" data-live-search="true" id="item_group1" onchange="load_item_sub_group();">
                                     <option value="0" disabled selected>Select a Item Group</option>
                                     <?php
 
@@ -290,7 +287,7 @@ include 'mop_session_check.php';
                             </div>
                             <div class="form-group">
                                 <label for="item_sub_group1">Item Sub Group</label>
-                                <select class="form-control" id="item_sub_group1">
+                                <select class="form-control selectpicker" data-live-search="true" id="item_sub_group1">
                                     <option value="0" disabled selected>Select a Item Sub Group</option>
                                     <?php
 
@@ -325,7 +322,7 @@ include 'mop_session_check.php';
             <div class="form-group row mt-3">
                 <label for="item" class="col-sm-2 col-form-label">Item</label>
                 <div class="col-sm-10">
-                    <select class="selectpicker" data-live-search="true" id="item" onchange="load_mop_unit();" title="Choose an Item">
+                    <select class="form-control selectpicker" data-live-search="true" id="item" onchange="load_mop_unit();" title="Choose an Item">
                         <?php
 
                         $item_rs = Database::search("SELECT * FROM `mop_inventory`");
