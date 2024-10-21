@@ -228,9 +228,7 @@ include 'mop_session_check.php';
                             <div class="card-body text-center">
                                 <h5 class="card-title">Add New Item</h5>
                                 <p>Add new items to the inventory database.</p>
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">
-                                    Add New Item
-                                </button>
+                                <a href="mop-inventory.php" class="btn btn-success">Add new Item</a>
                             </div>
                         </div>
                     </div>
@@ -251,105 +249,6 @@ include 'mop_session_check.php';
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Add New Item</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="item_code">Item Code</label>
-                            <input type="text" class="form-control" id="item_code"
-                                placeholder="Item Code">
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Item Description</label>
-                            <input type="text" class="form-control" id="description"
-                                placeholder="Item Description">
-                        </div>
-                        <div class="form-group">
-                            <label for="unit">Unit</label>
-                            <select class="form-control" id="unit">
-                                <option value="0" disabled selected>Select a unit</option>
-                                <?php
-
-                                $unit_rs = Database::search("SELECT * FROM `units`");
-                                $unit_num = $unit_rs->num_rows;
-
-                                for ($x = 0; $x < $unit_num; $x++) {
-                                    $unit_data = $unit_rs->fetch_assoc();
-
-                                ?>
-
-                                    <option value="<?php echo $unit_data["id"]; ?>"><?php echo $unit_data["name"]; ?></option>
-
-                                <?php
-                                }
-
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="item_group1">Item Group</label>
-                            <select class="form-control" id="item_group1" onchange="load_item_sub_group();">
-                                <option value="0" disabled selected>Select a Item Group</option>
-                                <?php
-
-                                $item_group1_rs = Database::search("SELECT * FROM `mop_item_group`");
-                                $item_group1_num = $item_group1_rs->num_rows;
-
-                                for ($x = 0; $x < $item_group1_num; $x++) {
-                                    $item_group1_data = $item_group1_rs->fetch_assoc();
-
-                                ?>
-
-                                    <option value="<?php echo $item_group1_data["code"]; ?>"><?php echo $item_group1_data["name"]; ?></option>
-
-                                <?php
-                                }
-
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="item_sub_group1">Item Sub Group</label>
-                            <select class="form-control" id="item_sub_group1">
-                                <option value="0" disabled selected>Select a Item Sub Group</option>
-                                <?php
-
-                                $item_sub_group1_rs = Database::search("SELECT * FROM `mop_item_sub_group`");
-                                $item_sub_group1_num = $item_sub_group1_rs->num_rows;
-
-                                for ($x = 0; $x < $item_sub_group1_num; $x++) {
-                                    $item_sub_group1_data = $item_sub_group1_rs->fetch_assoc();
-
-                                ?>
-
-                                    <option value="<?php echo $item_sub_group1_data["sub_code"]; ?>"><?php echo $item_sub_group1_data["name"]; ?></option>
-
-                                <?php
-                                }
-
-                                ?>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" onclick="mop_new_item();">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
