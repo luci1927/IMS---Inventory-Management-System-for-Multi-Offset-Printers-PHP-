@@ -16,7 +16,6 @@ include 'mop_session_check.php';
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
     <style>
 
-
         .fixed-date-time {
             position: fixed;
             top: 60px;
