@@ -393,7 +393,7 @@ include 'mop_session_check.php';
                     <th>#</th>
                     <th>Item Code</th>
                     <th>Item Description</th>
-                    <th>Group</th>
+                    <th>Item Group</th>
                     <th>Qty in System</th>
                     <th>Qty on Hand</th>
                     <th>Unit</th>
