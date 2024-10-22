@@ -307,6 +307,8 @@ include 'mop_session_check.php';
                             </button>
                         </div>
 
+                        <hr class="vertical-line" />
+
                         <div class="col-auto">
                             <select class="form-control" data-live-search="true" id="item4" onchange="load_issue_update_report_table();">
                                 <option value="0" disabled selected>Select an Item Group</option>
@@ -485,6 +487,8 @@ include 'mop_session_check.php';
                                 <i class="fa-solid fa-magnifying-glass"></i> Search
                             </button>
                         </div>
+
+                        <hr class="vertical-line" />
 
                         <div class="col-auto">
                             <select class="form-control" data-live-search="true" id="item5" onchange="load_grn_update_report_table();">

@@ -89,7 +89,7 @@ include 'mop_session_check.php';
             <div class="form-group row mt-3">
                 <label for="item" class="col-sm-2 col-form-label">Item</label>
                 <div class="col-sm-10">
-                    <select class="selectpicker" data-live-search="true" id="item" onchange="load_mop_unit(); load_mop_out_table();" title="Choose an Item">
+                    <select class="selectpicker form-control" data-live-search="true" id="item" onchange="load_mop_unit(); load_mop_out_table();" title="Choose an Item">
                         <?php
 
                         require "connection.php";
