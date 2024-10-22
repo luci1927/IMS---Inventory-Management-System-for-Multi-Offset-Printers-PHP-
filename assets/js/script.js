@@ -1037,7 +1037,6 @@ function add_unit(){
                 alert(text);
             }
 
-
         }
     }
 
@@ -1094,8 +1093,6 @@ function add_supplier(){
             } else {
                 alert(text);
             }
-
-
         }
     }
 
