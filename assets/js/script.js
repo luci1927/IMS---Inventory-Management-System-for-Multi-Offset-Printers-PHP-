@@ -478,19 +478,7 @@ function load_rmi_unit(){
 
 
 
-$(document).ready(function () {
 
-    $('#datepicker1').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayHighlight: true
-    });
-
-
-    $('#searchButton1').click(function () {
-        searchmop();
-    });
-});
 
 function searchmop() {
     var selectedDate = $('#datepicker1').val(); 
@@ -519,16 +507,20 @@ function searchmop() {
 }
 
 $(document).ready(function () {
-    $('#datepickerfth').datepicker({
+
+    $('#datepicker1').datepicker({
         format: 'yyyy-mm-dd',
         autoclose: true,
         todayHighlight: true
     });
 
-    $('#searchButtonfth').click(function () {
-        searchfth();
+
+    $('#searchButton1').click(function () {
+        searchmop();
     });
 });
+
+
 
 function searchfth() {
     var selectedDate = $('#datepickerfth').val(); 
@@ -555,6 +547,7 @@ function searchfth() {
         }
     });
 }
+
 
 
 $(document).ready(function () {
