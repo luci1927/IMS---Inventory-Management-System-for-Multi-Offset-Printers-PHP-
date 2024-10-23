@@ -130,7 +130,7 @@ include 'mop_session_check.php';
 
 
                         <div class="col-auto">
-                            <select class="form-control" data-live-search="true" id="item3" onchange="load_stock_update_report_table();">
+                            <select class="form-control" id="item3" onchange="load_stock_update_report_table();">
                                 <option value="0" disabled selected>Select an Item Group</option>
                                 <?php
 
