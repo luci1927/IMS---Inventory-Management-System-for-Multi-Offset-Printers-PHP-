@@ -199,7 +199,7 @@ include 'mop_session_check.php';
                             <th scope="col">Qty on Hand</th>
                             <th scope="col">Diff</th>
                             <th scope="col">Unit</th>
-                            <th scope="col">GRN No</th>
+                            <th scope="col">GRN/Issue No</th>
                             <th scope="col">GRN Date</th>
                             <th scope="col">Remarks</th>
                         </tr>
@@ -214,10 +214,11 @@ include 'mop_session_check.php';
                     $offset = ($page - 1) * $results_per_page;
 
                     $query_total = "SELECT COUNT(*) AS total FROM mop_stock
-                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                INNER JOIN units ON mop_inventory.units_id = units.id
-                INNER JOIN mop_grn ON mop_stock.mop_grn_id = mop_grn.id
-                WHERE mop_inventory.status_status_id = '1'";
+                    INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                    INNER JOIN units ON mop_inventory.units_id = units.id
+                    LEFT JOIN mop_grn ON mop_stock.mop_grn_grn_no = mop_grn.grn_no 
+                    LEFT JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
+                    WHERE mop_inventory.status_status_id = '1'";
                     $total_result = Database::search($query_total);
                     $total_row = $total_result->fetch_assoc();
                     $total_records = $total_row['total'];
@@ -231,15 +232,15 @@ include 'mop_session_check.php';
                     mop_stock.qty_hand AS qhand, 
                     (mop_stock.qty_system - mop_stock.qty_hand) AS diff, 
                     units.`name` AS unit_name, 
-                    mop_grn.grn_no AS grn_number,
-                    mop_grn.date_time AS grn_date,
+                    COALESCE(mop_stock.mop_grn_grn_no, mop_stock.mop_issuing_issue_no) AS GrnIssue,
+                    COALESCE(mop_grn.qty, mop_issuing.qty) AS qty,
                     mop_stock.remarks AS remarks
                     FROM mop_stock
                     INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                    INNER JOIN units ON mop_inventory.units_id = units.id 
-                    INNER JOIN mop_grn ON mop_stock.mop_grn_id = mop_grn.id 
+                    INNER JOIN units ON mop_inventory.units_id = units.id
+                    LEFT JOIN mop_grn ON mop_stock.mop_grn_grn_no = mop_grn.grn_no
+                    LEFT JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
                     WHERE mop_inventory.status_status_id = '1'
-                    ORDER BY mop_stock.date_time DESC
                     LIMIT $results_per_page OFFSET $offset";
 
                     $item_table_rs = Database::search($query);
@@ -260,8 +261,8 @@ include 'mop_session_check.php';
                                 <td><?php echo $item_table_data['qhand']; ?></td>
                                 <td><?php echo $item_table_data['diff']; ?></td>
                                 <td><?php echo $item_table_data['unit_name']; ?></td>
-                                <td><?php echo $item_table_data['grn_number']; ?></td>
-                                <td><?php echo $item_table_data['grn_date']; ?></td>
+                                <td><?php echo $item_table_data['GrnIssue']; ?></td>
+                                <td><?php echo $item_table_data['qty']; ?></td>
                                 <td><?php echo $item_table_data['remarks']; ?></td>
                             </tr>
                         <?php } ?>
@@ -399,7 +400,7 @@ include 'mop_session_check.php';
                     $query_total2 = "SELECT COUNT(*) AS total FROM mop_stock
                 INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
                 INNER JOIN units ON mop_inventory.units_id = units.id
-                INNER JOIN mop_issuing ON mop_issuing.mop_stock_id = mop_stock.id 
+                INNER JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
                 WHERE mop_inventory.status_status_id = '1'";
                     $total_result2 = Database::search($query_total2);
                     $total_row2 = $total_result2->fetch_assoc();
@@ -408,20 +409,20 @@ include 'mop_session_check.php';
                     $total_pages2 = ceil($total_records2 / $results_per_page2);
 
                     $query2 = "SELECT mop_inventory.item_code AS item_code, 
-            mop_inventory.`description` AS descr, 
-            mop_stock.qty_hand AS qhand, 
-            units.`name` AS unit_name, 
-            mop_issuing.issue_no AS issue_number, 
-            mop_issuing.qty AS issue_qty, 
-            mop_issuing.date_time AS issue_date, 
-            mop_stock.remarks AS remarks
-            FROM mop_stock
-            INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-            INNER JOIN units ON mop_inventory.units_id = units.id
-            INNER JOIN mop_issuing ON mop_issuing.mop_stock_id = mop_stock.id 
-            WHERE mop_inventory.status_status_id = '1'
-            ORDER BY mop_stock.date_time DESC
-            LIMIT $results_per_page2 OFFSET $offset2";
+                mop_inventory.`description` AS descr, 
+                mop_stock.qty_hand AS qhand, 
+                units.`name` AS unit_name, 
+                mop_stock.mop_issuing_issue_no AS issue_number, 
+                mop_issuing.qty AS issue_qty, 
+                mop_issuing.date_time AS issue_date, 
+                mop_stock.remarks AS remarks
+                FROM mop_stock
+                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                INNER JOIN units ON mop_inventory.units_id = units.id
+                INNER JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
+                WHERE mop_inventory.status_status_id = '1'
+                ORDER BY mop_stock.date_time DESC
+                LIMIT $results_per_page2 OFFSET $offset2";
 
                     $item_table_rs2 = Database::search($query2);
                     $item_table_num2 = $item_table_rs2->num_rows;
