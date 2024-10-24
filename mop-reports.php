@@ -188,7 +188,7 @@ include 'mop_session_check.php';
                 <!-- Modal -->
 
                 <!-- Report Table -->
-                <table class="table table-striped table-hover mt-3" id="reportsTable1">
+                <table class="table table-hover mt-3" id="reportsTable1">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -373,7 +373,7 @@ include 'mop_session_check.php';
 
 
                 <!-- Report Table -->
-                <table class="table table-striped table-hover mt-3" id="reportsTable2">
+                <table class="table table-hover table-hover mt-3" id="reportsTable2">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -554,7 +554,7 @@ include 'mop_session_check.php';
 
 
                 <!-- Report Table -->
-                <table class="table table-striped table-hover mt-3" id="reportsTable3">
+                <table class="table table-hover table-hover mt-3" id="reportsTable3">
                     <thead>
                         <tr>
                             <th>#</th>

@@ -86,7 +86,7 @@ include 'mop_session_check.php';
             <h3>Units</h3>
             <div class="row">
                 <div class="col-6">
-                    <table class="table table-striped mt-3">
+                    <table class="table table-hover mt-3">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -154,7 +154,7 @@ include 'mop_session_check.php';
             <h3>GRN Types</h3>
             <div class="row">
                 <div class="col-6">
-                    <table class="table table-striped mt-3">
+                    <table class="table table-hover mt-3">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -220,7 +220,7 @@ include 'mop_session_check.php';
             <h3>Suppliers</h3>
             <div class="row">
                 <div class="col-8">
-                    <table class="table table-striped mt-3">
+                    <table class="table table-hover mt-3">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -297,7 +297,7 @@ include 'mop_session_check.php';
             <h3>Item Group</h3>
             <div class="row">
                 <div class="col-8">
-                    <table class="table table-striped mt-3">
+                    <table class="table table-hover mt-3">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -369,7 +369,7 @@ include 'mop_session_check.php';
             <h3>Item Sub Group</h3>
             <div class="row">
                 <div class="col-8">
-                    <table class="table table-striped mt-3">
+                    <table class="table table-hover mt-3">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>

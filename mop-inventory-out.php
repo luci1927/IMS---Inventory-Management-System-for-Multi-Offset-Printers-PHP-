@@ -141,7 +141,7 @@ include 'mop_session_check.php';
         </form>
 
         <h3 class="mt-5">Inventory List</h3>
-        <table class="table table-striped table-hover mt-3" id="inventoryTable">
+        <table class="table table-hover table-hover mt-3" id="inventoryTable">
             <thead>
                 <tr>
                     <th>#</th>
