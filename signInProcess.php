@@ -23,7 +23,7 @@ if ($rs->num_rows == 1) {
         $_SESSION['username'] = $username;
         $_SESSION['department'] = $user['departments_dep_id'];
         $_SESSION['last_activity'] = time(); 
-        $_SESSION['expire_time'] = 1800; 
+        $_SESSION['expire_time'] = 36000; 
 
 
         echo $user['departments_dep_id']; 
