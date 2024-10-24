@@ -130,7 +130,7 @@ include 'mop_session_check.php';
 
             <?php
             require "connection.php";
-
+// date is not working correctly!!
             $today_rs = Database::search("SELECT COUNT(*) AS daily_count
                         FROM mop_stock 
                         WHERE DATE(date_time) = CURDATE();");
