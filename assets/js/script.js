@@ -480,20 +480,24 @@ function load_rmi_unit(){
 
 
 
-function searchmop() {
-    var selectedDate = $('#datepicker1').val(); 
+function search_mop() {
+    var dateRange = $('#date_range_stock').val(); 
 
-    console.log("Selected date: " + selectedDate);
+    console.log("Selected date range: " + dateRange);
 
-    if (!selectedDate) {
-        alert("Please select a valid date.");
+    if (!dateRange) {
+        alert("Please select a valid date range.");
         return; 
     }
+
+    var dates = dateRange.split(' - ');
+    var startDate = dates[0];
+    var endDate = dates[1];
 
     $.ajax({
         url: 'process_mop_search.php',
         type: 'POST',
-        data: { date: selectedDate },
+        data: { start_date: startDate, end_date: endDate },
         success: function (response) {
             console.log("Response from server: " + response); 
             $('#reportsTable1 tbody').empty(); 
@@ -507,96 +511,89 @@ function searchmop() {
 }
 
 $(document).ready(function () {
-
-    $('#datepicker1').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayHighlight: true
+    $('#date_range_stock').on('change', function () {
+        search_mop();
     });
-
-
-    $('#searchButton1').click(function () {
-        searchmop();
-    });
+    
 });
 
 
 
-function searchfth() {
-    var selectedDate = $('#datepickerfth').val(); 
+// function searchfth() {
+//     var selectedDate = $('#datepickerfth').val(); 
 
-    console.log("Selected date: " + selectedDate);
+//     console.log("Selected date: " + selectedDate);
 
-    if (!selectedDate) {
-        alert("Please select a valid date.");
-        return; 
-    }
+//     if (!selectedDate) {
+//         alert("Please select a valid date.");
+//         return; 
+//     }
 
-    $.ajax({
-        url: 'process_fth_search.php', 
-        type: 'POST',
-        data: { date: selectedDate }, 
-        success: function (response) {
-            console.log("Response from server: " + response); 
-            $('#reportsTablefth tbody').empty(); 
-            $('#reportsTablefth tbody').html(response); 
-        },
-        error: function (xhr, status, error) {
-            console.error("AJAX Error: " + status + ", " + error); 
-            alert('Error fetching data.');
-        }
-    });
-}
+//     $.ajax({
+//         url: 'process_fth_search.php', 
+//         type: 'POST',
+//         data: { date: selectedDate }, 
+//         success: function (response) {
+//             console.log("Response from server: " + response); 
+//             $('#reportsTablefth tbody').empty(); 
+//             $('#reportsTablefth tbody').html(response); 
+//         },
+//         error: function (xhr, status, error) {
+//             console.error("AJAX Error: " + status + ", " + error); 
+//             alert('Error fetching data.');
+//         }
+//     });
+// }
 
 
 
-$(document).ready(function () {
-    $('#datepickerfth').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayHighlight: true
-    });
+// $(document).ready(function () {
+//     $('#datepickerfth').datepicker({
+//         format: 'yyyy-mm-dd',
+//         autoclose: true,
+//         todayHighlight: true
+//     });
 
-    $('#searchButtonfth').click(function () {
-        search('#datepickerfth', '#reportsTablefth');
-    });
+//     $('#searchButtonfth').click(function () {
+//         search('#datepickerfth', '#reportsTablefth');
+//     });
 
-    $('#datepickerrmi').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayHighlight: true
-    });
+//     $('#datepickerrmi').datepicker({
+//         format: 'yyyy-mm-dd',
+//         autoclose: true,
+//         todayHighlight: true
+//     });
 
-    $('#searchButtonrmi').click(function () {
-        search('#datepickerrmi', '#reportsTablermi'); 
-    });
-});
+//     $('#searchButtonrmi').click(function () {
+//         search('#datepickerrmi', '#reportsTablermi'); 
+//     });
+// });
 
-function search(datepickerId, tableId) {
-    var selectedDate = $(datepickerId).val(); 
+// function search(datepickerId, tableId) {
+//     var selectedDate = $(datepickerId).val(); 
 
-    console.log("Selected date: " + selectedDate);
+//     console.log("Selected date: " + selectedDate);
 
-    if (!selectedDate) {
-        alert("Please select a valid date.");
-        return; 
-    }
+//     if (!selectedDate) {
+//         alert("Please select a valid date.");
+//         return; 
+//     }
 
-    $.ajax({
-        url: 'process_rmi_search.php',
-        type: 'POST',
-        data: { date: selectedDate }, 
-        success: function (response) {
-            console.log("Response from server: " + response); 
-            $(tableId + ' tbody').empty(); 
-            $(tableId + ' tbody').html(response);
-        },
-        error: function (xhr, status, error) {
-            console.error("AJAX Error: " + status + ", " + error); 
-            alert('Error fetching data.');
-        }
-    });
-}
+//     $.ajax({
+//         url: 'process_rmi_search.php',
+//         type: 'POST',
+//         data: { date: selectedDate }, 
+//         success: function (response) {
+//             console.log("Response from server: " + response); 
+//             $(tableId + ' tbody').empty(); 
+//             $(tableId + ' tbody').html(response);
+//         },
+//         error: function (xhr, status, error) {
+//             console.error("AJAX Error: " + status + ", " + error); 
+//             alert('Error fetching data.');
+//         }
+//     });
+// }
 
 $('#exportCSVButton1').click(function () {
     exportTableToCSV('reportsTable1', 'Inventory_Reports');
@@ -663,12 +660,12 @@ function exportTableToPDF(tableId, title = '') {
 
     const pdf = new jsPDF('p', 'pt', 'a4');
 
-    pdf.setFontSize(20);
+    pdf.setFontSize(2100);
     pdf.text(title, pdf.internal.pageSize.getWidth() / 2, 30, { align: 'center' });
 
     const date = new Date();
     const dateString = date.toLocaleDateString();
-    pdf.setFontSize(12);
+    pdf.setFontSize(8);
     pdf.text(`Date: ${dateString}`, 15, 50);
 
     const table = document.getElementById(tableId);
@@ -686,13 +683,16 @@ function exportTableToPDF(tableId, title = '') {
 
     pdf.autoTable({
         head: [header],
-        body: rows.slice(1), 
-        startY: 70, 
-        theme: 'grid', 
+        body: rows.slice(1),
+        startY: 70,
+        theme: 'grid',
+        headStyles: { fontSize: 10 },  // Reduced font size for headers
+        bodyStyles: { fontSize: 8 },   // Reduced font size for body rows
     });
 
     pdf.save('Inventory_Data_Sheet.pdf');
 }
+
 
 
 function formatRow(data, columnWidths) {
@@ -935,34 +935,24 @@ function load_mop_out_table(){
 
 
 
- $(document).ready(function () {
+function search_mop_issue() {
+    var dateRange = $('#date_range_issue').val(); 
 
-    $('#datepicker2').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayHighlight: true
-    });
+    console.log("Selected date range: " + dateRange);
 
-
-    $('#searchButton2').click(function () {
-        searchmopissue();
-    });
-});
-
-function searchmopissue() {
-    var selectedDate = $('#datepicker2').val(); 
-
-    console.log("Selected date: " + selectedDate);
-
-    if (!selectedDate) {
-        alert("Please select a valid date.");
+    if (!dateRange) {
+        alert("Please select a valid date range.");
         return; 
     }
+
+    var dates = dateRange.split(' - ');
+    var startDate = dates[0];
+    var endDate = dates[1];
 
     $.ajax({
         url: 'process_mop_search_issue.php',
         type: 'POST',
-        data: { date: selectedDate },
+        data: { start_date: startDate, end_date: endDate },
         success: function (response) {
             console.log("Response from server: " + response); 
             $('#reportsTable2 tbody').empty(); 
@@ -976,33 +966,30 @@ function searchmopissue() {
 }
 
 $(document).ready(function () {
-
-    $('#datepicker3').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayHighlight: true
+    $('#date_range_issue').on('change', function () {
+        search_mop_issue();
     });
-
-
-    $('#searchButton3').click(function () {
-        searchmopgrn();
-    });
+    
 });
 
-function searchmopgrn() {
-    var selectedDate = $('#datepicker3').val(); 
+function search_mop_grn() {
+    var dateRange = $('#date_range_grn').val(); 
 
-    console.log("Selected date: " + selectedDate);
+    console.log("Selected date range: " + dateRange);
 
-    if (!selectedDate) {
-        alert("Please select a valid date.");
+    if (!dateRange) {
+        alert("Please select a valid date range.");
         return; 
     }
 
+    var dates = dateRange.split(' - ');
+    var startDate = dates[0];
+    var endDate = dates[1];
+
     $.ajax({
-        url: 'process_mop_search_grn.php',
+        url: 'process_mop_search_issue.php',
         type: 'POST',
-        data: { date: selectedDate },
+        data: { start_date: startDate, end_date: endDate },
         success: function (response) {
             console.log("Response from server: " + response); 
             $('#reportsTable3 tbody').empty(); 
@@ -1014,6 +1001,13 @@ function searchmopgrn() {
         }
     });
 }
+
+$(document).ready(function () {
+    $('#date_range_grn').on('change', function () {
+        search_mop_grn();
+    });
+    
+});
 
 
 
@@ -1188,55 +1182,76 @@ function load_stock_update_report_table(){
 
     var item = document.getElementById("item3").value;
 
-    var r = new XMLHttpRequest();
+    var dateRange = $('#date_range_stock').val(); 
 
-    r.onreadystatechange = function () {
-        if (r.readyState == 4) {
-            var t = r.responseText; 
+    var dates = dateRange.split(' - ');
+    var startDate = dates[0];
+    var endDate = dates[1];
 
-            document.getElementById("reportsTable1").innerHTML = t;
-
+    $.ajax({
+        url: 'load_mop_stock_update_report_table.php',
+        type: 'POST',
+        data: { item_code: item, start_date: startDate, end_date: endDate },
+        success: function (response) {
+            console.log("Response from server: " + response); 
+            $('#reportsTable1 tbody').empty(); 
+            $('#reportsTable1 tbody').html(response); 
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error: " + status + ", " + error); 
+            alert('Error fetching data.');
         }
-    }
-
-    r.open("GET", "load_mop_stock_update_report_table.php?i=" + item, true);
-    r.send();
+    });
 }
 
 function load_issue_update_report_table(){
 
     var item = document.getElementById("item4").value;
 
-    var r = new XMLHttpRequest();
+    var dateRange = $('#date_range_issue').val(); 
 
-    r.onreadystatechange = function () {
-        if (r.readyState == 4) {
-            var t = r.responseText; 
+    var dates = dateRange.split(' - ');
+    var startDate = dates[0];
+    var endDate = dates[1];
 
-            document.getElementById("reportsTable2").innerHTML = t;
-
+    $.ajax({
+        url: 'load_mop_issue_update_report_table.php',
+        type: 'POST',
+        data: { item_code: item, start_date: startDate, end_date: endDate },
+        success: function (response) {
+            console.log("Response from server: " + response); 
+            $('#reportsTable2 tbody').empty(); 
+            $('#reportsTable2 tbody').html(response); 
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error: " + status + ", " + error); 
+            alert('Error fetching data.');
         }
-    }
-
-    r.open("GET", "load_mop_issue_update_report_table.php?i=" + item, true);
-    r.send();
+    });
 }
 
 function load_grn_update_report_table(){
 
     var item = document.getElementById("item5").value;
 
-    var r = new XMLHttpRequest();
+    var dateRange = $('#date_range_grn').val(); 
 
-    r.onreadystatechange = function () {
-        if (r.readyState == 4) {
-            var t = r.responseText; 
+    var dates = dateRange.split(' - ');
+    var startDate = dates[0];
+    var endDate = dates[1];
 
-            document.getElementById("reportsTable3").innerHTML = t;
-
+    $.ajax({
+        url: 'load_mop_grn_update_report_table.php',
+        type: 'POST',
+        data: { item_code: item, start_date: startDate, end_date: endDate },
+        success: function (response) {
+            console.log("Response from server: " + response); 
+            $('#reportsTable3 tbody').empty(); 
+            $('#reportsTable3 tbody').html(response); 
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error: " + status + ", " + error); 
+            alert('Error fetching data.');
         }
-    }
-
-    r.open("GET", "load_mop_grn_update_report_table.php?i=" + item, true);
-    r.send();
+    });
 }

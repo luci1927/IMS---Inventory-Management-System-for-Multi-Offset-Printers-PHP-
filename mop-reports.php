@@ -14,8 +14,9 @@ include 'mop_session_check.php';
     <link rel="icon" href="assets/favicon/favicon.png" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <style>
         .fixed-date-time {
@@ -102,7 +103,7 @@ include 'mop_session_check.php';
                 GRN Reports
             </a>
         </p>
-        <div class="collapse" id="collapseExample1">
+        <div class="collapse show" id="collapseExample1">
             <div class="card card-body">
                 <h2>Stock Update Report</h2>
                 <p>Here you can view daily reports about your inventory activities.</p>
@@ -112,19 +113,13 @@ include 'mop_session_check.php';
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="form-group row align-items-center">
                         <div class="col-auto">
-                            <div class="input-group date" id="datepicker">
-                                <input type="text" id="datepicker1" class="form-control" placeholder="YYYY-MM-DD">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                </div>
-                            </div>
+                            <?php
+                            $yesterday = date('m/d/Y', strtotime('-30 day'));
+                            $today = date('m/d/Y');
+                            ?>
+                            <input type="text" id="date_range_stock" name="daterange" value="<?php echo $yesterday . ' - ' . $today; ?>" class="form-control" />
                         </div>
 
-                        <div class="col-auto">
-                            <button type="button" id="searchButton1" class="btn btn-success">
-                                <i class="fa-solid fa-magnifying-glass"></i> Search
-                            </button>
-                        </div>
 
                         <hr class="vertical-line" />
 
@@ -150,17 +145,17 @@ include 'mop_session_check.php';
                                 ?>
                             </select>
                         </div>
-
-                        <div class="col-auto">
-                            <button type="button" id="resetButton" class="btn btn-warning" onclick="window.location.reload();">
-                                <i class="fa-solid fa-arrows-rotate"></i> Refresh
-                            </button>
-                        </div>
                     </div>
 
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter1">
-                        <i class="fa-solid fa-file-export"></i> Export
-                    </button>
+                    <div class="col-auto">
+                        <button type="button" id="resetButton" class="btn btn-warning btn-sm" onclick="window.location.reload();">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                        </button>
+
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter1">
+                            <i class="fa-solid fa-file-export"></i> Export
+                        </button>
+                    </div>
 
                 </div>
 
@@ -200,7 +195,7 @@ include 'mop_session_check.php';
                             <th scope="col">Diff</th>
                             <th scope="col">Unit</th>
                             <th scope="col">GRN/Issue No</th>
-                            <th scope="col">GRN Date</th>
+                            <th scope="col">GRN/Issue Qty</th>
                             <th scope="col">Remarks</th>
                         </tr>
                     </thead>
@@ -241,6 +236,7 @@ include 'mop_session_check.php';
                     LEFT JOIN mop_grn ON mop_stock.mop_grn_grn_no = mop_grn.grn_no
                     LEFT JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
                     WHERE mop_inventory.status_status_id = '1'
+                    ORDER BY mop_stock.date_time DESC 
                     LIMIT $results_per_page OFFSET $offset";
 
                     $item_table_rs = Database::search($query);
@@ -253,7 +249,7 @@ include 'mop_session_check.php';
                             $item_table_data = $item_table_rs->fetch_assoc();
                         ?>
                             <tr>
-                                <th scope="row"><?php echo $x + 1; ?></th>
+                                <td><?php echo $x + 1; ?></td>
                                 <td><?php echo $item_table_data['datetime']; ?></td>
                                 <td><?php echo $item_table_data['item_code']; ?></td>
                                 <td><?php echo $item_table_data['descr']; ?></td>
@@ -295,18 +291,8 @@ include 'mop_session_check.php';
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="form-group row align-items-center">
                         <div class="col-auto">
-                            <div class="input-group date" id="datepicker">
-                                <input type="text" id="datepicker2" class="form-control" placeholder="YYYY-MM-DD">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="col-auto">
-                            <button type="button" id="searchButton2" class="btn btn-success">
-                                <i class="fa-solid fa-magnifying-glass"></i> Search
-                            </button>
+                            <input type="text" id="date_range_issue" name="daterange" value="<?php echo $yesterday . ' - ' . $today; ?>" class="form-control" />
                         </div>
 
                         <hr class="vertical-line" />
@@ -331,17 +317,19 @@ include 'mop_session_check.php';
                                 ?>
                             </select>
                         </div>
-
-                        <div class="col-auto">
-                            <button type="button" id="resetButton2" class="btn btn-warning" onclick="window.location.reload();">
-                                <i class="fa-solid fa-arrows-rotate"></i> Refresh
-                            </button>
-                        </div>
                     </div>
 
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter2">
-                        <i class="fa-solid fa-file-export"></i> Export
-                    </button>
+                    <div class="col-auto">
+                        <button type="button" id="resetButton2" class="btn btn-warning btn-sm" onclick="window.location.reload();">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                        </button>
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter2">
+                            <i class="fa-solid fa-file-export"></i> Export
+                        </button>
+                    </div>
+
+
+
 
                 </div>
 
@@ -434,7 +422,7 @@ include 'mop_session_check.php';
                             $item_table_data2 = $item_table_rs2->fetch_assoc();
                         ?>
                             <tr>
-                                <th scope="row"><?php echo $x + 1; ?></th>
+                                <td><?php echo $x + 1; ?></td>
                                 <td><?php echo $item_table_data2['issue_number']; ?></td>
                                 <td><?php echo $item_table_data2['issue_date']; ?></td>
                                 <td><?php echo $item_table_data2['item_code']; ?></td>
@@ -476,18 +464,7 @@ include 'mop_session_check.php';
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="form-group row align-items-center">
                         <div class="col-auto">
-                            <div class="input-group date" id="datepicker">
-                                <input type="text" id="datepicker3" class="form-control" placeholder="YYYY-MM-DD">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-auto">
-                            <button type="button" id="searchButton3" class="btn btn-success">
-                                <i class="fa-solid fa-magnifying-glass"></i> Search
-                            </button>
+                            <input type="text" id="date_range_grn" name="daterange" value="<?php echo $yesterday . ' - ' . $today; ?>" class="form-control" />
                         </div>
 
                         <hr class="vertical-line" />
@@ -513,16 +490,18 @@ include 'mop_session_check.php';
                             </select>
                         </div>
 
-                        <div class="col-auto">
-                            <button type="button" id="resetButton3" class="btn btn-warning" onclick="window.location.reload();">
-                                <i class="fa-solid fa-arrows-rotate"></i> Refresh
-                            </button>
-                        </div>
+
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" id="resetButton3" class="btn btn-warning btn-sm" onclick="window.location.reload();">
+                            <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                        </button>
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter3">
+                            <i class="fa-solid fa-file-export"></i> Export
+                        </button>
                     </div>
 
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter3">
-                        <i class="fa-solid fa-file-export"></i> Export
-                    </button>
+
 
                 </div>
 
@@ -615,7 +594,7 @@ include 'mop_session_check.php';
                             $item_table_data3 = $item_table_rs3->fetch_assoc();
                         ?>
                             <tr>
-                                <th scope="row"><?php echo $x + 1; ?></th>
+                                <td><?php echo $x + 1; ?></td>
                                 <td><?php echo $item_table_data3['grn_number']; ?></td>
                                 <td><?php echo $item_table_data3['grn_date']; ?></td>
                                 <td><?php echo $item_table_data3['item_code']; ?></td>
@@ -646,8 +625,6 @@ include 'mop_session_check.php';
             </div>
         </div>
 
-        <!-- Add similar blocks for collapseExample2 and collapseExample3 -->
-
     </main>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -656,55 +633,21 @@ include 'mop_session_check.php';
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Function to update collapse state in localStorage
-            function updateCollapseState(id, state) {
-                localStorage.setItem(id, state ? 'open' : 'closed');
-            }
-
-            // Function to restore collapse state from localStorage
-            function restoreCollapseState() {
-                $('.collapse').each(function() {
-                    var id = $(this).attr('id');
-                    var state = localStorage.getItem(id);
-
-                    if (state === 'open') {
-                        $(this).collapse('show');
-                    } else {
-                        $(this).collapse('hide');
-                    }
-                });
-            }
-
-            // Update collapse state when toggled
-            $('.collapse').on('shown.bs.collapse', function() {
-                var id = $(this).attr('id');
-                updateCollapseState(id, true);
-            });
-
-            $('.collapse').on('hidden.bs.collapse', function() {
-                var id = $(this).attr('id');
-                updateCollapseState(id, false);
-            });
-
-            // Restore collapse state on page load
-            restoreCollapseState();
-        });
-
-        $(document).ready(function() {
-            $('#datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                todayHighlight: true,
-                autoclose: true,
-                endDate: new Date()
+        $(function() {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'left'
+            }, function(start, end, label) {
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
             });
         });
 

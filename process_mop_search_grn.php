@@ -1,9 +1,11 @@
 <?php require "connection.php";
 
-if (isset($_POST['date']) && !empty($_POST['date'])) {
-    $selectedDate = $_POST['date'];
+if (isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['start_date']) && !empty($_POST['end_date'])) {
+    $startDate = $_POST['start_date'];
+    $endDate = $_POST['end_date'];
 
-    error_log("Received date: " . $selectedDate);
+    $startDate = DateTime::createFromFormat('m/d/Y', $startDate)->format('Y-m-d');
+    $endDate = DateTime::createFromFormat('m/d/Y', $endDate)->format('Y-m-d');
 
     $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_inventory.`description` AS descr, 
@@ -17,7 +19,7 @@ if (isset($_POST['date']) && !empty($_POST['date'])) {
                     INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
                     INNER JOIN units ON mop_inventory.units_id = units.id
                     WHERE mop_inventory.status_status_id = '1' 
-                AND DATE(mop_grn.date_time) = '$selectedDate'
+                AND DATE(mop_grn.date_time)  BETWEEN '$startDate' AND '$endDate' 
                 ORDER BY grn_date DESC;";
 
 

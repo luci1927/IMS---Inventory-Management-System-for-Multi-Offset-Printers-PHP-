@@ -1,12 +1,19 @@
-<?php
 
-require "connection.php";
+<?php require "connection.php";
 
-if (isset($_GET["i"])) {
+if (isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['start_date']) && !empty($_POST['end_date'])) {
+    
+    $item_id = $_POST["item_code"];
+    $startDate = $_POST['start_date'];
+    $endDate = $_POST['end_date'];
 
-    $item_id = $_GET["i"];
 
-    $item_rs = Database::search("SELECT mop_inventory.item_code AS item_code, 
+    $startDate = DateTime::createFromFormat('m/d/Y', $startDate)->format('Y-m-d');
+    $endDate = DateTime::createFromFormat('m/d/Y', $endDate)->format('Y-m-d');
+
+    error_log("Received date range: " . $startDate . " to " . $endDate . " Item code: " . $item_id);
+
+    $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_inventory.`description` AS descr, 
                     mop_grn.qty AS grn_qty,
                     units.`name` AS unit_name, 
@@ -17,53 +24,32 @@ if (isset($_GET["i"])) {
                     INNER JOIN mop_stock ON mop_grn.id = mop_stock.id 
                     INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
                     INNER JOIN units ON mop_inventory.units_id = units.id
-                    WHERE mop_inventory.status_status_id = '1' AND mop_inventory.mop_item_group_code = '" . $item_id . "' 
-                    ORDER BY grn_date DESC;");
-                    
-    $item_num = $item_rs->num_rows;
+                    WHERE mop_inventory.status_status_id = '1'  
+                    AND mop_inventory.mop_item_group_code = '" . $item_id . "' 
+                    AND DATE(mop_stock.date_time) BETWEEN '$startDate' AND '$endDate' 
+                    ORDER BY mop_stock.date_time DESC;";
 
+    $item_table_rs = Database::search($query);
+    $item_table_num = $item_table_rs->num_rows;
 
-?>
-
-    <thead>
-        <tr>
-            <th>#</th>
-            <th scope="col">GRN No</th>
-            <th scope="col">GRN Date</th>
-            <th scope="col">Item Code</th>
-            <th scope="col">Item Description</th>
-            <th scope="col">GRN Quantity</th>
-            <th scope="col">Unit</th>
-            <th scope="col">Remarks</th>
-        </tr>
-    </thead>
-
-    <?php
-    for ($x = 0; $x < $item_num; $x++) {
-
-        $item_data = $item_rs->fetch_assoc();
-
-
-
-    ?>
-
-
-        <tbody>
-            <tr>
-                <th scope="row"><?php echo $x + 1; ?></th>
-                <td><?php echo $item_data['grn_number']; ?></td>
-                <td><?php echo $item_data['grn_date']; ?></td>
-                <td><?php echo $item_data['item_code']; ?></td>
-                <td><?php echo $item_data['descr']; ?></td>
-                <td><?php echo $item_data['grn_qty']; ?></td>
-                <td><?php echo $item_data['unit_name']; ?></td>
-                <td><?php echo $item_data['remarks']; ?></td>
-            </tr>
-        </tbody>
-
-<?php
-
+    if ($item_table_num > 0) {
+        for ($x = 0; $x < $item_table_num; $x++) {
+            $item_table_data = $item_table_rs->fetch_assoc();
+            echo "<tr>
+                    <td>" . ($x + 1) . "</td>
+                    <td>{$item_table_data['grn_number']}</td>
+                    <td>{$item_table_data['grn_date']}</td>
+                    <td>{$item_table_data['item_code']}</td>
+                    <td>{$item_table_data['descr']}</td>
+                    <td>{$item_table_data['grn_qty']}</td>
+                    <td>{$item_table_data['unit_name']}</td>
+                    <td>{$item_table_data['remarks']}</td>
+                  </tr>";
+        }
+    } else {
+        echo "<tr><td colspan='11'>No data available for the selected date range.</td></tr>";
     }
+} else {
+    echo "<tr><td colspan='11'>Please select a valid date range.</td></tr>";
 }
-
 ?>
