@@ -279,7 +279,7 @@ include 'mop_session_check.php';
 
 
 
-                    </div>>
+                    </div>
                 </div>
             </div>
             <div class="card">
