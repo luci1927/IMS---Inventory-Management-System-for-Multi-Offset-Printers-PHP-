@@ -20,7 +20,7 @@ if (isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['s
                     mop_stock.qty_hand AS qhand, 
                     (mop_stock.qty_system - mop_stock.qty_hand) AS diff, 
                     units.`name` AS unit_name, 
-                    COALESCE(mop_stock.mop_grn_grn_no, mop_stock.mop_issuing_issue_no) AS GrnIssue,
+                    COALESCE(mop_stock.mop_grn_grn_no,  mop_issuing.ref_no) AS GrnIssue,
                     COALESCE(mop_grn.qty, mop_issuing.qty) AS qty,
                     mop_stock.remarks AS remarks
                     FROM mop_stock
