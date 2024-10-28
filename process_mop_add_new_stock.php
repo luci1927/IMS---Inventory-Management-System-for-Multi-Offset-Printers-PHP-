@@ -26,15 +26,8 @@ if ($item_code == "") {
     $d->setTimezone($tz);
     $date = $d->format("Y-m-d H:i:s");
 
-    Database::iud("INSERT INTO `mop_grn` 
-    (`grn_no`,`date_time`,`qty`,`grn_type_id`,`supplier_id`,`ref_no`)
-    VALUES ('" . $grn_no . "','" . $date . "','" . $quantity . "','" . $grn_type_id . "','" . $supplier_id . "')");
 
-    $grn_rs = Database::search("SELECT * FROM `mop_grn` WHERE `grn_no`='" . $grn_no . "'");
 
-    $grn_data = $grn_rs->fetch_assoc();
-
-    $grn_id = $grn_data["id"];
 
 
 
@@ -45,6 +38,10 @@ if ($item_code == "") {
     $n = $rs->num_rows;
 
     if ($n >= 1) {
+
+        Database::iud("INSERT INTO `mop_grn` 
+        (`grn_no`,`date_time`,`qty`,`grn_type_id`,`supplier_id`,`ref_no`)
+        VALUES ('" . $grn_no . "','" . $date . "','" . $quantity . "','" . $grn_type_id . "','" . $supplier_id . "','" . $ref_no . "')");
 
         // $qty_rs = Database::search("SELECT *
         // FROM `mop_stock`
@@ -60,16 +57,20 @@ if ($item_code == "") {
         $new_qty = $quantity + $qty_in_hand;
 
         Database::iud("INSERT INTO `mop_stock` 
-            (`mop_inventory_item_code`, `qty_hand`, `remarks`, `date_time`, `mop_grn_grn_no`)
-            VALUES ('" . $item_code . "', '" . $new_qty . "', '" . $remarks . "', '" . $date . "', '" . $grn_id . "')");
+            (`mop_inventory_item_code`,`qty_system`, `qty_hand`, `remarks`, `date_time`, `mop_grn_grn_no`)
+            VALUES ('" . $item_code . "','" . $qty_data["qty_system"] . "', '" . $new_qty . "', '" . $remarks . "', '" . $date . "', '" . $grn_no . "')");
 
         echo "success";
     } else {
 
+        Database::iud("INSERT INTO `mop_grn` 
+        (`grn_no`,`date_time`,`qty`,`grn_type_id`,`supplier_id`,`ref_no`)
+        VALUES ('" . $grn_no . "','" . $date . "','" . $quantity . "','" . $grn_type_id . "','" . $supplier_id . "','" . $ref_no . "')");
+
 
         Database::iud("INSERT INTO `mop_stock` 
             (`mop_inventory_item_code`, `qty_system`, `qty_hand`, `remarks`, `date_time`, `mop_grn_grn_no`)
-            VALUES ('" . $item_code . "', '" . $quantity . "', '" . $quantity . "', '" . $remarks . "', '" . $date . "', '" . $grn_id . "')");
+            VALUES ('" . $item_code . "', '" . $quantity . "', '" . $quantity . "', '" . $remarks . "', '" . $date . "', '" . $grn_no . "')");
 
         echo "success";
     }

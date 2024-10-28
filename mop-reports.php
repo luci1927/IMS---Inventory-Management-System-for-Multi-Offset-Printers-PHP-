@@ -470,7 +470,7 @@ include 'mop_session_check.php';
                 <div class="card-header" id="headingThree">
                     <h2 class="mb-0">
                         <button class="btn btn-success collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            GRN Update Report 
+                            GRN Update Report
                         </button>
                     </h2>
                 </div>
@@ -702,6 +702,51 @@ include 'mop_session_check.php';
         setInterval(updateDateTime, 1000);
 
         updateDateTime();
+
+        $(document).ready(function() {
+            $('#date_range_stock').on('change', function() {
+                search_mop();
+            });
+
+        });
+
+        $(document).ready(function() {
+            $('#date_range_grn').on('change', function() {
+                search_mop_grn();
+            });
+
+        });
+
+        $(document).ready(function() {
+            $('#date_range_issue').on('change', function() {
+                search_mop_issue();
+            });
+
+        });
+
+        $('#exportCSVButton1').click(function() {
+            exportTableToCSV('reportsTable1', 'Inventory_Reports');
+        });
+
+        $('#exportCSVButton2').click(function() {
+            exportTableToCSV('reportsTable2', 'Inventory_Reports');
+        });
+
+        $('#exportCSVButton3').click(function() {
+            exportTableToCSV('reportsTable3', 'Inventory_Reports');
+        });
+
+        $('#exportPDFButton1').click(function() {
+            exportTableToPDF('reportsTable1', 'Inventory Data Sheet');
+        });
+
+        $('#exportPDFButton2').click(function() {
+            exportTableToPDF('reportsTable2', 'Inventory Data Sheet');
+        });
+
+        $('#exportPDFButton3').click(function() {
+            exportTableToPDF('reportsTable3', 'Inventory Data Sheet');
+        });
     </script>
 
 </body>

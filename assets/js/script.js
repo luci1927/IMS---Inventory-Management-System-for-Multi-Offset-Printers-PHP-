@@ -256,13 +256,11 @@ function mop_update_qty(){
 
     var i = document.getElementById("item");
     var q = document.getElementById("quantity2");
-    var u = document.getElementById("unit2");
     var re = document.getElementById("remarks2");
 
     var form = new FormData();
     form.append("i", i.value);
     form.append("q", q.value);
-    form.append("u", u.value);
     form.append("re", re.value);
 
     var r = new XMLHttpRequest();
@@ -271,8 +269,8 @@ function mop_update_qty(){
         if (r.readyState == 4) {
             var text = r.responseText;
 
-            if (text == "success") {
-                alert(text);
+            if (text === "success") {
+                alert("Quantity updated successfully.");
                 window.location.reload();
             } else {
                 alert(text);
@@ -512,12 +510,6 @@ function search_mop() {
     });
 }
 
-$(document).ready(function () {
-    $('#date_range_stock').on('change', function () {
-        search_mop();
-    });
-    
-});
 
 
 
@@ -597,17 +589,6 @@ $(document).ready(function () {
 //     });
 // }
 
-$('#exportCSVButton1').click(function () {
-    exportTableToCSV('reportsTable1', 'Inventory_Reports');
-});
-
-$('#exportCSVButton2').click(function () {
-    exportTableToCSV('reportsTable2', 'Inventory_Reports');
-});
-
-$('#exportCSVButton3').click(function () {
-    exportTableToCSV('reportsTable3', 'Inventory_Reports');
-});
 
 function exportTableToCSV(tableId, filename = '') {
     const csv = [];
@@ -643,17 +624,7 @@ function exportTableToCSV(tableId, filename = '') {
 
 
 
-$('#exportPDFButton1').click(function () {
-    exportTableToPDF('reportsTable1', 'Inventory Data Sheet');
-});
 
-$('#exportPDFButton2').click(function () {
-    exportTableToPDF('reportsTable2', 'Inventory Data Sheet');
-});
-
-$('#exportPDFButton3').click(function () {
-    exportTableToPDF('reportsTable3', 'Inventory Data Sheet');
-});
 
 
 function exportTableToPDF(tableId, title = '') {
@@ -734,13 +705,13 @@ function exportTableToCSV(tableId, filename = '') {
     document.body.removeChild(downloadLink); 
 }
 
-$('#exportCSVButtonfth').click(function () {
-    exportTableToCSV('reportsTablefth', 'Inventory_Reports');
-});
+// $('#exportCSVButtonfth').click(function () {
+//     exportTableToCSV('reportsTablefth', 'Inventory_Reports');
+// });
 
-$('#exportPDFButtonfth').click(function () {
-    exportTableToPDF('reportsTablefth', 'Inventory Data Sheet'); 
-});
+// $('#exportPDFButtonfth').click(function () {
+//     exportTableToPDF('reportsTablefth', 'Inventory Data Sheet'); 
+// });
 
 function exportTableToPDF(tableId, title = '') {
     console.log('Exporting PDF...');
@@ -820,14 +791,14 @@ function exportTableToCSV(tableId, filename = '') {
     document.body.removeChild(downloadLink);
 }
 
-$('#exportCSVButtonrmi').click(function () {
-    exportTableToCSV('reportsTablermi', 'Inventory_Reports'); 
-});
+// $('#exportCSVButtonrmi').click(function () {
+//     exportTableToCSV('reportsTablermi', 'Inventory_Reports'); 
+// });
 
 
-$('#exportPDFButtonrmi').click(function () {
-    exportTableToPDF('reportsTablermi', 'Inventory Data Sheet'); 
-});
+// $('#exportPDFButtonrmi').click(function () {
+//     exportTableToPDF('reportsTablermi', 'Inventory Data Sheet'); 
+// });
 
 function exportTableToPDF(tableId, title = '') {
     console.log('Exporting PDF...');
@@ -969,12 +940,7 @@ function search_mop_issue() {
     });
 }
 
-$(document).ready(function () {
-    $('#date_range_issue').on('change', function () {
-        search_mop_issue();
-    });
-    
-});
+
 
 function search_mop_grn() {
     var dateRange = $('#date_range_grn').val(); 
@@ -1006,12 +972,7 @@ function search_mop_grn() {
     });
 }
 
-$(document).ready(function () {
-    $('#date_range_grn').on('change', function () {
-        search_mop_grn();
-    });
-    
-});
+
 
 
 

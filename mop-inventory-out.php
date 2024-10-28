@@ -128,9 +128,7 @@ include 'mop_session_check.php';
             $issue_number = 'ISU' . str_pad((int)substr($last_issue_no, 3) + 1, 4, '0', STR_PAD_LEFT);
             ?>
 
-            <script>
-                document.getElementById('issue_no').value = '<?php echo $issue_number; ?>';
-            </script>
+            
             <div class="form-group row">
                 <label for="issue_no" class="col-sm-2 col-form-label">Issue No</label>
                 <div class="col-sm-10">

@@ -3,7 +3,6 @@
 require "connection.php";
 
 $item_code = $_POST["i"];
-$unit = $_POST["u"];
 $qhand = $_POST["q"];
 $remarks = $_POST["re"];
 
@@ -33,7 +32,6 @@ if (empty($qhand)) {
     $stock_data = $stock_rs->fetch_assoc();
 
     $qsystem = $stock_data["qty_hand"];
-    $grn_id = $stock_data["mop_grn_id"];
 
 
 
@@ -44,8 +42,8 @@ if (empty($qhand)) {
 
 
     Database::iud("INSERT INTO `mop_stock` 
-    (`mop_inventory_item_code`,`qty_system`,`qty_hand`,`remarks`,`date_time`,`mop_grn_id`)
-    VALUES ('" . $item_code . "','" . $qsystem . "','" . $qhand . "','" . $remarks . "','" . $date . "','". $grn_id ."')");
+    (`mop_inventory_item_code`,`qty_system`,`qty_hand`,`remarks`,`date_time`)
+    VALUES ('" . $item_code . "','" . $qsystem . "','" . $qhand . "','" . $remarks . "','" . $date . "')");
 
 
     echo ("success");
