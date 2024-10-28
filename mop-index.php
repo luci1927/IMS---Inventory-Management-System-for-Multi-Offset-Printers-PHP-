@@ -153,7 +153,7 @@ include 'mop_session_check.php';
                         mop_stock ON 
                         mop_stock.mop_inventory_item_code = mop_inventory.item_code
                         WHERE 
-                        mop_inventory.status_status_id = '1' AND  mop_stock.qty_system <=5 AND
+                        mop_inventory.status_status_id = '1' AND  mop_stock.qty_hand <=5 AND
                         mop_stock.date_time = (
                         SELECT MAX(sub_stock.date_time)
                         FROM mop_stock sub_stock
