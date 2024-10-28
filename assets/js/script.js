@@ -101,6 +101,7 @@ function mop_new_stock(){
     var gt = document.getElementById("grn_type3");
     var s = document.getElementById("supplier2");
     var re = document.getElementById("remarks");
+    var ref = document.getElementById("ref_no");
 
     var form = new FormData();
     form.append("i", i.value);
@@ -109,6 +110,7 @@ function mop_new_stock(){
     form.append("gt", gt.value);
     form.append("s", s.value);
     form.append("re", re.value);
+    form.append("ref", ref.value);
 
     var r = new XMLHttpRequest();
 
@@ -905,12 +907,14 @@ function load_mop_out_table(){
     var q = document.getElementById("quantity2");
     var u = document.getElementById("issue_no");
     var re = document.getElementById("remarks2");
+    var ref = document.getElementById("ref_no");
 
     var form = new FormData();
     form.append("i", i.value);
     form.append("q", q.value);
     form.append("u", u.value);
     form.append("re", re.value);
+    form.append("ref", ref.value);
 
     var r = new XMLHttpRequest();
 

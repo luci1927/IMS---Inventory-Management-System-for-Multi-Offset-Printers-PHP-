@@ -159,6 +159,11 @@ include 'mop_session_check.php';
                                     placeholder="GRN No">
                             </div>
                             <div class="form-group">
+                                <label for="ref_no">Reference No</label>
+                                <input type="text" class="form-control" id="ref_no"
+                                    placeholder="Reference Number (Optional)">
+                            </div>
+                            <div class="form-group">
                                 <label for="grn_type3">GRN Type</label>
                                 <select class="form-control" id="grn_type3">
                                     <option value="0" disabled selected>Select GRN Type</option>

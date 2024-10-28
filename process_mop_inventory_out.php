@@ -6,6 +6,7 @@ $item_code = $_POST["i"];
 $issue_no = $_POST["u"];
 $qout = $_POST["q"];
 $remarks = $_POST["re"];
+$ref_no = $_POST["ref"];
 
 
 
@@ -33,8 +34,8 @@ if (empty($qout)) {
     $date = $d->format("Y-m-d H:i:s");
 
     Database::iud("INSERT INTO `mop_issuing` 
-    (`issue_no`,`qty`,`status_status_id`,`date_time`)
-    VALUES ('" . $issue_no . "','" . $qout . "','1','" . $date . "')");
+    (`issue_no`,`qty`,`status_status_id`,`date_time`,`ref_no`)
+    VALUES ('" . $issue_no . "','" . $qout . "','1','" . $date . "','".$ref_no."')");
 
     $stock_rs = Database::search("SELECT * FROM `mop_stock` 
     WHERE `mop_inventory_item_code` = '" . $item_code . "' ORDER BY `date_time` DESC LIMIT 1;");
@@ -49,10 +50,6 @@ if (empty($qout)) {
     Database::iud("INSERT INTO `mop_stock` 
     (`mop_inventory_item_code`,`qty_system`,`qty_hand`,`remarks`,`date_time`,`mop_issuing_issue_no`)
     VALUES ('" . $item_code . "','" . $qsystem . "','" . $avl_qty . "','" . $remarks . "','" . $date . "','" . $issue_no . "')");
-
-
-
-
 
     echo ("success");
 }

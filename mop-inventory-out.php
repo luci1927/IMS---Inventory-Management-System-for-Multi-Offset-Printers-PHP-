@@ -89,7 +89,7 @@ include 'mop_session_check.php';
         <form id="inventoryForm">
             <div class="form-group row mt-3">
                 <label for="item" class="col-sm-2 col-form-label">Item</label>
-                <div class="col-sm-10">
+                <div class="col-sm-10"> 
                     <select class="selectpicker form-control" data-live-search="true" id="item" onchange=" load_mop_out_table();" title="Choose an Item">
                         <?php
 
@@ -119,13 +119,30 @@ include 'mop_session_check.php';
                         min="0" max="10000" required />
                 </div>
             </div>
+            <?php
+
+            $last_issue_rs = Database::search("SELECT issue_no FROM mop_issuing ORDER BY date_time DESC LIMIT 1");
+            $last_issue_data = $last_issue_rs->fetch_assoc();
+            $last_issue_no = $last_issue_data ? $last_issue_data['issue_no'] : 'ISU0000';
+
+            $issue_number = 'ISU' . str_pad((int)substr($last_issue_no, 3) + 1, 4, '0', STR_PAD_LEFT);
+            ?>
+
+            <script>
+                document.getElementById('issue_no').value = '<?php echo $issue_number; ?>';
+            </script>
             <div class="form-group row">
                 <label for="issue_no" class="col-sm-2 col-form-label">Issue No</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="issue_no" placeholder="Enter Issue Number" required />
+                    <input type="text" class="form-control" id="issue_no" value="<?php echo $issue_number; ?>" placeholder="Enter Issue Number" required disabled/>
                 </div>
             </div>
-
+            <div class="form-group row">
+                <label for="ref_no" class="col-sm-2 col-form-label">Reference No</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="ref_no" placeholder="Enter Reference Number" required/>
+                </div>
+            </div>
             <div class="form-group row">
                 <label for="remarks2" class="col-sm-2 col-form-label">Remarks</label>
                 <div class="col-sm-10">

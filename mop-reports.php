@@ -227,7 +227,7 @@ include 'mop_session_check.php';
                     mop_stock.qty_hand AS qhand, 
                     (mop_stock.qty_system - mop_stock.qty_hand) AS diff, 
                     units.`name` AS unit_name, 
-                    COALESCE(mop_stock.mop_grn_grn_no, mop_stock.mop_issuing_issue_no) AS GrnIssue,
+                    COALESCE(mop_stock.mop_grn_grn_no, mop_issuing.ref_no) AS GrnIssue,
                     COALESCE(mop_grn.qty, mop_issuing.qty) AS qty,
                     mop_stock.remarks AS remarks
                     FROM mop_stock
@@ -366,6 +366,7 @@ include 'mop_session_check.php';
                         <tr>
                             <th>#</th>
                             <th scope="col">Issue No</th>
+                            <th scope="col">Reference No</th>
                             <th scope="col">Issue Date/Time</th>
                             <th scope="col">Item Code</th>
                             <th scope="col">Item Description</th>
@@ -401,6 +402,7 @@ include 'mop_session_check.php';
                 mop_stock.qty_hand AS qhand, 
                 units.`name` AS unit_name, 
                 mop_stock.mop_issuing_issue_no AS issue_number, 
+                 mop_issuing.ref_no AS reff_no, 
                 mop_issuing.qty AS issue_qty, 
                 mop_issuing.date_time AS issue_date, 
                 mop_stock.remarks AS remarks
@@ -424,6 +426,7 @@ include 'mop_session_check.php';
                             <tr>
                                 <td><?php echo $x + 1; ?></td>
                                 <td><?php echo $item_table_data2['issue_number']; ?></td>
+                                <td><?php echo $item_table_data2['reff_no']; ?></td>
                                 <td><?php echo $item_table_data2['issue_date']; ?></td>
                                 <td><?php echo $item_table_data2['item_code']; ?></td>
                                 <td><?php echo $item_table_data2['descr']; ?></td>

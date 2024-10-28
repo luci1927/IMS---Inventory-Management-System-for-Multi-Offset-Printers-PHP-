@@ -18,6 +18,7 @@ if (isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['s
                 mop_stock.qty_hand AS qhand, 
                 units.`name` AS unit_name, 
                 mop_stock.mop_issuing_issue_no AS issue_number, 
+                mop_issuing.ref_no AS reff_no, 
                 mop_issuing.qty AS issue_qty, 
                 mop_issuing.date_time AS issue_date, 
                 mop_stock.remarks AS remarks
@@ -39,6 +40,7 @@ if (isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['s
             echo "<tr>
                     <td>" . ($x + 1) . "</td>
                     <td>{$item_table_data['issue_number']}</td>
+                    <td>{$item_table_data['reff_no']}</td>
                     <td>{$item_table_data['issue_date']}</td>
                     <td>{$item_table_data['item_code']}</td>
                     <td>{$item_table_data['descr']}</td>
