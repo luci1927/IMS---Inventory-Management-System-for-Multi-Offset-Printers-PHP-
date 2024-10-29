@@ -40,7 +40,7 @@ include 'mop_session_check.php';
         .vertical-line {
             width: 1px;
             /* Thickness */
-            height: 40px;
+            height: 30px;
             /* Height */
             background-color: black;
             /* Color */
@@ -145,11 +145,19 @@ include 'mop_session_check.php';
                                         ?>
                                     </select>
                                 </div>
+
+                                <hr class="vertical-line" />
+
+                                <div class="col-auto">
+                                    <input type="text" id="stock_search" placeholder="Search" class="form-control" onkeyup="stockLiveSearch();" />
+                                </div>
+
                             </div>
+                            
 
                             <div class="col-auto">
                                 <button type="button" id="resetButton" class="btn btn-warning btn-sm" onclick="window.location.reload();">
-                                    <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                                    <i class="fa-solid fa-arrows-rotate"></i> Reset
                                 </button>
 
                                 <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter1">
@@ -326,11 +334,17 @@ include 'mop_session_check.php';
                                         ?>
                                     </select>
                                 </div>
+
+                                <hr class="vertical-line" />
+
+                                <div class="col-auto">
+                                    <input type="text" id="issue_search" placeholder="Search" class="form-control" onkeyup="issueLiveSearch();" />
+                                </div>
                             </div>
 
                             <div class="col-auto">
                                 <button type="button" id="resetButton2" class="btn btn-warning btn-sm" onclick="window.location.reload();">
-                                    <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                                    <i class="fa-solid fa-arrows-rotate"></i> Reset
                                 </button>
                                 <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter2">
                                     <i class="fa-solid fa-file-export"></i> Export
@@ -510,11 +524,16 @@ include 'mop_session_check.php';
                                     </select>
                                 </div>
 
+                                <hr class="vertical-line" />
+
+                                <div class="col-auto">
+                                    <input type="text" id="grn_search" placeholder="Search" class="form-control" onkeyup="grnLiveSearch();" />
+                                </div>
 
                             </div>
                             <div class="col-auto">
                                 <button type="button" id="resetButton3" class="btn btn-warning btn-sm" onclick="window.location.reload();">
-                                    <i class="fa-solid fa-arrows-rotate"></i> Refresh
+                                    <i class="fa-solid fa-arrows-rotate"></i> Reset
                                 </button>
                                 <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter3">
                                     <i class="fa-solid fa-file-export"></i> Export

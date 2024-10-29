@@ -38,16 +38,6 @@ $stock_rs = Database::search("SELECT * FROM `mop_stock`
         die("Please enter reference number!");
     }
 
-    $ref_rs = Database::search("SELECT * FROM `mop_issuing` WHERE `ref_no`='" . $ref_no . "'");
-    if ($ref_rs) {
-        $ref_n = $ref_rs->num_rows;
-        if ($ref_n > 0) {
-            die("Reference number already exists!");
-        }
-    } else {
-        die("Error executing reference query.");
-    }
-
     if ($current_qty < $qout) {
         die("Insufficient quantity in stock!");
     }
