@@ -1227,3 +1227,28 @@ function issueLiveSearch() {
     });
   }
   
+function change_mop_issue_status(ref_no){
+
+
+  var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+        if (request.readyState == 4) {
+            var txt = request.responseText;
+            if (txt == "viewed") {
+                document.getElementById("ub" + ref_no).innerHTML = "Approved";
+                document.getElementById("ub" + ref_no).classList = "btn btn-success";
+                window.location.reload();
+            } else if (txt == "approved") {
+                document.getElementById("ub" + ref_no).innerHTML = "Viewed";
+                document.getElementById("ub" + ref_no).classList = "btn btn-danger";
+                window.location.reload();
+            } else {
+                alert(txt);
+            }
+        }
+    }
+
+    request.open("GET", "mop_issue_update_status.php?ref_no=" + ref_no, true);
+    request.send();
+}

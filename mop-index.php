@@ -17,7 +17,7 @@ include 'mop_session_check.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <style>
         .fixed-date-time {
             position: fixed;
@@ -66,6 +66,9 @@ include 'mop_session_check.php';
                         <a class="nav-link" href="mop-inventory-out.php">Inventory Out</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="mop-requests.php">Issue Request</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="mop-reports.php">Reports</a>
                     </li>
                     <li class="nav-item">
@@ -103,6 +106,9 @@ include 'mop_session_check.php';
                             <a class="nav-link" href="mop-inventory-out.php">Inventory Out</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="mop-requests.php">Issue Request</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="mop-reports.php">Reports</a>
                         </li>
                         <li class="nav-item">
@@ -130,7 +136,7 @@ include 'mop_session_check.php';
 
             <?php
             require "connection.php";
-// date is not working correctly!!
+
             $today_rs = Database::search("SELECT COUNT(*) AS daily_count
                         FROM mop_stock 
                         WHERE DATE(date_time) = CURDATE();");

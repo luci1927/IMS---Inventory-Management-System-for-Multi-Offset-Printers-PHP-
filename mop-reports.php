@@ -71,6 +71,9 @@ include 'mop_session_check.php';
                     <li class="nav-item">
                         <a class="nav-link" href="mop-inventory-out.php">Inventory Out</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mop-requests.php">Issue Request</a>
+                    </li>
                     <li class="nav-item active">
                         <a class="nav-link" href="mop-reports.php">Reports</a>
                     </li>
