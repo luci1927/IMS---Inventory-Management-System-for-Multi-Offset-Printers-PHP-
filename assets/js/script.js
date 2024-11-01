@@ -39,7 +39,7 @@ function signout() {
   r.onreadystatechange = function () {
     if (r.readyState == 4) {
       var t = r.responseText;
-      if (t == "success") {
+      if (t.trim() == "success") {
         window.location.reload();
       }
     }

@@ -15,7 +15,7 @@ include 'mop_session_check.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <style>
@@ -80,8 +80,20 @@ include 'mop_session_check.php';
                     <li class="nav-item">
                         <a class="nav-link" href="mop-other.php">Others</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
+                    <li class="nav-item mt-1">
+                        <button id="logoutButton" onclick="confirmLogout()" class="btn btn-danger"
+                            style="font-weight: bold; cursor: pointer; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-people-fill"></i>
+                        </button>
+
+
+                        <script>
+                            function confirmLogout() {
+                                if (confirm("Are you sure you want to logout?")) {
+                                    signout();
+                                }
+                            }
+                        </script>
                     </li>
                 </ul>
             </div>
@@ -156,7 +168,7 @@ include 'mop_session_check.php';
                                 </div>
 
                             </div>
-                            
+
 
                             <div class="col-auto">
                                 <button type="button" id="resetButton" class="btn btn-warning btn-sm" onclick="window.location.reload();">
@@ -194,45 +206,45 @@ include 'mop_session_check.php';
                         <!-- Modal -->
 
                         <!-- Report Table -->
+                        <div class="table-responsive mt-3">
+                            <table class="table table-hover mt-3" id="reportsTable1">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th scope="col">Date/Time Updated</th>
+                                        <th scope="col">Item Code</th>
+                                        <th scope="col">Item Description</th>
+                                        <th scope="col">Qty in System</th>
+                                        <th scope="col">Qty on Hand</th>
+                                        <th scope="col">Diff</th>
+                                        <th scope="col">Unit</th>
+                                        <th scope="col">GRN/Issue No</th>
+                                        <th scope="col">GRN/Issue Qty</th>
+                                        <th scope="col">Remarks</th>
+                                    </tr>
+                                </thead>
+                                <?php
 
-                        <table class="table table-hover mt-3" id="reportsTable1">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th scope="col">Date/Time Updated</th>
-                                    <th scope="col">Item Code</th>
-                                    <th scope="col">Item Description</th>
-                                    <th scope="col">Qty in System</th>
-                                    <th scope="col">Qty on Hand</th>
-                                    <th scope="col">Diff</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">GRN/Issue No</th>
-                                    <th scope="col">GRN/Issue Qty</th>
-                                    <th scope="col">Remarks</th>
-                                </tr>
-                            </thead>
-                            <?php
+                                $results_per_page = 20;
 
-                            $results_per_page = 20;
+                                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                                if ($page <= 0) $page = 1;
 
-                            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                            if ($page <= 0) $page = 1;
+                                $offset = ($page - 1) * $results_per_page;
 
-                            $offset = ($page - 1) * $results_per_page;
-
-                            $query_total = "SELECT COUNT(*) AS total FROM mop_stock
+                                $query_total = "SELECT COUNT(*) AS total FROM mop_stock
                     INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
                     INNER JOIN units ON mop_inventory.units_id = units.id
                     LEFT JOIN mop_grn ON mop_stock.mop_grn_grn_no = mop_grn.grn_no 
                     LEFT JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
                     WHERE mop_inventory.status_status_id = '1'";
-                            $total_result = Database::search($query_total);
-                            $total_row = $total_result->fetch_assoc();
-                            $total_records = $total_row['total'];
+                                $total_result = Database::search($query_total);
+                                $total_row = $total_result->fetch_assoc();
+                                $total_records = $total_row['total'];
 
-                            $total_pages = ceil($total_records / $results_per_page);
+                                $total_pages = ceil($total_records / $results_per_page);
 
-                            $query = "SELECT mop_inventory.item_code AS item_code, 
+                                $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_stock.date_time AS datetime,
                     mop_inventory.`description` AS descr, 
                     mop_stock.qty_system AS qsystem, 
@@ -251,42 +263,43 @@ include 'mop_session_check.php';
                     ORDER BY mop_stock.date_time DESC 
                     LIMIT $results_per_page OFFSET $offset";
 
-                            $item_table_rs = Database::search($query);
-                            $item_table_num = $item_table_rs->num_rows;
-                            ?>
-
-                            <tbody>
-                                <?php
-                                for ($x = 0; $x < $item_table_num; $x++) {
-                                    $item_table_data = $item_table_rs->fetch_assoc();
+                                $item_table_rs = Database::search($query);
+                                $item_table_num = $item_table_rs->num_rows;
                                 ?>
-                                    <tr>
-                                        <td><?php echo $x + 1; ?></td>
-                                        <td><?php echo $item_table_data['datetime']; ?></td>
-                                        <td><?php echo $item_table_data['item_code']; ?></td>
-                                        <td><?php echo $item_table_data['descr']; ?></td>
-                                        <td><?php echo $item_table_data['qsystem']; ?></td>
-                                        <td><?php echo $item_table_data['qhand']; ?></td>
-                                        <td><?php echo $item_table_data['diff']; ?></td>
-                                        <td><?php echo $item_table_data['unit_name']; ?></td>
-                                        <td><?php echo $item_table_data['GrnIssue']; ?></td>
-                                        <td><?php echo $item_table_data['qty']; ?></td>
-                                        <td><?php echo $item_table_data['remarks']; ?></td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                            <nav>
-                                <ul class="pagination justify-content-center mt-4">
-                                    <?php for ($page = 1; $page <= $total_pages; $page++) { ?>
-                                        <li class="page-item">
-                                            <a class="page-link" href="mop-reports.php?page=<?php echo $page; ?>">
-                                                <?php echo $page; ?>
-                                            </a>
-                                        </li>
+
+                                <tbody>
+                                    <?php
+                                    for ($x = 0; $x < $item_table_num; $x++) {
+                                        $item_table_data = $item_table_rs->fetch_assoc();
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $x + 1; ?></td>
+                                            <td><?php echo $item_table_data['datetime']; ?></td>
+                                            <td><?php echo $item_table_data['item_code']; ?></td>
+                                            <td><?php echo $item_table_data['descr']; ?></td>
+                                            <td><?php echo $item_table_data['qsystem']; ?></td>
+                                            <td><?php echo $item_table_data['qhand']; ?></td>
+                                            <td><?php echo $item_table_data['diff']; ?></td>
+                                            <td><?php echo $item_table_data['unit_name']; ?></td>
+                                            <td><?php echo $item_table_data['GrnIssue']; ?></td>
+                                            <td><?php echo $item_table_data['qty']; ?></td>
+                                            <td><?php echo $item_table_data['remarks']; ?></td>
+                                        </tr>
                                     <?php } ?>
-                                </ul>
-                            </nav>
-                        </table>
+                                </tbody>
+                                <nav>
+                                    <ul class="pagination justify-content-center mt-4">
+                                        <?php for ($page = 1; $page <= $total_pages; $page++) { ?>
+                                            <li class="page-item">
+                                                <a class="page-link" href="mop-reports.php?page=<?php echo $page; ?>">
+                                                    <?php echo $page; ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </nav>
+                            </table>
+                        </div>
 
 
 
@@ -387,43 +400,44 @@ include 'mop_session_check.php';
 
 
                         <!-- Report Table -->
-                        <table class="table table-hover table-hover mt-3" id="reportsTable2">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th scope="col">Issue No</th>
-                                    <th scope="col">Reference No</th>
-                                    <th scope="col">Issue Date/Time</th>
-                                    <th scope="col">Item Code</th>
-                                    <th scope="col">Item Description</th>
-                                    <th scope="col">Issue Qty</th>
-                                    <th scope="col">Qty Remaining</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">Remarks</th>
-                                </tr>
-                            </thead>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-hover table-hover mt-3" id="reportsTable2">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th scope="col">Issue No</th>
+                                        <th scope="col">Reference No</th>
+                                        <th scope="col">Issue Date/Time</th>
+                                        <th scope="col">Item Code</th>
+                                        <th scope="col">Item Description</th>
+                                        <th scope="col">Issue Qty</th>
+                                        <th scope="col">Qty Remaining</th>
+                                        <th scope="col">Unit</th>
+                                        <th scope="col">Remarks</th>
+                                    </tr>
+                                </thead>
 
-                            <?php
+                                <?php
 
-                            $results_per_page2 = 20;
+                                $results_per_page2 = 20;
 
-                            $page2 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                            if ($page2 <= 0) $page2 = 1;
+                                $page2 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                                if ($page2 <= 0) $page2 = 1;
 
-                            $offset2 = ($page2 - 1) * $results_per_page2;
+                                $offset2 = ($page2 - 1) * $results_per_page2;
 
-                            $query_total2 = "SELECT COUNT(*) AS total FROM mop_stock
+                                $query_total2 = "SELECT COUNT(*) AS total FROM mop_stock
                             INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
                             INNER JOIN units ON mop_inventory.units_id = units.id
                             INNER JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
                             WHERE mop_inventory.status_status_id = '1'";
-                            $total_result2 = Database::search($query_total2);
-                            $total_row2 = $total_result2->fetch_assoc();
-                            $total_records2 = $total_row2['total'];
+                                $total_result2 = Database::search($query_total2);
+                                $total_row2 = $total_result2->fetch_assoc();
+                                $total_records2 = $total_row2['total'];
 
-                            $total_pages2 = ceil($total_records2 / $results_per_page2);
+                                $total_pages2 = ceil($total_records2 / $results_per_page2);
 
-                            $query2 = "SELECT mop_inventory.item_code AS item_code, 
+                                $query2 = "SELECT mop_inventory.item_code AS item_code, 
                             mop_inventory.`description` AS descr, 
                             mop_stock.qty_hand AS qhand, 
                             units.`name` AS unit_name, 
@@ -440,43 +454,44 @@ include 'mop_session_check.php';
                             ORDER BY mop_stock.date_time DESC
                             LIMIT $results_per_page2 OFFSET $offset2";
 
-                            $item_table_rs2 = Database::search($query2);
-                            $item_table_num2 = $item_table_rs2->num_rows;
-                            ?>
-
-                            <tbody>
-                                <?php
-                                for ($x = 0; $x < $item_table_num2; $x++) {
-                                    $item_table_data2 = $item_table_rs2->fetch_assoc();
+                                $item_table_rs2 = Database::search($query2);
+                                $item_table_num2 = $item_table_rs2->num_rows;
                                 ?>
-                                    <tr>
-                                        <td><?php echo $x + 1; ?></td>
-                                        <td><?php echo $item_table_data2['issue_number']; ?></td>
-                                        <td><?php echo $item_table_data2['reff_no']; ?></td>
-                                        <td><?php echo $item_table_data2['issue_date']; ?></td>
-                                        <td><?php echo $item_table_data2['item_code']; ?></td>
-                                        <td><?php echo $item_table_data2['descr']; ?></td>
-                                        <td><?php echo $item_table_data2['issue_qty']; ?></td>
-                                        <td><?php echo $item_table_data2['qhand']; ?></td>
-                                        <td><?php echo $item_table_data2['unit_name']; ?></td>
-                                        <td><?php echo $item_table_data2['remarks']; ?></td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
 
-                            <nav>
-                                <ul class="pagination justify-content-center mt-4">
-                                    <?php for ($page2 = 1; $page2 <= $total_pages2; $page2++) { ?>
-                                        <li class="page-item">
-                                            <a class="page-link" href="mop-reports.php?page=<?php echo $page2; ?>">
-                                                <?php echo $page2; ?>
-                                            </a>
-                                        </li>
+                                <tbody>
+                                    <?php
+                                    for ($x = 0; $x < $item_table_num2; $x++) {
+                                        $item_table_data2 = $item_table_rs2->fetch_assoc();
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $x + 1; ?></td>
+                                            <td><?php echo $item_table_data2['issue_number']; ?></td>
+                                            <td><?php echo $item_table_data2['reff_no']; ?></td>
+                                            <td><?php echo $item_table_data2['issue_date']; ?></td>
+                                            <td><?php echo $item_table_data2['item_code']; ?></td>
+                                            <td><?php echo $item_table_data2['descr']; ?></td>
+                                            <td><?php echo $item_table_data2['issue_qty']; ?></td>
+                                            <td><?php echo $item_table_data2['qhand']; ?></td>
+                                            <td><?php echo $item_table_data2['unit_name']; ?></td>
+                                            <td><?php echo $item_table_data2['remarks']; ?></td>
+                                        </tr>
                                     <?php } ?>
-                                </ul>
-                            </nav>
+                                </tbody>
 
-                        </table>
+                                <nav>
+                                    <ul class="pagination justify-content-center mt-4">
+                                        <?php for ($page2 = 1; $page2 <= $total_pages2; $page2++) { ?>
+                                            <li class="page-item">
+                                                <a class="page-link" href="mop-reports.php?page=<?php echo $page2; ?>">
+                                                    <?php echo $page2; ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </nav>
+
+                            </table>
+                        </div>
 
 
 
@@ -575,41 +590,42 @@ include 'mop_session_check.php';
 
 
                         <!-- Report Table -->
-                        <table class="table table-hover table-hover mt-3" id="reportsTable3">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th scope="col">GRN No</th>
-                                    <th scope="col">GRN Date</th>
-                                    <th scope="col">Item Code</th>
-                                    <th scope="col">Item Description</th>
-                                    <th scope="col">GRN Quantity</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">Remarks</th>
-                                </tr>
-                            </thead>
-                            <?php
+                        <div class="table-responsive mt-3">
+                            <table class="table table-hover table-hover mt-3" id="reportsTable3">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th scope="col">GRN No</th>
+                                        <th scope="col">GRN Date</th>
+                                        <th scope="col">Item Code</th>
+                                        <th scope="col">Item Description</th>
+                                        <th scope="col">GRN Quantity</th>
+                                        <th scope="col">Unit</th>
+                                        <th scope="col">Remarks</th>
+                                    </tr>
+                                </thead>
+                                <?php
 
-                            $results_per_page3 = 20;
+                                $results_per_page3 = 20;
 
-                            $page3 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                            if ($page3 <= 0) $page = 1;
+                                $page3 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                                if ($page3 <= 0) $page = 1;
 
-                            $offset3 = ($page3 - 1) * $results_per_page3;
+                                $offset3 = ($page3 - 1) * $results_per_page3;
 
-                            $query_total3 = "SELECT COUNT(*) AS total
+                                $query_total3 = "SELECT COUNT(*) AS total
                             FROM mop_grn 
                             INNER JOIN mop_stock ON mop_grn.id = mop_stock.id 
                             INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
                             INNER JOIN units ON mop_inventory.units_id = units.id
                             WHERE mop_inventory.status_status_id = '1'";
-                            $total_result3 = Database::search($query_total3);
-                            $total_row3 = $total_result3->fetch_assoc();
-                            $total_records3 = $total_row3['total'];
+                                $total_result3 = Database::search($query_total3);
+                                $total_row3 = $total_result3->fetch_assoc();
+                                $total_records3 = $total_row3['total'];
 
-                            $total_pages3 = ceil($total_records3 / $results_per_page3);
+                                $total_pages3 = ceil($total_records3 / $results_per_page3);
 
-                            $query3 = "SELECT mop_inventory.item_code AS item_code, 
+                                $query3 = "SELECT mop_inventory.item_code AS item_code, 
                     mop_inventory.`description` AS descr, 
                     mop_grn.qty AS grn_qty,
                     units.`name` AS unit_name, 
@@ -624,45 +640,45 @@ include 'mop_session_check.php';
                     ORDER BY grn_date DESC
                     LIMIT $results_per_page3 OFFSET $offset3";
 
-                            $item_table_rs3 = Database::search($query3);
-                            $item_table_num3 = $item_table_rs3->num_rows;
-                            ?>
-
-
-
-                            <tbody>
-                                <?php
-                                for ($x = 0; $x < $item_table_num3; $x++) {
-                                    $item_table_data3 = $item_table_rs3->fetch_assoc();
+                                $item_table_rs3 = Database::search($query3);
+                                $item_table_num3 = $item_table_rs3->num_rows;
                                 ?>
-                                    <tr>
-                                        <td><?php echo $x + 1; ?></td>
-                                        <td><?php echo $item_table_data3['grn_number']; ?></td>
-                                        <td><?php echo $item_table_data3['grn_date']; ?></td>
-                                        <td><?php echo $item_table_data3['item_code']; ?></td>
-                                        <td><?php echo $item_table_data3['descr']; ?></td>
-                                        <td><?php echo $item_table_data3['grn_qty']; ?></td>
-                                        <td><?php echo $item_table_data3['unit_name']; ?></td>
-                                        <td><?php echo $item_table_data3['remarks']; ?></td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
 
-                            <nav>
-                                <ul class="pagination justify-content-center mt-4">
-                                    <?php for ($page3 = 1; $page3 <= $total_pages3; $page3++) { ?>
-                                        <li class="page-item">
-                                            <a class="page-link" href="mop-reports.php?page=<?php echo $page3; ?>">
-                                                <?php echo $page3; ?>
-                                            </a>
-                                        </li>
+
+
+                                <tbody>
+                                    <?php
+                                    for ($x = 0; $x < $item_table_num3; $x++) {
+                                        $item_table_data3 = $item_table_rs3->fetch_assoc();
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $x + 1; ?></td>
+                                            <td><?php echo $item_table_data3['grn_number']; ?></td>
+                                            <td><?php echo $item_table_data3['grn_date']; ?></td>
+                                            <td><?php echo $item_table_data3['item_code']; ?></td>
+                                            <td><?php echo $item_table_data3['descr']; ?></td>
+                                            <td><?php echo $item_table_data3['grn_qty']; ?></td>
+                                            <td><?php echo $item_table_data3['unit_name']; ?></td>
+                                            <td><?php echo $item_table_data3['remarks']; ?></td>
+                                        </tr>
                                     <?php } ?>
-                                </ul>
-                            </nav>
+                                </tbody>
+
+                                <nav>
+                                    <ul class="pagination justify-content-center mt-4">
+                                        <?php for ($page3 = 1; $page3 <= $total_pages3; $page3++) { ?>
+                                            <li class="page-item">
+                                                <a class="page-link" href="mop-reports.php?page=<?php echo $page3; ?>">
+                                                    <?php echo $page3; ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </nav>
 
 
-                        </table>
-
+                            </table>
+                        </div>
 
                     </div>
                 </div>

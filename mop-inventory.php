@@ -14,9 +14,9 @@ include 'mop_session_check.php';
     <link rel="icon" href="assets/favicon/favicon.png" type="image/png">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
-
         .fixed-date-time {
             position: fixed;
             top: 60px;
@@ -66,8 +66,20 @@ include 'mop_session_check.php';
                     <li class="nav-item">
                         <a class="nav-link" href="mop-other.php">Others</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
+                    <li class="nav-item mt-1">
+                        <button id="logoutButton" onclick="confirmLogout()" class="btn btn-danger"
+                            style="font-weight: bold; cursor: pointer; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-people-fill"></i>
+                        </button>
+
+
+                        <script>
+                            function confirmLogout() {
+                                if (confirm("Are you sure you want to logout?")) {
+                                    signout();
+                                }
+                            }
+                        </script>
                     </li>
                 </ul>
             </div>
@@ -154,7 +166,7 @@ include 'mop_session_check.php';
                             <div class="form-group">
                                 <label for="quantity">Quantity</label>
                                 <input type="text" class="form-control" id="quantity" placeholder="Enter quantity"
-                                     required />
+                                    required />
                             </div>
                             <div class="form-group">
                                 <label for="grn2">GRN No</label>
@@ -353,7 +365,7 @@ include 'mop_session_check.php';
             <div class="form-group row">
                 <label for="quantity2" class="col-sm-2 col-form-label">Quantity</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="quantity2" placeholder="Enter quantity"  required />
+                    <input type="text" class="form-control" id="quantity2" placeholder="Enter quantity" required />
                 </div>
             </div>
             <div class="form-group row">
@@ -396,29 +408,30 @@ include 'mop_session_check.php';
         </form>
 
         <h3 class="mt-5">Inventory List</h3>
-        <table class="table table-hover table-hover mt-3" id="inventoryTable">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Item Code</th>
-                    <th>Item Description</th>
-                    <th>Item Group</th>
-                    <th>Qty in System</th>
-                    <th>Qty on Hand</th>
-                    <th>Unit</th>
-                    <th>Remarks</th>
-                </tr>
-            </thead>
-            <?php
+        <div class="table-responsive mt-3">
+            <table class="table table-hover table-hover" id="inventoryTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item Code</th>
+                        <th>Item Description</th>
+                        <th>Item Group</th>
+                        <th>Qty in System</th>
+                        <th>Qty on Hand</th>
+                        <th>Unit</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <?php
 
-            $results_per_page = 10;
+                $results_per_page = 10;
 
-            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-            if ($page <= 0) $page = 1;
+                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                if ($page <= 0) $page = 1;
 
-            $offset = ($page - 1) * $results_per_page;
+                $offset = ($page - 1) * $results_per_page;
 
-            $query_total = "SELECT COUNT(*) AS total FROM mop_inventory
+                $query_total = "SELECT COUNT(*) AS total FROM mop_inventory
                 INNER JOIN mop_stock ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
                 INNER JOIN units ON mop_inventory.units_id = units.id
                 INNER JOIN (
@@ -427,13 +440,13 @@ include 'mop_session_check.php';
                     GROUP BY mop_inventory_item_code
                 ) latest_stock ON mop_stock.id = latest_stock.latest_id
                 WHERE mop_inventory.status_status_id = '1';";
-            $total_result = Database::search($query_total);
-            $total_row = $total_result->fetch_assoc();
-            $total_records = $total_row['total'];
+                $total_result = Database::search($query_total);
+                $total_row = $total_result->fetch_assoc();
+                $total_records = $total_row['total'];
 
-            $total_pages = ceil($total_records / $results_per_page);
+                $total_pages = ceil($total_records / $results_per_page);
 
-            $query = "SELECT mop_inventory.item_code AS item_code, 
+                $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_inventory.`description` AS descr, 
                     mop_inventory.`mop_item_group_code` AS item_grp, 
                     mop_stock.qty_system AS qsystem, 
@@ -451,29 +464,30 @@ include 'mop_session_check.php';
                 WHERE mop_inventory.status_status_id = '1'
                 LIMIT $results_per_page OFFSET $offset;";
 
-            $item_table_rs = Database::search($query);
-            $item_table_num = $item_table_rs->num_rows;
-            ?>
-
-            <tbody>
-                <?php
-                for ($x = 0; $x < $item_table_num; $x++) {
-                    $item_table_data = $item_table_rs->fetch_assoc();
+                $item_table_rs = Database::search($query);
+                $item_table_num = $item_table_rs->num_rows;
                 ?>
-                    <tr>
-                        <th scope="row"><?php echo $x + 1; ?></th>
-                        <td><?php echo $item_table_data['item_code']; ?></td>
-                        <td><?php echo $item_table_data['descr']; ?></td>
-                        <td><?php echo $item_table_data['item_grp']; ?></td>
-                        <td><?php echo $item_table_data['qsystem']; ?></td>
-                        <td><?php echo $item_table_data['qhand']; ?></td>
-                        <td><?php echo $item_table_data['unit_name']; ?></td>
-                        <td><?php echo $item_table_data['remarks']; ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
 
-        </table>
+                <tbody>
+                    <?php
+                    for ($x = 0; $x < $item_table_num; $x++) {
+                        $item_table_data = $item_table_rs->fetch_assoc();
+                    ?>
+                        <tr>
+                            <th scope="row"><?php echo $x + 1; ?></th>
+                            <td><?php echo $item_table_data['item_code']; ?></td>
+                            <td><?php echo $item_table_data['descr']; ?></td>
+                            <td><?php echo $item_table_data['item_grp']; ?></td>
+                            <td><?php echo $item_table_data['qsystem']; ?></td>
+                            <td><?php echo $item_table_data['qhand']; ?></td>
+                            <td><?php echo $item_table_data['unit_name']; ?></td>
+                            <td><?php echo $item_table_data['remarks']; ?></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+
+            </table>
+        </div>
 
         <nav>
             <ul class="pagination justify-content-center mt-4">

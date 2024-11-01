@@ -2,7 +2,7 @@
 <?php require "connection.php";
 
 if (isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['start_date']) && !empty($_POST['end_date'])) {
-    
+
     $item_id = $_POST["item_code"];
     $startDate = $_POST['start_date'];
     $endDate = $_POST['end_date'];

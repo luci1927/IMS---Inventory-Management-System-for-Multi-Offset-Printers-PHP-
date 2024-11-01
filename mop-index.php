@@ -18,6 +18,7 @@ include 'mop_session_check.php';
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         .fixed-date-time {
             position: fixed;
@@ -74,8 +75,20 @@ include 'mop_session_check.php';
                     <li class="nav-item">
                         <a class="nav-link" href="mop-other.php">Others</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
+                    <li class="nav-item mt-1">
+                        <button id="logoutButton" onclick="confirmLogout()" class="btn btn-danger"
+                            style="font-weight: bold; cursor: pointer; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-people-fill"></i>
+                        </button>
+
+
+                        <script>
+                            function confirmLogout() {
+                                if (confirm("Are you sure you want to logout?")) {
+                                    signout();
+                                }
+                            }
+                        </script>
                     </li>
                 </ul>
             </div>
@@ -114,9 +127,21 @@ include 'mop_session_check.php';
                         <li class="nav-item">
                             <a class="nav-link" href="mop-other.php">Others</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
-                        </li>
+                        <li class="nav-item mt-1">
+                        <button id="logoutButton" onclick="confirmLogout()" class="btn btn-danger"
+                            style="font-weight: bold; cursor: pointer; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-people-fill"></i>
+                        </button>
+
+
+                        <script>
+                            function confirmLogout() {
+                                if (confirm("Are you sure you want to logout?")) {
+                                    signout();
+                                }
+                            }
+                        </script>
+                    </li>
                     </ul>
                 </div>
             </nav>
@@ -218,29 +243,6 @@ include 'mop_session_check.php';
                         </div>
                     </div>
                 </div>
-
-                <!-- Action Buttons Section -->
-                <div class="row mt-5">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Update Quantity</h5>
-                                <p>Update item quantity daily to adjust stock levels.</p>
-                                <a href="mop-inventory.php" class="btn btn-success">Update Quantity</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">Add New Item</h5>
-                                <p>Add new items to the inventory database.</p>
-                                <a href="mop-inventory.php" class="btn btn-success">Add new Item</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Chart Section -->
                 <div class="row mt-5">
                     <div class="col-md-12">

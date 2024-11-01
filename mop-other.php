@@ -15,6 +15,7 @@ include 'mop_session_check.php';
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         .selectpicker {
             width: 100%;
@@ -70,8 +71,20 @@ include 'mop_session_check.php';
                     <li class="nav-item active">
                         <a class="nav-link" href="mop-other.php">Others</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="signout();" style="color: red;" href="index.php">Logout</a>
+                    <li class="nav-item mt-1">
+                        <button id="logoutButton" onclick="confirmLogout()" class="btn btn-danger"
+                            style="font-weight: bold; cursor: pointer; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-people-fill"></i>
+                        </button>
+
+
+                        <script>
+                            function confirmLogout() {
+                                if (confirm("Are you sure you want to logout?")) {
+                                    signout();
+                                }
+                            }
+                        </script>
                     </li>
                 </ul>
             </div>
