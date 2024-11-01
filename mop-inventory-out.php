@@ -96,106 +96,114 @@ include 'mop_session_check.php';
 
     <!-- Main Content -->
     <main class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2>Inventory | Issuing Process</h2>
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>Inventory | Issuing Process</h2>
 
+                </div>
+
+
+                <form id="inventoryForm">
+                    <div class="form-group row mt-3">
+                        <label for="item" class="col-sm-2 col-form-label">Item</label>
+                        <div class="col-sm-10">
+                            <select class="selectpicker form-control" data-live-search="true" id="item" onchange=" load_mop_out_table();" title="Choose an Item">
+                                <?php
+
+                                require "connection.php";
+
+                                $item_rs = Database::search("SELECT * FROM `mop_inventory`");
+                                $item_num = $item_rs->num_rows;
+
+
+                                for ($x = 0; $x < $item_num; $x++) {
+                                    $item_data = $item_rs->fetch_assoc();
+                                ?>
+                                    <option value="<?php echo $item_data['item_code']; ?>">
+                                        <?php echo $item_data['description']; ?>
+                                    </option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="quantity2" class="col-sm-2 col-form-label">Issuing Quantity</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="quantity2" placeholder="Enter quantity" step="0.001"
+                                min="0" max="10000" required />
+                        </div>
+                    </div>
+                    <?php
+
+                    $last_issue_rs = Database::search("SELECT issue_no FROM mop_issuing ORDER BY date_time DESC LIMIT 1");
+                    $last_issue_data = $last_issue_rs->fetch_assoc();
+                    $last_issue_no = $last_issue_data ? $last_issue_data['issue_no'] : 'ISU0000';
+
+                    $issue_number = 'ISU' . str_pad((int)substr($last_issue_no, 3) + 1, 4, '0', STR_PAD_LEFT);
+                    ?>
+
+
+                    <div class="form-group row">
+                        <label for="issue_no" class="col-sm-2 col-form-label">Issue No</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="issue_no" value="<?php echo $issue_number; ?>" placeholder="Enter Issue Number" required disabled />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ref_no" class="col-sm-2 col-form-label">Reference No</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="ref_no" placeholder="Enter Reference Number" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="remarks2" class="col-sm-2 col-form-label">Remarks</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="remarks2" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-block" onclick="mop_inventory_out();">
+                        Issue Item
+                    </button>
+
+
+                </form>
+            </div>
         </div>
 
 
-        <form id="inventoryForm">
-            <div class="form-group row mt-3">
-                <label for="item" class="col-sm-2 col-form-label">Item</label>
-                <div class="col-sm-10"> 
-                    <select class="selectpicker form-control" data-live-search="true" id="item" onchange=" load_mop_out_table();" title="Choose an Item">
+        <div class="card shadow mt-4">
+            <div class="card-body">
+
+                <h3 class="mt-5">Inventory List</h3>
+                <div class="table-responsive mt-3">
+                    <table class="table table-hover table-hover" id="inventoryTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Item Code</th>
+                                <th>Item Description</th>
+                                <th>Item Group</th>
+                                <th>Qty in System</th>
+                                <th>Qty on Hand</th>
+                                <th>Unit</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
                         <?php
 
-                        require "connection.php";
+                        $results_per_page = 10;
 
-                        $item_rs = Database::search("SELECT * FROM `mop_inventory`");
-                        $item_num = $item_rs->num_rows;
+                        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                        if ($page <= 0) $page = 1;
 
+                        $offset = ($page - 1) * $results_per_page;
 
-                        for ($x = 0; $x < $item_num; $x++) {
-                            $item_data = $item_rs->fetch_assoc();
-                        ?>
-                            <option value="<?php echo $item_data['item_code']; ?>">
-                                <?php echo $item_data['description']; ?>
-                            </option>
-                        <?php
-                        }
-                        ?>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label for="quantity2" class="col-sm-2 col-form-label">Issuing Quantity</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" id="quantity2" placeholder="Enter quantity" step="0.001"
-                        min="0" max="10000" required />
-                </div>
-            </div>
-            <?php
-
-            $last_issue_rs = Database::search("SELECT issue_no FROM mop_issuing ORDER BY date_time DESC LIMIT 1");
-            $last_issue_data = $last_issue_rs->fetch_assoc();
-            $last_issue_no = $last_issue_data ? $last_issue_data['issue_no'] : 'ISU0000';
-
-            $issue_number = 'ISU' . str_pad((int)substr($last_issue_no, 3) + 1, 4, '0', STR_PAD_LEFT);
-            ?>
-
-            
-            <div class="form-group row">
-                <label for="issue_no" class="col-sm-2 col-form-label">Issue No</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="issue_no" value="<?php echo $issue_number; ?>" placeholder="Enter Issue Number" required disabled/>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="ref_no" class="col-sm-2 col-form-label">Reference No</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="ref_no" placeholder="Enter Reference Number" required/>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="remarks2" class="col-sm-2 col-form-label">Remarks</label>
-                <div class="col-sm-10">
-                    <textarea class="form-control" id="remarks2" rows="3"></textarea>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-success btn-block" onclick="mop_inventory_out();">
-                Issue Item
-            </button>
-
-
-        </form>
-
-        <h3 class="mt-5">Inventory List</h3>
-        <div class="table-responsive mt-3">
-        <table class="table table-hover table-hover" id="inventoryTable">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Item Code</th>
-                    <th>Item Description</th>
-                    <th>Item Group</th>
-                    <th>Qty in System</th>
-                    <th>Qty on Hand</th>
-                    <th>Unit</th>
-                    <th>Remarks</th>
-                </tr>
-            </thead>
-            <?php
-
-            $results_per_page = 10;
-
-            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-            if ($page <= 0) $page = 1;
-
-            $offset = ($page - 1) * $results_per_page;
-
-            $query_total = "SELECT COUNT(*) AS total FROM mop_inventory
+                        $query_total = "SELECT COUNT(*) AS total FROM mop_inventory
                 INNER JOIN mop_stock ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
                 INNER JOIN units ON mop_inventory.units_id = units.id
                 INNER JOIN (
@@ -204,13 +212,13 @@ include 'mop_session_check.php';
                     GROUP BY mop_inventory_item_code
                 ) latest_stock ON mop_stock.id = latest_stock.latest_id
                 WHERE mop_inventory.status_status_id = '1';";
-            $total_result = Database::search($query_total);
-            $total_row = $total_result->fetch_assoc();
-            $total_records = $total_row['total'];
+                        $total_result = Database::search($query_total);
+                        $total_row = $total_result->fetch_assoc();
+                        $total_records = $total_row['total'];
 
-            $total_pages = ceil($total_records / $results_per_page);
+                        $total_pages = ceil($total_records / $results_per_page);
 
-            $query = "SELECT mop_inventory.item_code AS item_code, 
+                        $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_inventory.`description` AS descr, 
                     mop_inventory.`mop_item_group_code` AS item_grp, 
                     mop_stock.qty_system AS qsystem, 
@@ -228,58 +236,63 @@ include 'mop_session_check.php';
                 WHERE mop_inventory.status_status_id = '1'
                 LIMIT $results_per_page OFFSET $offset;";
 
-            $item_table_rs = Database::search($query);
-            $item_table_num = $item_table_rs->num_rows;
-            ?>
+                        $item_table_rs = Database::search($query);
+                        $item_table_num = $item_table_rs->num_rows;
+                        ?>
 
-            <tbody>
-                <?php
-                for ($x = 0; $x < $item_table_num; $x++) {
-                    $item_table_data = $item_table_rs->fetch_assoc();
-                ?>
-                    <tr>
-                        <th scope="row"><?php echo $x + 1; ?></th>
-                        <td><?php echo $item_table_data['item_code']; ?></td>
-                        <td><?php echo $item_table_data['descr']; ?></td>
-                        <td><?php echo $item_table_data['item_grp']; ?></td>
-                        <td><?php echo $item_table_data['qsystem']; ?></td>
-                        <td><?php echo $item_table_data['qhand']; ?></td>
-                        <td><?php echo $item_table_data['unit_name']; ?></td>
-                        <td><?php echo $item_table_data['remarks']; ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
+                        <tbody>
+                            <?php
+                            for ($x = 0; $x < $item_table_num; $x++) {
+                                $item_table_data = $item_table_rs->fetch_assoc();
+                            ?>
+                                <tr>
+                                    <th scope="row"><?php echo $x + 1; ?></th>
+                                    <td><?php echo $item_table_data['item_code']; ?></td>
+                                    <td><?php echo $item_table_data['descr']; ?></td>
+                                    <td><?php echo $item_table_data['item_grp']; ?></td>
+                                    <td><?php echo $item_table_data['qsystem']; ?></td>
+                                    <td><?php echo $item_table_data['qhand']; ?></td>
+                                    <td><?php echo $item_table_data['unit_name']; ?></td>
+                                    <td><?php echo $item_table_data['remarks']; ?></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
 
-        </table>
+                    </table>
                 </div>
 
-        <nav>
-            <ul class="pagination justify-content-center mt-4">
-                <?php if ($page > 1) { ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                <?php } ?>
+                <nav>
+                    <ul class="pagination justify-content-center mt-4">
+                        <?php if ($page > 1) { ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <?php } ?>
 
-                <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    </li>
-                <?php } ?>
+                        <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                            </li>
+                        <?php } ?>
 
-                <?php if ($page < $total_pages) { ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                <?php } ?>
-            </ul>
-        </nav>
+                        <?php if ($page < $total_pages) { ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
 
     </main>
+
+    <?php include 'footer.php'; ?>
 
     <script src="assets/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

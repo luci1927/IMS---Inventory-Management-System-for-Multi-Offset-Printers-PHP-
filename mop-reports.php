@@ -19,6 +19,24 @@ include 'mop_session_check.php';
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <style>
+        body {
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-height: 100vh;
+
+        }
+
+
+
+        main {
+
+            flex: 1;
+
+        }
+
         .fixed-date-time {
             position: fixed;
             top: 60px;
@@ -109,7 +127,7 @@ include 'mop_session_check.php';
 
 
         <div class="accordion" id="accordionExample">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header" id="headingOne">
                     <h2 class="mb-0">
                         <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -306,7 +324,7 @@ include 'mop_session_check.php';
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card shadow mt-4">
                 <div class="card-header" id="headingTwo">
                     <h2 class="mb-0">
                         <button class="btn btn-success collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -498,7 +516,7 @@ include 'mop_session_check.php';
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card shadow mt-4">
                 <div class="card-header" id="headingThree">
                     <h2 class="mb-0">
                         <button class="btn btn-success collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -686,6 +704,8 @@ include 'mop_session_check.php';
         </div>
 
     </main>
+
+    <?php include 'footer.php'; ?>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>

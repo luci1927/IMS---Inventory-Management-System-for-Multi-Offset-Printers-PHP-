@@ -38,10 +38,52 @@ include 'mop_session_check.php';
             }
         }
 
+        html,
         body {
-            height: 100vh;
-            /* Set body to full viewport height */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
+
+        .navbar {
+            margin-bottom: 0;
+        }
+
+        .content {
+            height: calc(100vh - 56px);
+            overflow-y: auto;
+        }
+
+        .custom-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+    }
+
+    .custom-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Icon Styling */
+    .custom-icon i {
+        font-size: 2.5rem;
+    }
+
+    /* Text Styling */
+    .card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .display-6 {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    .mousep {
+        cursor: pointer;
+    }
     </style>
 </head>
 
@@ -128,20 +170,20 @@ include 'mop_session_check.php';
                             <a class="nav-link" href="mop-other.php">Others</a>
                         </li>
                         <li class="nav-item mt-1">
-                        <button id="logoutButton" onclick="confirmLogout()" class="btn btn-danger"
-                            style="font-weight: bold; cursor: pointer; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-people-fill"></i>
-                        </button>
+                            <button id="logoutButton" onclick="confirmLogout()" class="btn btn-danger"
+                                style="font-weight: bold; cursor: pointer; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-people-fill"></i>
+                            </button>
 
 
-                        <script>
-                            function confirmLogout() {
-                                if (confirm("Are you sure you want to logout?")) {
-                                    signout();
+                            <script>
+                                function confirmLogout() {
+                                    if (confirm("Are you sure you want to logout?")) {
+                                        signout();
+                                    }
                                 }
-                            }
-                        </script>
-                    </li>
+                            </script>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -205,40 +247,49 @@ include 'mop_session_check.php';
 
             <main class="container mt-4">
                 <!-- Statistics Section -->
-                <div class="row text-center">
-                    <div class="col-md-3">
-                        <div class="card text-white bg-success">
-                            <div class="card-body">
-                                <h5 class="card-title">Updated Today</h5>
-                                <h3><?php echo $today_updated; ?></h3>
-                                <i class="fa-solid fa-calendar-day fa-2xl"></i>
+                <div class="container">
+                    <div class="row text-center my-5">
+                        <!-- Card 1: Updated Today -->
+                        <div class="col-lg-3 col-md-6 mb-4 mousep">
+                            <div class="card custom-card shadow border-0 rounded">
+                                <div class="card-body text-center">
+                                    <div class="custom-icon text-success mb-3"><i class="bi bi-calendar-day"></i></div>
+                                    <h5 class="card-title mb-1 text-secondary">Updated Today</h5>
+                                    <h2 class="display-6 text-dark font-weight-bold"><?php echo $today_updated; ?></h2>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-warning">
-                            <div class="card-body">
-                                <h5 class="card-title">Updated This Month</h5>
-                                <h3><?php echo $this_month_updated; ?></h3>
-                                <i class="fa-solid fa-calendar-week fa-2xl"></i>
+
+                        <!-- Card 2: Updated This Month -->
+                        <div class="col-lg-3 col-md-6 mb-4 mousep">
+                            <div class="card custom-card shadow border-0 rounded">
+                                <div class="card-body text-center">
+                                    <div class="custom-icon text-warning mb-3"><i class="bi bi-calendar-week"></i></div>
+                                    <h5 class="card-title mb-1 text-secondary">Updated This Month</h5>
+                                    <h2 class="display-6 text-dark font-weight-bold"><?php echo $this_month_updated; ?></h2>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-info">
-                            <div class="card-body">
-                                <h5 class="card-title">Low Stock Alerts</h5>
-                                <h3><?php echo $low_stock_count; ?></h3>
-                                <i class="fa-solid fa-bell fa-2xl"></i>
+
+                        <!-- Card 3: Low Stock Alerts -->
+                        <div class="col-lg-3 col-md-6 mb-4 mousep">
+                            <div class="card custom-card shadow border-0 rounded">
+                                <div class="card-body text-center">
+                                    <div class="custom-icon text-danger mb-3"><i class="bi bi-bell"></i></div>
+                                    <h5 class="card-title mb-1 text-secondary">Low Stock Alerts</h5>
+                                    <h2 class="display-6 text-dark font-weight-bold"><?php echo $low_stock_count; ?></h2>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-danger">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Items</h5>
-                                <h3><?php echo $total_item_count; ?></h3>
-                                <i class="fa-solid fa-boxes-stacked fa-2xl"></i>
+
+                        <!-- Card 4: Total Items -->
+                        <div class="col-lg-3 col-md-6 mb-4 mousep">
+                            <div class="card custom-card shadow border-0 rounded">
+                                <div class="card-body text-center">
+                                    <div class="custom-icon text-info mb-3"><i class="bi bi-boxes"></i></div>
+                                    <h5 class="card-title mb-1 text-secondary">Total Items</h5>
+                                    <h2 class="display-6 text-dark font-weight-bold"><?php echo $total_item_count; ?></h2>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -257,6 +308,8 @@ include 'mop_session_check.php';
             </main>
         </div>
     </div>
+
+    <?php include 'footer.php'; ?>
 
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

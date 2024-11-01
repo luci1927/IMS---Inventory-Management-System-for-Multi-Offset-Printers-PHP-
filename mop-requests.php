@@ -92,46 +92,49 @@ include 'connection.php';
 
     <!-- Main Content -->
     <main class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2>Inventory | Issue Request List</h2>
 
-        </div>
+        <div class="card shadow ">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>Inventory | Issue Request List</h2>
 
-        <h3 class="mt-5">Today Issue Request List</h3>
-        <div class="table-responsive">
-            <table class="table table-hover table-hover mt-3" id="issueRequestTable">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Refference No</th>
-                        <th>Description</th>
-                        <th>Name</th>
-                        <th>Time Requested</th>
-                        <th>Time Approved</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <?php
+                </div>
 
-                $results_per_page = 10;
+                <h3 class="mt-5">Today Issue Request List</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover table-hover mt-3" id="issueRequestTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Refference No</th>
+                                <th>Description</th>
+                                <th>Name</th>
+                                <th>Time Requested</th>
+                                <th>Time Approved</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <?php
 
-                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                if ($page <= 0) $page = 1;
+                        $results_per_page = 10;
 
-                $offset = ($page - 1) * $results_per_page;
+                        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                        if ($page <= 0) $page = 1;
 
-                $query_total = "SELECT COUNT(*) AS total FROM request
+                        $offset = ($page - 1) * $results_per_page;
+
+                        $query_total = "SELECT COUNT(*) AS total FROM request
                 INNER JOIN request_status ON request.request_status_id = request_status.id 
                 INNER JOIN request_user ON request_user.email = request.request_user_email 
                 WHERE (request.request_status_id = '2' OR request.request_status_id = '3') 
                 AND DATE(request.time_requested) = CURDATE() ;";
-                $total_result = Database::search($query_total);
-                $total_row = $total_result->fetch_assoc();
-                $total_records = $total_row['total'];
+                        $total_result = Database::search($query_total);
+                        $total_row = $total_result->fetch_assoc();
+                        $total_records = $total_row['total'];
 
-                $total_pages = ceil($total_records / $results_per_page);
+                        $total_pages = ceil($total_records / $results_per_page);
 
-                $query = "SELECT request.ref_no AS ref_no, request.`description` AS descr, request_user.`name` AS reqName, request.request_status_id AS istatus_id,
+                        $query = "SELECT request.ref_no AS ref_no, request.`description` AS descr, request_user.`name` AS reqName, request.request_status_id AS istatus_id,
                 request.time_requested AS time_requested, request.time_approved AS time_approved, request_status.`name` AS status_name
                 FROM request
                 INNER JOIN request_status ON request.request_status_id = request_status.id 
@@ -141,79 +144,81 @@ include 'connection.php';
                 ORDER BY request.time_approved DESC 
                 LIMIT $results_per_page OFFSET $offset;";
 
-                $item_table_rs = Database::search($query);
-                $item_table_num = $item_table_rs->num_rows;
-                ?>
+                        $item_table_rs = Database::search($query);
+                        $item_table_num = $item_table_rs->num_rows;
+                        ?>
 
-                <tbody>
-                    <?php
-                    for ($x = 0; $x < $item_table_num; $x++) {
-                        $item_table_data = $item_table_rs->fetch_assoc();
-                    ?>
-                        <tr>
-                            <th scope="row"><?php echo $x + 1; ?></th>
-                            <td><?php echo $item_table_data['ref_no']; ?></td>
-                            <td><?php echo nl2br(htmlspecialchars($item_table_data['descr'])) . "<br>"; ?></td>
-                            <td><?php echo $item_table_data['reqName']; ?></td>
-                            <td><?php echo $item_table_data['time_requested']; ?></td>
-                            <td><?php echo $item_table_data['time_approved']; ?></td>
-                            <td><?php
-                                if ($item_table_data["istatus_id"] == 2) {
-                                ?>
-                                    <button id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-danger" onclick="confirmAction('<?php echo $item_table_data['ref_no']; ?>', 'Viewed');">Approved</button>
-                                <?php
-                                } else if ($item_table_data["istatus_id"] == 3) {
-                                ?>
-                                    <button disabled id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-success" onclick="confirmAction('<?php echo $item_table_data['ref_no']; ?>', 'Approved');">Viewed</button>
-                                <?php
-                                } else {
-                                    echo "No action available";
-                                }
-                                ?>
-
-                                <script>
-                                    function confirmAction(refNo, action) {
-                                        if (confirm('Are you sure you want to mark this request as ' + action + '?')) {
-                                            change_mop_issue_status(refNo);
+                        <tbody>
+                            <?php
+                            for ($x = 0; $x < $item_table_num; $x++) {
+                                $item_table_data = $item_table_rs->fetch_assoc();
+                            ?>
+                                <tr>
+                                    <th scope="row"><?php echo $x + 1; ?></th>
+                                    <td><?php echo $item_table_data['ref_no']; ?></td>
+                                    <td><?php echo nl2br(htmlspecialchars($item_table_data['descr'])) . "<br>"; ?></td>
+                                    <td><?php echo $item_table_data['reqName']; ?></td>
+                                    <td><?php echo $item_table_data['time_requested']; ?></td>
+                                    <td><?php echo $item_table_data['time_approved']; ?></td>
+                                    <td><?php
+                                        if ($item_table_data["istatus_id"] == 2) {
+                                        ?>
+                                            <button id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-danger" onclick="confirmAction('<?php echo $item_table_data['ref_no']; ?>', 'Viewed');">Approved</button>
+                                        <?php
+                                        } else if ($item_table_data["istatus_id"] == 3) {
+                                        ?>
+                                            <button disabled id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-success" onclick="confirmAction('<?php echo $item_table_data['ref_no']; ?>', 'Approved');">Viewed</button>
+                                        <?php
+                                        } else {
+                                            echo "No action available";
                                         }
-                                    }
-                                </script>
+                                        ?>
+
+                                        <script>
+                                            function confirmAction(refNo, action) {
+                                                if (confirm('Are you sure you want to mark this request as ' + action + '?')) {
+                                                    change_mop_issue_status(refNo);
+                                                }
+                                            }
+                                        </script>
 
 
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
 
-            </table>
+                    </table>
 
+                </div>
+
+                <nav>
+                    <ul class="pagination justify-content-center mt-4">
+                        <?php if ($page > 1) { ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        <?php } ?>
+
+                        <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+                            <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                            </li>
+                        <?php } ?>
+
+                        <?php if ($page < $total_pages) { ?>
+                            <li class="page-item">
+                                <a class="pa        ge-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </nav>
+            </div>
         </div>
-
-        <nav>
-            <ul class="pagination justify-content-center mt-4">
-                <?php if ($page > 1) { ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                <?php } ?>
-
-                <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    </li>
-                <?php } ?>
-
-                <?php if ($page < $total_pages) { ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                <?php } ?>
-            </ul>
-        </nav>
 
     </main>
 
