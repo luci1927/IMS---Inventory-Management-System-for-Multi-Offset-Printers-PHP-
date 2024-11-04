@@ -199,7 +199,7 @@ require "connection.php";
                         </thead>
                         <?php
 
-                        $results_per_page = 10;
+                        $results_per_page = 20;
 
                         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                         if ($page <= 0) $page = 1;
