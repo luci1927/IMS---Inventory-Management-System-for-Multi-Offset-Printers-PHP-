@@ -124,13 +124,7 @@ include 'mop_session_check.php';
                         </button>
 
 
-                        <script>
-                            function confirmLogout() {
-                                if (confirm("Are you sure you want to logout?")) {
-                                    signout();
-                                }
-                            }
-                        </script>
+                        
                     </li>
                 </ul>
             </div>
@@ -313,6 +307,9 @@ include 'mop_session_check.php';
 
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+
     <script>
         // Sample Chart.js script for stockChart and reportChart
 

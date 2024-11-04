@@ -163,11 +163,11 @@ include 'connection.php';
                                     <td><?php
                                         if ($item_table_data["istatus_id"] == 2) {
                                         ?>
-                                            <button id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-danger" onclick="confirmAction('<?php echo $item_table_data['ref_no']; ?>', 'Viewed');">Approved</button>
+                                            <button id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-danger" onclick="change_mop_issue_status('<?php echo $item_table_data['ref_no']; ?>', 'Viewed');">Approved</button>
                                         <?php
                                         } else if ($item_table_data["istatus_id"] == 3) {
                                         ?>
-                                            <button disabled id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-success" onclick="confirmAction('<?php echo $item_table_data['ref_no']; ?>', 'Approved');">Viewed</button>
+                                            <button disabled id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-success" onclick="change_mop_issue_status('<?php echo $item_table_data['ref_no']; ?>', 'Approved');">Viewed</button>
                                         <?php
                                         } else {
                                             echo "No action available";
@@ -223,6 +223,7 @@ include 'connection.php';
     </main>
 
     <script src="assets/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>

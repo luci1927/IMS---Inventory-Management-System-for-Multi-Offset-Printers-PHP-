@@ -24,7 +24,9 @@ if ($inventory_rs) {
 
 if (empty($qhand)) {
     echo ("Please enter quantity!");
-} else {
+} else if (!is_numeric($qhand)) {
+    echo ("Quantity must be a number!");
+} else{
 
     $stock_rs = Database::search("SELECT * FROM `mop_stock` 
     WHERE `mop_inventory_item_code` = '" . $item_code . "' ORDER BY `date_time` DESC LIMIT 1;");

@@ -153,7 +153,7 @@ include 'mop_session_check.php';
                             </p>
                             <div style="min-height: 120px;">
                                 <div class="collapse width" id="collapseUnit">
-                                    <div class="card card-body shadow" style="width: 420px;">
+                                    <div class="card card-body shadow">
                                         <form>
                                             <h4>Add New Unit</h4>
                                             <div class="form-group">
@@ -223,7 +223,7 @@ include 'mop_session_check.php';
                             </p>
                             <div style="min-height: 120px;">
                                 <div class="collapse width" id="collapseGRN">
-                                    <div class="card card-body shadow" style="width: 420px;">
+                                    <div class="card card-body shadow" >
                                         <form>
                                             <h4>Add New GRN Type</h4>
                                             <div class="form-group">
@@ -298,7 +298,7 @@ include 'mop_session_check.php';
                             </p>
                             <div style="min-height: 120px;">
                                 <div class="collapse width" id="collapseSupplier">
-                                    <div class="card card-body shadow" style="width: 420px;">
+                                    <div class="card card-body shadow" >
                                         <form>
                                             <h4>Add New Supplier</h4>
                                             <div class="form-group">
@@ -379,7 +379,7 @@ include 'mop_session_check.php';
                             </p>
                             <div style="min-height: 120px;">
                                 <div class="collapse width" id="collapseig">
-                                    <div class="card card-body shadow" style="width: 420px;">
+                                    <div class="card card-body shadow">
                                         <form>
                                             <h4>Add New Item Group</h4>
                                             <div class="form-group">
@@ -458,7 +458,7 @@ include 'mop_session_check.php';
                             </p>
                             <div style="min-height: 120px;">
                                 <div class="collapse width" id="collapseisg">
-                                    <div class="card card-body shadow" style="width: 420px;">
+                                    <div class="card card-body shadow">
                                         <form>
                                             <h4>Add New Item Sub Group</h4>
                                             <div class="form-group">
@@ -514,6 +514,7 @@ include 'mop_session_check.php';
 
     <script src="assets/js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -3,7 +3,6 @@ session_start();
 session_unset();
 session_destroy();
 
-// Redirect to the login page after logout
-header("Location: index.php");
+// Send a success message instead of redirecting
+echo "success";
 exit();
-?>

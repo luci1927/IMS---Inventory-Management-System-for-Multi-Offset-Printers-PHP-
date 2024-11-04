@@ -12,9 +12,13 @@ $ref_no = $_POST["ref"];
 
 if ($item_code == "") {
     echo ("Please select an item!");
-} else if (empty($grn_no)) {
+} else if (empty($quantity)) {
+    echo ("Please enter item quantity!");
+} else if (!is_numeric($quantity)) {
+    echo ("Quantity must be a number!");
+}else if (empty($grn_no)) {
     echo ("Please enter GRN number!");
-} else if ($grn_type_id == "0") {
+}  else if ($grn_type_id == "0") {
     echo ("Please select a GRN type!");
 } else if ($supplier_id == "0") {
     echo ("Please select a supplier!");

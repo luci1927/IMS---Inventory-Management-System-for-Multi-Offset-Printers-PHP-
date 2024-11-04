@@ -10,44 +10,116 @@ function signIn() {
 
   var r = new XMLHttpRequest();
 
-  r.onreadystatechange = function () {
-    if (r.readyState === 4) {
-      var t = r.responseText;
-      console.log("Response from server:", t);
-
-      var departmentId = parseInt(t, 10);
-
-      if (departmentId === 1) {
-        window.location = "mop-index.php";
-      } else if (departmentId === 2) {
-        window.location = "fth-index.php";
-      } else if (departmentId === 3) {
-        window.location = "rmi-index.php";
-      } else {
-        alert("Invalid credentials or department");
+  // Show a loading SweetAlert while the request is being processed
+  Swal.fire({
+      title: 'Signing In...',
+      text: 'Please wait while we log you in.',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
       }
-    }
+  });
+
+  r.onreadystatechange = function () {
+      if (r.readyState === 4) {
+          Swal.close();  // Close the loading SweetAlert when request is complete
+
+          var t = r.responseText;
+          console.log("Response from server:", t);
+
+          var departmentId = parseInt(t, 10);
+
+          if (departmentId === 1) {
+              Swal.fire({
+                  title: 'Welcome!',
+                  text: 'Redirecting to MOP Dashboard...',
+                  icon: 'success',
+                  timer: 1500,
+                  showConfirmButton: false
+              }).then(() => {
+                  window.location = "mop-index.php";
+              });
+          } else if (departmentId === 2) {
+              Swal.fire({
+                  title: 'Welcome!',
+                  text: 'Redirecting to FTH Dashboard...',
+                  icon: 'success',
+                  timer: 1500,
+                  showConfirmButton: false
+              }).then(() => {
+                  window.location = "fth-index.php";
+              });
+          } else if (departmentId === 3) {
+              Swal.fire({
+                  title: 'Welcome!',
+                  text: 'Redirecting to RMI Dashboard...',
+                  icon: 'success',
+                  timer: 1500,
+                  showConfirmButton: false
+              }).then(() => {
+                  window.location = "rmi-index.php";
+              });
+          } else {
+              // Show an error SweetAlert if credentials or department are invalid
+              Swal.fire({
+                  title: 'Error',
+                  text: 'Invalid credentials or department. Please try again.',
+                  icon: 'error'
+              });
+          }
+      }
   };
 
   r.open("POST", "signInProcess.php", true);
   r.send(f);
 }
 
-function signout() {
-  var r = new XMLHttpRequest();
-
-  r.onreadystatechange = function () {
-    if (r.readyState == 4) {
-      var t = r.responseText;
-      if (t.trim() == "success") {
-        window.location.reload();
+function confirmLogout() {
+  Swal.fire({
+      title: 'Are you sure you want to sign out?',
+      text: "You will need to log in again to access your account.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, sign me out!',
+      cancelButtonText: 'Cancel'
+  }).then((result) => {
+      if (result.isConfirmed) {
+          signout();  // Call the signout function if the user confirms
       }
-    }
-  };
-
-  r.open("GET", "signoutProcess.php", true);
-  r.send();
+  });
 }
+
+function signout() {
+    var r = new XMLHttpRequest();
+
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var t = r.responseText;
+            
+            // Check if the response is HTML (indicating a redirect occurred)
+            if (t.includes("<html")) {
+                location.href = "index.php"; // Redirect to login page
+            } else if (t.trim() == "success") {
+                Swal.fire({
+                    title: 'Signed out!',
+                    text: 'You have been signed out successfully.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.href = "index.php"; // Redirect to login page after SweetAlert
+                });
+            }
+        }
+    };
+
+    r.open("GET", "signoutProcess.php", true);
+    r.send();
+}
+
+
 
 function mop_new_item() {
   var i = document.getElementById("item_code");
@@ -65,17 +137,43 @@ function mop_new_item() {
 
   var r = new XMLHttpRequest();
 
-  r.onreadystatechange = function () {
-    if (r.readyState == 4) {
-      var text = r.responseText;
-
-      if (text == "success") {
-        alert("Item added successfully.");
-        window.location.reload();
-      } else {
-        alert(text);
+  // Show loading SweetAlert while request is processing
+  Swal.fire({
+      title: 'Adding Item...',
+      text: 'Please wait while the item is being added.',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
       }
-    }
+  });
+
+  r.onreadystatechange = function () {
+      if (r.readyState == 4) {
+          Swal.close();  // Close loading SweetAlert once request is complete
+
+          var text = r.responseText.trim();
+          console.log("Response from server:", text);  // Debugging line
+
+          if (text === "success") {
+              // Success SweetAlert with page reload on close
+              Swal.fire({
+                  title: 'Success!',
+                  text: 'Item added successfully.',
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+              }).then(() => {
+                  window.location.reload();
+              });
+          } else {
+              // Error SweetAlert displaying the error message
+              Swal.fire({
+                  title: 'Error',
+                  text: text || 'An error occurred while adding the item.',
+                  icon: 'error',
+                  confirmButtonText: 'Try Again'
+              });
+          }
+      }
   };
 
   r.open("POST", "process_mop_add_new_item.php", true);
@@ -102,17 +200,43 @@ function mop_new_stock() {
 
   var r = new XMLHttpRequest();
 
-  r.onreadystatechange = function () {
-    if (r.readyState == 4) {
-      var text = r.responseText;
-
-      if (text == "success") {
-        alert("Stock added successfully.");
-        window.location.reload();
-      } else {
-        alert(text);
+  // Show loading SweetAlert while request is processing
+  Swal.fire({
+      title: 'Adding Stock...',
+      text: 'Please wait while the stock is being added.',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
       }
-    }
+  });
+
+  r.onreadystatechange = function () {
+      if (r.readyState == 4) {
+          Swal.close();  // Close loading SweetAlert once request is complete
+
+          var text = r.responseText.trim();
+          console.log("Response from server:", text);  // Debugging line
+
+          if (text === "success") {
+              // Success SweetAlert with page reload on close
+              Swal.fire({
+                  title: 'Success!',
+                  text: 'Stock added successfully.',
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+              }).then(() => {
+                  window.location.reload();
+              });
+          } else {
+              // Error SweetAlert displaying the error message
+              Swal.fire({
+                  title: 'Error',
+                  text: text || 'An error occurred while adding stock.',
+                  icon: 'error',
+                  confirmButtonText: 'Try Again'
+              });
+          }
+      }
   };
 
   r.open("POST", "process_mop_add_new_stock.php", true);
@@ -238,17 +362,43 @@ function mop_update_qty() {
 
   var r = new XMLHttpRequest();
 
-  r.onreadystatechange = function () {
-    if (r.readyState == 4) {
-      var text = r.responseText;
-
-      if (text === "success") {
-        alert("Quantity updated successfully.");
-        window.location.reload();
-      } else {
-        alert(text);
+  // Show loading SweetAlert while request is processing
+  Swal.fire({
+      title: 'Updating Quantity...',
+      text: 'Please wait while we update the quantity.',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
       }
-    }
+  });
+
+  r.onreadystatechange = function () {
+      if (r.readyState == 4) {
+          Swal.close();  // Close loading SweetAlert once request is complete
+
+          var text = r.responseText.trim();
+          console.log("Response from server:", text);  // Debugging line
+
+          if (text === "success") {
+              // Success SweetAlert with page reload on close
+              Swal.fire({
+                  title: 'Success!',
+                  text: 'Quantity updated successfully.',
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+              }).then(() => {
+                  window.location.reload();
+              });
+          } else {
+              // Error SweetAlert displaying the error message
+              Swal.fire({
+                  title: 'Error',
+                  text: text || 'An error occurred while updating the quantity.',
+                  icon: 'error',
+                  confirmButtonText: 'Try Again'
+              });
+          }
+      }
   };
 
   r.open("POST", "process_mop_update_item.php", true);
@@ -829,17 +979,43 @@ function mop_inventory_out() {
 
   var r = new XMLHttpRequest();
 
-  r.onreadystatechange = function () {
-    if (r.readyState == 4) {
-      var text = r.responseText;
-
-      if (text == "success") {
-        alert(text);
-        window.location.reload();
-      } else {
-        alert(text);
+  // Show loading SweetAlert while request is processing
+  Swal.fire({
+      title: 'Processing Inventory Out...',
+      text: 'Please wait while we process your request.',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading();
       }
-    }
+  });
+
+  r.onreadystatechange = function () {
+      if (r.readyState == 4) {
+          Swal.close();  // Close loading SweetAlert once request is complete
+
+          var text = r.responseText.trim();
+          console.log("Response from server:", text);  // Debugging line
+
+          if (text === "success") {
+              // Success SweetAlert with page reload on close
+              Swal.fire({
+                  title: 'Success!',
+                  text: 'Item issued out successfully.',
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+              }).then(() => {
+                  window.location.reload();
+              });
+          } else {
+              // Error SweetAlert displaying the error message
+              Swal.fire({
+                  title: 'Error',
+                  text: text || 'An error occurred while processing the inventory out.',
+                  icon: 'error',
+                  confirmButtonText: 'Try Again'
+              });
+          }
+      }
   };
 
   r.open("POST", "process_mop_inventory_out.php", true);
@@ -915,22 +1091,36 @@ function add_unit() {
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
-    if (r.readyState == 4) {
-      var text = r.responseText;
+      if (r.readyState == 4) {
+          var text = r.responseText.trim();
+          console.log("Response from server:", text); // Debugging line
 
-      if (text == "success") {
-        alert("Unit added successfully.");
-        window.location.reload();
-      } else {
-        alert(text);
+          if (text === "success") {
+              // Show success SweetAlert
+              Swal.fire({
+                  title: 'Success!',
+                  text: 'Unit added successfully.',
+                  icon: 'success',
+                  timer: 1500,
+                  showConfirmButton: false
+              }).then(() => {
+                  window.location.reload();  // Reload the page after the alert is dismissed
+              });
+          } else {
+              // Show error SweetAlert
+              Swal.fire({
+                  title: 'Error',
+                  text: text || 'An error occurred while adding the unit.',
+                  icon: 'error',
+                  confirmButtonText: 'Try Again'
+              });
+          }
       }
-    }
   };
 
   r.open("POST", "process_add_new_unit.php", true);
   r.send(form);
 }
-
 function add_grn() {
   var grn_type = document.getElementById("grn").value;
 
@@ -940,109 +1130,168 @@ function add_grn() {
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
-    if (r.readyState == 4) {
-      var text = r.responseText;
+      if (r.readyState == 4) {
+          var text = r.responseText.trim();
+          console.log("Response from server:", text); // Debugging line
 
-      if (text == "success") {
-        alert("GRN Type added successfully.");
-        window.location.reload();
-      } else {
-        alert(text);
+          if (text === "success") {
+              // Show success SweetAlert
+              Swal.fire({
+                  title: 'Success!',
+                  text: 'GRN Type added successfully.',
+                  icon: 'success',
+                  timer: 1500,
+                  showConfirmButton: false
+              }).then(() => {
+                  window.location.reload();  // Reload the page after the alert is dismissed
+              });
+          } else {
+              // Show error SweetAlert
+              Swal.fire({
+                  title: 'Error',
+                  text: text || 'An error occurred while adding the GRN type.',
+                  icon: 'error',
+                  confirmButtonText: 'Try Again'
+              });
+          }
       }
-    }
   };
 
   r.open("POST", "process_add_new_grn_type.php", true);
   r.send(form);
 }
 
-function add_supplier() {
-  var supplier_name = document.getElementById("supplierName").value;
-  var company = document.getElementById("company").value;
-  var mobile = document.getElementById("mobile").value;
 
-  var form = new FormData();
-  form.append("s", supplier_name);
-  form.append("c", company);
-  form.append("m", mobile);
+    function add_supplier() {
+        var supplier_name = document.getElementById("supplierName").value;
+        var company = document.getElementById("company").value;
+        var mobile = document.getElementById("mobile").value;
 
-  var r = new XMLHttpRequest();
+        var form = new FormData();
+        form.append("s", supplier_name);
+        form.append("c", company);
+        form.append("m", mobile);
 
-  r.onreadystatechange = function () {
-    if (r.readyState == 4) {
-      var text = r.responseText;
+        var r = new XMLHttpRequest();
 
-      if (text == "success") {
-        alert("Supplier added successfully.");
-        window.location.reload();
-      } else {
-        alert(text);
-      }
+        r.onreadystatechange = function () {
+            if (r.readyState == 4) {
+                var text = r.responseText.trim();
+                console.log("Response from server:", text); // Debugging line
+
+                if (text === "success") {
+                    // Show success SweetAlert
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Supplier added successfully.',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.reload();  // Reload the page after the alert is dismissed
+                    });
+                } else {
+                    // Show error SweetAlert
+                    Swal.fire({
+                        title: 'Error',
+                        text: text || 'An error occurred while adding the supplier.',
+                        icon: 'error',
+                        confirmButtonText: 'Try Again'
+                    });
+                }
+            }
+        };
+
+        r.open("POST", "process_add_new_supplier.php", true);
+        r.send(form);
     }
-  };
 
-  r.open("POST", "process_add_new_supplier.php", true);
-  r.send(form);
-}
 
-function mop_add_item_group() {
-  var item_group_code = document.getElementById("igc").value;
-  var item_group_name = document.getElementById("ign").value;
 
-  var form = new FormData();
-  form.append("c", item_group_code);
-  form.append("n", item_group_name);
+    function mop_add_item_group() {
+      var item_group_code = document.getElementById("igc").value;
+      var item_group_name = document.getElementById("ign").value;
 
-  var r = new XMLHttpRequest();
+      var form = new FormData();
+      form.append("c", item_group_code);
+      form.append("n", item_group_name);
 
-  r.onreadystatechange = function () {
-    if (r.readyState == 4) {
-      var text = r.responseText;
+      var r = new XMLHttpRequest();
 
-      if (text == "success") {
-        alert("Item Group added successfully.");
-        window.location.reload();
-      } else {
-        alert(text);
-      }
-    }
-  };
+      r.onreadystatechange = function () {
+          if (r.readyState == 4) {
+              var text = r.responseText.trim();
+              console.log("Response from server:", text); // Debugging line
 
-  r.open("POST", "process_mop_add_item_group.php", true);
-  r.send(form);
-}
+              if (text === "success") {
+                  // Show success SweetAlert
+                  Swal.fire({
+                      title: 'Success!',
+                      text: 'Item Group added successfully.',
+                      icon: 'success',
+                      timer: 1500,
+                      showConfirmButton: false
+                  }).then(() => {
+                      window.location.reload();  // Reload the page after the alert is dismissed
+                  });
+              } else {
+                  // Show error SweetAlert
+                  Swal.fire({
+                      title: 'Error',
+                      text: text || 'An error occurred while adding the item group.',
+                      icon: 'error',
+                      confirmButtonText: 'Try Again'
+                  });
+              }
+          }
+      };
 
-function mop_add_item_sub_group() {
-  var item_group_code = document.getElementById("itmgp").value;
-  var item_sub_group_code = document.getElementById("igc1").value;
-  var item_sub_group_name = document.getElementById("ign1").value;
+      r.open("POST", "process_mop_add_item_group.php", true);
+      r.send(form);
+  }
 
-  var form = new FormData();
-  form.append("g", item_group_code);
-  form.append("c", item_sub_group_code);
-  form.append("n", item_sub_group_name);
+  function mop_add_item_sub_group() {
+    var item_group_code = document.getElementById("itmgp").value;
+    var item_sub_group_code = document.getElementById("igc1").value;
+    var item_sub_group_name = document.getElementById("ign1").value;
 
-  console.log(item_group_code);
-  console.log("--");
-  console.log(item_sub_group_code);
+    var form = new FormData();
+    form.append("g", item_group_code);
+    form.append("c", item_sub_group_code);
+    form.append("n", item_sub_group_name);
 
-  var r = new XMLHttpRequest();
+    var r = new XMLHttpRequest();
 
-  r.onreadystatechange = function () {
-    if (r.readyState == 4) {
-      var text = r.responseText;
+    r.onreadystatechange = function () {
+        if (r.readyState == 4) {
+            var text = r.responseText.trim(); // Trim the response text
+            console.log("Response from server:", text); // Debugging line
 
-      if (text == "success") {
-        alert("Item Group added successfully.");
-        window.location.reload();
-      } else {
-        alert(text);
-      }
-    }
-  };
+            if (text === "success") {
+                // Show success SweetAlert
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Item Sub Group added successfully.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.reload();  // Reload the page after the alert is dismissed
+                });
+            } else {
+                // Show error SweetAlert
+                Swal.fire({
+                    title: 'Error',
+                    text: text || 'An error occurred while adding the item sub group.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+            }
+        }
+    };
 
-  r.open("POST", "process_mop_add_item_sub_group.php", true);
-  r.send(form);
+    r.open("POST", "process_mop_add_item_sub_group.php", true);
+    r.send(form);
 }
 function load_item_sub_group() {
   var item_group_code = document.getElementById("item_group1").value;
@@ -1227,24 +1476,50 @@ function issueLiveSearch() {
     });
   }
   
-function change_mop_issue_status(ref_no){
-
-
-  var request = new XMLHttpRequest();
+  function change_mop_issue_status(ref_no) {
+    var request = new XMLHttpRequest();
 
     request.onreadystatechange = function () {
         if (request.readyState == 4) {
-            var txt = request.responseText;
-            if (txt == "viewed") {
+            var txt = request.responseText.trim();
+            console.log("Response from server:", txt); // Debugging line
+
+            if (txt === "viewed") {
                 document.getElementById("ub" + ref_no).innerHTML = "Approved";
                 document.getElementById("ub" + ref_no).classList = "btn btn-success";
-                window.location.reload();
-            } else if (txt == "approved") {
+
+                // Show success SweetAlert for "Approved" status
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Status updated to Approved.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.reload();  // Reload the page after the alert is dismissed
+                });
+            } else if (txt === "approved") {
                 document.getElementById("ub" + ref_no).innerHTML = "Viewed";
                 document.getElementById("ub" + ref_no).classList = "btn btn-danger";
-                window.location.reload();
+
+                // Show success SweetAlert for "Viewed" status
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Status updated to Viewed.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.reload();  // Reload the page after the alert is dismissed
+                });
             } else {
-                alert(txt);
+                // Show error SweetAlert for any other response
+                Swal.fire({
+                    title: 'Error',
+                    text: txt || 'An error occurred while updating the status.',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
             }
         }
     }

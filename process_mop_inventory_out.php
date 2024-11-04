@@ -26,40 +26,39 @@ if ($inventory_rs) {
 
 $stock_rs = Database::search("SELECT * FROM `mop_stock` 
     WHERE `mop_inventory_item_code` = '" . $item_code . "' ORDER BY `date_time` DESC LIMIT 1;");
-    $stock_n = $stock_rs->num_rows;
-    $stock_data = $stock_rs->fetch_assoc();
+$stock_n = $stock_rs->num_rows;
+$stock_data = $stock_rs->fetch_assoc();
 
-    $current_qty = $stock_data["qty_hand"];
+$current_qty = $stock_data["qty_hand"];
 
+if (empty($qout)) {
+    die("Please enter quantity!");
+} else if (!is_numeric($qout)) {
+    die("Quantity must be a number!");
+} else if (empty($ref_no)) {
+    die("Please enter reference number!");
+}
 
-    if (empty($qout)) {
-        die("Please enter quantity!");
-    } else if (empty($ref_no)) {
-        die("Please enter reference number!");
-    }
+if ($current_qty < $qout) {
+    die("Insufficient quantity in stock!");
+}
 
-    if ($current_qty < $qout) {
-        die("Insufficient quantity in stock!");
-    }
+$d = new DateTime();
+$tz = new DateTimeZone("Asia/Colombo");
+$d->setTimezone($tz);
+$date = $d->format("Y-m-d H:i:s");
 
-    $d = new DateTime();
-    $tz = new DateTimeZone("Asia/Colombo");
-    $d->setTimezone($tz);
-    $date = $d->format("Y-m-d H:i:s");
-
-    Database::iud("INSERT INTO `mop_issuing` 
+Database::iud("INSERT INTO `mop_issuing` 
     (`issue_no`,`qty`,`status_status_id`,`date_time`,`ref_no`)
-    VALUES ('" . $issue_no . "','" . $qout . "','1','" . $date . "','".$ref_no."')");
+    VALUES ('" . $issue_no . "','" . $qout . "','1','" . $date . "','" . $ref_no . "')");
 
-    $qsystem = $stock_data["qty_system"];
-    $qhand = floatval($stock_data["qty_hand"]);
-    $qout = floatval($qout);
-    $avl_qty = $qhand - $qout;
+$qsystem = $stock_data["qty_system"];
+$qhand = floatval($stock_data["qty_hand"]);
+$qout = floatval($qout);
+$avl_qty = $qhand - $qout;
 
-    Database::iud("INSERT INTO `mop_stock` 
+Database::iud("INSERT INTO `mop_stock` 
     (`mop_inventory_item_code`,`qty_system`,`qty_hand`,`remarks`,`date_time`,`mop_issuing_issue_no`)
     VALUES ('" . $item_code . "','" . $qsystem . "','" . $avl_qty . "','" . $remarks . "','" . $date . "','" . $issue_no . "')");
 
 echo ("success");
-
-
