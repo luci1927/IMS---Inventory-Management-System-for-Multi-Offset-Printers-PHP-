@@ -82,6 +82,7 @@
 
                     ?>
                 </select>
+                
                 <div class="error-message" id="departmentError">Please select a department.</div>
             </div>
             <button type="submit" class="btn btn-success btn-block" >Login</button>
