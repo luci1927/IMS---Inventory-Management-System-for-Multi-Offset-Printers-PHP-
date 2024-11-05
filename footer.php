@@ -25,17 +25,19 @@
                 <h5 class="text-uppercase font-weight-bold mb-3">Contact</h5>
                 <p class="small mb-1">345 Negombo Rd, Seeduwa 11410. Sri Lanka</p>
                 <p class="small mb-1">Email: <a href="mailto:multioffsetprinters@gmail.com" class="text-white-50">multioffsetprinters@gmail.com</a></p>
-                <p class="small mb-0">Phone: <a href="tel:+94112253505" class="text-white-50">+94 11 2253 505</a></p>
+                <p class="small mb-0">Phone: <a href="tel:+94112253505" class="text-white-50">+94 11 22 53 505</a></p>
             </div>
 
             <!-- Social Media Links -->
             <div class="col-lg-3 col-md-6 mb-4">
                 <h5 class="text-uppercase font-weight-bold mb-3">Follow Us On</h5>
                 <div>
-                    <a href="" class="text-white-50 me-3" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="" class="text-white-50 me-3 p-1" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
                     <a href="" class="text-white-50 me-3" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
-                    <a href="" class="text-white-50 me-3" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                    <a href="" class="text-white-50" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="" class="text-white-50 me-3 p-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="" class="text-white-50 me-3" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="" class="text-white-50 me-3 p-1" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    <a href="" class="text-white-50" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
                 </div>
             </div>
         </div>

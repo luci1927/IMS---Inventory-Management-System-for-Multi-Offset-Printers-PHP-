@@ -10,64 +10,62 @@ function signIn() {
 
   var r = new XMLHttpRequest();
 
-  // Show a loading SweetAlert while the request is being processed
   Swal.fire({
-      title: 'Signing In...',
-      text: 'Please wait while we log you in.',
-      allowOutsideClick: false,
-      didOpen: () => {
-          Swal.showLoading();
-      }
+    title: "Signing In...",
+    text: "Please wait while we log you in.",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
   });
 
   r.onreadystatechange = function () {
-      if (r.readyState === 4) {
-          Swal.close();  // Close the loading SweetAlert when request is complete
+    if (r.readyState === 4) {
+      Swal.close();
 
-          var t = r.responseText;
-          console.log("Response from server:", t);
+      var t = r.responseText;
+      console.log("Response from server:", t);
 
-          var departmentId = parseInt(t, 10);
+      var departmentId = parseInt(t, 10);
 
-          if (departmentId === 1) {
-              Swal.fire({
-                  title: 'Welcome!',
-                  text: 'Redirecting to MOP Dashboard...',
-                  icon: 'success',
-                  timer: 1500,
-                  showConfirmButton: false
-              }).then(() => {
-                  window.location = "mop-index.php";
-              });
-          } else if (departmentId === 2) {
-              Swal.fire({
-                  title: 'Welcome!',
-                  text: 'Redirecting to FTH Dashboard...',
-                  icon: 'success',
-                  timer: 1500,
-                  showConfirmButton: false
-              }).then(() => {
-                  window.location = "fth-index.php";
-              });
-          } else if (departmentId === 3) {
-              Swal.fire({
-                  title: 'Welcome!',
-                  text: 'Redirecting to RMI Dashboard...',
-                  icon: 'success',
-                  timer: 1500,
-                  showConfirmButton: false
-              }).then(() => {
-                  window.location = "rmi-index.php";
-              });
-          } else {
-              // Show an error SweetAlert if credentials or department are invalid
-              Swal.fire({
-                  title: 'Error',
-                  text: 'Invalid credentials or department. Please try again.',
-                  icon: 'error'
-              });
-          }
+      if (departmentId === 1) {
+        Swal.fire({
+          title: "Welcome!",
+          text: "Redirecting to MOP Dashboard...",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location = "mop-index.php";
+        });
+      } else if (departmentId === 2) {
+        Swal.fire({
+          title: "Welcome!",
+          text: "Redirecting to FTH Dashboard...",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location = "fth-index.php";
+        });
+      } else if (departmentId === 3) {
+        Swal.fire({
+          title: "Welcome!",
+          text: "Redirecting to RMI Dashboard...",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location = "rmi-index.php";
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "Invalid credentials or department. Please try again.",
+          icon: "error",
+        });
       }
+    }
   };
 
   r.open("POST", "signInProcess.php", true);
@@ -76,50 +74,47 @@ function signIn() {
 
 function confirmLogout() {
   Swal.fire({
-      title: 'Are you sure you want to sign out?',
-      text: "You will need to log in again to access your account.",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, sign me out!',
-      cancelButtonText: 'Cancel'
+    title: "Are you sure you want to sign out?",
+    text: "You will need to log in again to access your account.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, sign me out!",
+    cancelButtonText: "Cancel",
   }).then((result) => {
-      if (result.isConfirmed) {
-          signout();  // Call the signout function if the user confirms
-      }
+    if (result.isConfirmed) {
+      signout();
+    }
   });
 }
 
 function signout() {
-    var r = new XMLHttpRequest();
+  var r = new XMLHttpRequest();
 
-    r.onreadystatechange = function () {
-        if (r.readyState == 4) {
-            var t = r.responseText;
-            
-            // Check if the response is HTML (indicating a redirect occurred)
-            if (t.includes("<html")) {
-                location.href = "index.php"; // Redirect to login page
-            } else if (t.trim() == "success") {
-                Swal.fire({
-                    title: 'Signed out!',
-                    text: 'You have been signed out successfully.',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
-                    location.href = "index.php"; // Redirect to login page after SweetAlert
-                });
-            }
-        }
-    };
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var t = r.responseText;
 
-    r.open("GET", "signoutProcess.php", true);
-    r.send();
+      if (t.includes("<html")) {
+        location.href = "index.php";
+      } else if (t.trim() == "success") {
+        Swal.fire({
+          title: "Signed out!",
+          text: "You have been signed out successfully.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          location.href = "index.php";
+        });
+      }
+    }
+  };
+
+  r.open("GET", "signoutProcess.php", true);
+  r.send();
 }
-
-
 
 function mop_new_item() {
   var i = document.getElementById("item_code");
@@ -137,43 +132,40 @@ function mop_new_item() {
 
   var r = new XMLHttpRequest();
 
-  // Show loading SweetAlert while request is processing
   Swal.fire({
-      title: 'Adding Item...',
-      text: 'Please wait while the item is being added.',
-      allowOutsideClick: false,
-      didOpen: () => {
-          Swal.showLoading();
-      }
+    title: "Adding Item...",
+    text: "Please wait while the item is being added.",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
   });
 
   r.onreadystatechange = function () {
-      if (r.readyState == 4) {
-          Swal.close();  // Close loading SweetAlert once request is complete
+    if (r.readyState == 4) {
+      Swal.close();
 
-          var text = r.responseText.trim();
-          console.log("Response from server:", text);  // Debugging line
+      var text = r.responseText.trim();
+      console.log("Response from server:", text);
 
-          if (text === "success") {
-              // Success SweetAlert with page reload on close
-              Swal.fire({
-                  title: 'Success!',
-                  text: 'Item added successfully.',
-                  icon: 'success',
-                  confirmButtonText: 'OK'
-              }).then(() => {
-                  window.location.reload();
-              });
-          } else {
-              // Error SweetAlert displaying the error message
-              Swal.fire({
-                  title: 'Error',
-                  text: text || 'An error occurred while adding the item.',
-                  icon: 'error',
-                  confirmButtonText: 'Try Again'
-              });
-          }
+      if (text === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "Item added successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: text || "An error occurred while adding the item.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
       }
+    }
   };
 
   r.open("POST", "process_mop_add_new_item.php", true);
@@ -200,43 +192,40 @@ function mop_new_stock() {
 
   var r = new XMLHttpRequest();
 
-  // Show loading SweetAlert while request is processing
   Swal.fire({
-      title: 'Adding Stock...',
-      text: 'Please wait while the stock is being added.',
-      allowOutsideClick: false,
-      didOpen: () => {
-          Swal.showLoading();
-      }
+    title: "Adding Stock...",
+    text: "Please wait while the stock is being added.",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
   });
 
   r.onreadystatechange = function () {
-      if (r.readyState == 4) {
-          Swal.close();  // Close loading SweetAlert once request is complete
+    if (r.readyState == 4) {
+      Swal.close();
 
-          var text = r.responseText.trim();
-          console.log("Response from server:", text);  // Debugging line
+      var text = r.responseText.trim();
+      console.log("Response from server:", text);
 
-          if (text === "success") {
-              // Success SweetAlert with page reload on close
-              Swal.fire({
-                  title: 'Success!',
-                  text: 'Stock added successfully.',
-                  icon: 'success',
-                  confirmButtonText: 'OK'
-              }).then(() => {
-                  window.location.reload();
-              });
-          } else {
-              // Error SweetAlert displaying the error message
-              Swal.fire({
-                  title: 'Error',
-                  text: text || 'An error occurred while adding stock.',
-                  icon: 'error',
-                  confirmButtonText: 'Try Again'
-              });
-          }
+      if (text === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "Stock added successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: text || "An error occurred while adding stock.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
       }
+    }
   };
 
   r.open("POST", "process_mop_add_new_stock.php", true);
@@ -362,43 +351,40 @@ function mop_update_qty() {
 
   var r = new XMLHttpRequest();
 
-  // Show loading SweetAlert while request is processing
   Swal.fire({
-      title: 'Updating Quantity...',
-      text: 'Please wait while we update the quantity.',
-      allowOutsideClick: false,
-      didOpen: () => {
-          Swal.showLoading();
-      }
+    title: "Updating Quantity...",
+    text: "Please wait while we update the quantity.",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
   });
 
   r.onreadystatechange = function () {
-      if (r.readyState == 4) {
-          Swal.close();  // Close loading SweetAlert once request is complete
+    if (r.readyState == 4) {
+      Swal.close();
 
-          var text = r.responseText.trim();
-          console.log("Response from server:", text);  // Debugging line
+      var text = r.responseText.trim();
+      console.log("Response from server:", text);
 
-          if (text === "success") {
-              // Success SweetAlert with page reload on close
-              Swal.fire({
-                  title: 'Success!',
-                  text: 'Quantity updated successfully.',
-                  icon: 'success',
-                  confirmButtonText: 'OK'
-              }).then(() => {
-                  window.location.reload();
-              });
-          } else {
-              // Error SweetAlert displaying the error message
-              Swal.fire({
-                  title: 'Error',
-                  text: text || 'An error occurred while updating the quantity.',
-                  icon: 'error',
-                  confirmButtonText: 'Try Again'
-              });
-          }
+      if (text === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "Quantity updated successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: text || "An error occurred while updating the quantity.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
       }
+    }
   };
 
   r.open("POST", "process_mop_update_item.php", true);
@@ -469,7 +455,6 @@ function rmi_update_qty() {
 
 function load_mop_unit() {
   var item = document.getElementById("item").value;
-
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
@@ -486,7 +471,6 @@ function load_mop_unit() {
 
 function load_mop_unit_update() {
   var item = document.getElementById("item3").value;
-
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
@@ -503,7 +487,6 @@ function load_mop_unit_update() {
 
 function load_mop_grn_type_update() {
   var item = document.getElementById("item3").value;
-
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
@@ -537,7 +520,6 @@ function load_fth_unit() {
 
 function load_fth_unit_update() {
   var item = document.getElementById("item3").value;
-
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
@@ -554,7 +536,6 @@ function load_fth_unit_update() {
 
 function load_fth_grn_type_update() {
   var item = document.getElementById("item3").value;
-
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
@@ -571,7 +552,6 @@ function load_fth_grn_type_update() {
 
 function load_rmi_unit() {
   var item = document.getElementById("item").value;
-
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
@@ -615,80 +595,6 @@ function search_mop() {
     },
   });
 }
-
-// function searchfth() {
-//     var selectedDate = $('#datepickerfth').val();
-
-//     console.log("Selected date: " + selectedDate);
-
-//     if (!selectedDate) {
-//         alert("Please select a valid date.");
-//         return;
-//     }
-
-//     $.ajax({
-//         url: 'process_fth_search.php',
-//         type: 'POST',
-//         data: { date: selectedDate },
-//         success: function (response) {
-//             console.log("Response from server: " + response);
-//             $('#reportsTablefth tbody').empty();
-//             $('#reportsTablefth tbody').html(response);
-//         },
-//         error: function (xhr, status, error) {
-//             console.error("AJAX Error: " + status + ", " + error);
-//             alert('Error fetching data.');
-//         }
-//     });
-// }
-
-// $(document).ready(function () {
-//     $('#datepickerfth').datepicker({
-//         format: 'yyyy-mm-dd',
-//         autoclose: true,
-//         todayHighlight: true
-//     });
-
-//     $('#searchButtonfth').click(function () {
-//         search('#datepickerfth', '#reportsTablefth');
-//     });
-
-//     $('#datepickerrmi').datepicker({
-//         format: 'yyyy-mm-dd',
-//         autoclose: true,
-//         todayHighlight: true
-//     });
-
-//     $('#searchButtonrmi').click(function () {
-//         search('#datepickerrmi', '#reportsTablermi');
-//     });
-// });
-
-// function search(datepickerId, tableId) {
-//     var selectedDate = $(datepickerId).val();
-
-//     console.log("Selected date: " + selectedDate);
-
-//     if (!selectedDate) {
-//         alert("Please select a valid date.");
-//         return;
-//     }
-
-//     $.ajax({
-//         url: 'process_rmi_search.php',
-//         type: 'POST',
-//         data: { date: selectedDate },
-//         success: function (response) {
-//             console.log("Response from server: " + response);
-//             $(tableId + ' tbody').empty();
-//             $(tableId + ' tbody').html(response);
-//         },
-//         error: function (xhr, status, error) {
-//             console.error("AJAX Error: " + status + ", " + error);
-//             alert('Error fetching data.');
-//         }
-//     });
-// }
 
 function exportTableToCSV(tableId, filename = "") {
   const csv = [];
@@ -756,8 +662,8 @@ function exportTableToPDF(tableId, title = "") {
     body: rows.slice(1),
     startY: 70,
     theme: "grid",
-    headStyles: { fontSize: 10 }, // Reduced font size for headers
-    bodyStyles: { fontSize: 8 }, // Reduced font size for body rows
+    headStyles: { fontSize: 10 },
+    bodyStyles: { fontSize: 8 }, 
   });
 
   pdf.save("Inventory_Data_Sheet.pdf");
@@ -787,7 +693,6 @@ function exportTableToCSV(tableId, filename = "") {
   }
 
   const csvString = csv.join("\n");
-
   const downloadLink = document.createElement("a");
   const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
@@ -800,14 +705,6 @@ function exportTableToCSV(tableId, filename = "") {
   downloadLink.click();
   document.body.removeChild(downloadLink);
 }
-
-// $('#exportCSVButtonfth').click(function () {
-//     exportTableToCSV('reportsTablefth', 'Inventory_Reports');
-// });
-
-// $('#exportPDFButtonfth').click(function () {
-//     exportTableToPDF('reportsTablefth', 'Inventory Data Sheet');
-// });
 
 function exportTableToPDF(tableId, title = "") {
   console.log("Exporting PDF...");
@@ -888,14 +785,6 @@ function exportTableToCSV(tableId, filename = "") {
   document.body.removeChild(downloadLink);
 }
 
-// $('#exportCSVButtonrmi').click(function () {
-//     exportTableToCSV('reportsTablermi', 'Inventory_Reports');
-// });
-
-// $('#exportPDFButtonrmi').click(function () {
-//     exportTableToPDF('reportsTablermi', 'Inventory Data Sheet');
-// });
-
 function exportTableToPDF(tableId, title = "") {
   console.log("Exporting PDF...");
   const { jsPDF } = window.jspdf;
@@ -920,7 +809,6 @@ function exportTableToPDF(tableId, title = "") {
   );
   rows.push(header);
 
-  // Extract rows
   const tableRows = table.querySelectorAll("tbody tr");
   tableRows.forEach((row) => {
     const cols = row.querySelectorAll("td");
@@ -948,13 +836,11 @@ function formatRow(data, columnWidths) {
 
 function load_mop_out_table() {
   var item = document.getElementById("item").value;
-
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
     if (r.readyState == 4) {
       var t = r.responseText;
-
       document.getElementById("inventoryTable").innerHTML = t;
     }
   };
@@ -969,7 +855,6 @@ function mop_inventory_out() {
   var u = document.getElementById("issue_no");
   var re = document.getElementById("remarks2");
   var ref = document.getElementById("ref_no");
-
   var form = new FormData();
   form.append("i", i.value);
   form.append("q", q.value);
@@ -979,43 +864,40 @@ function mop_inventory_out() {
 
   var r = new XMLHttpRequest();
 
-  // Show loading SweetAlert while request is processing
   Swal.fire({
-      title: 'Processing Inventory Out...',
-      text: 'Please wait while we process your request.',
-      allowOutsideClick: false,
-      didOpen: () => {
-          Swal.showLoading();
-      }
+    title: "Processing Inventory Out...",
+    text: "Please wait while we process your request.",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
   });
 
   r.onreadystatechange = function () {
-      if (r.readyState == 4) {
-          Swal.close();  // Close loading SweetAlert once request is complete
+    if (r.readyState == 4) {
+      Swal.close();
 
-          var text = r.responseText.trim();
-          console.log("Response from server:", text);  // Debugging line
+      var text = r.responseText.trim();
+      console.log("Response from server:", text);
 
-          if (text === "success") {
-              // Success SweetAlert with page reload on close
-              Swal.fire({
-                  title: 'Success!',
-                  text: 'Item issued out successfully.',
-                  icon: 'success',
-                  confirmButtonText: 'OK'
-              }).then(() => {
-                  window.location.reload();
-              });
-          } else {
-              // Error SweetAlert displaying the error message
-              Swal.fire({
-                  title: 'Error',
-                  text: text || 'An error occurred while processing the inventory out.',
-                  icon: 'error',
-                  confirmButtonText: 'Try Again'
-              });
-          }
+      if (text === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "Item issued out successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: text || "An error occurred while processing the inventory out.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
       }
+    }
   };
 
   r.open("POST", "process_mop_inventory_out.php", true);
@@ -1091,31 +973,29 @@ function add_unit() {
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
-      if (r.readyState == 4) {
-          var text = r.responseText.trim();
-          console.log("Response from server:", text); // Debugging line
+    if (r.readyState == 4) {
+      var text = r.responseText.trim();
+      console.log("Response from server:", text);
 
-          if (text === "success") {
-              // Show success SweetAlert
-              Swal.fire({
-                  title: 'Success!',
-                  text: 'Unit added successfully.',
-                  icon: 'success',
-                  timer: 1500,
-                  showConfirmButton: false
-              }).then(() => {
-                  window.location.reload();  // Reload the page after the alert is dismissed
-              });
-          } else {
-              // Show error SweetAlert
-              Swal.fire({
-                  title: 'Error',
-                  text: text || 'An error occurred while adding the unit.',
-                  icon: 'error',
-                  confirmButtonText: 'Try Again'
-              });
-          }
+      if (text === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "Unit added successfully.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: text || "An error occurred while adding the unit.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
       }
+    }
   };
 
   r.open("POST", "process_add_new_unit.php", true);
@@ -1130,172 +1010,158 @@ function add_grn() {
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
-      if (r.readyState == 4) {
-          var text = r.responseText.trim();
-          console.log("Response from server:", text); // Debugging line
+    if (r.readyState == 4) {
+      var text = r.responseText.trim();
+      console.log("Response from server:", text);
 
-          if (text === "success") {
-              // Show success SweetAlert
-              Swal.fire({
-                  title: 'Success!',
-                  text: 'GRN Type added successfully.',
-                  icon: 'success',
-                  timer: 1500,
-                  showConfirmButton: false
-              }).then(() => {
-                  window.location.reload();  // Reload the page after the alert is dismissed
-              });
-          } else {
-              // Show error SweetAlert
-              Swal.fire({
-                  title: 'Error',
-                  text: text || 'An error occurred while adding the GRN type.',
-                  icon: 'error',
-                  confirmButtonText: 'Try Again'
-              });
-          }
+      if (text === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "GRN Type added successfully.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: text || "An error occurred while adding the GRN type.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
       }
+    }
   };
 
   r.open("POST", "process_add_new_grn_type.php", true);
   r.send(form);
 }
 
+function add_supplier() {
+  var supplier_name = document.getElementById("supplierName").value;
+  var company = document.getElementById("company").value;
+  var mobile = document.getElementById("mobile").value;
 
-    function add_supplier() {
-        var supplier_name = document.getElementById("supplierName").value;
-        var company = document.getElementById("company").value;
-        var mobile = document.getElementById("mobile").value;
+  var form = new FormData();
+  form.append("s", supplier_name);
+  form.append("c", company);
+  form.append("m", mobile);
 
-        var form = new FormData();
-        form.append("s", supplier_name);
-        form.append("c", company);
-        form.append("m", mobile);
+  var r = new XMLHttpRequest();
 
-        var r = new XMLHttpRequest();
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var text = r.responseText.trim();
+      console.log("Response from server:", text);
 
-        r.onreadystatechange = function () {
-            if (r.readyState == 4) {
-                var text = r.responseText.trim();
-                console.log("Response from server:", text); // Debugging line
-
-                if (text === "success") {
-                    // Show success SweetAlert
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'Supplier added successfully.',
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        window.location.reload();  // Reload the page after the alert is dismissed
-                    });
-                } else {
-                    // Show error SweetAlert
-                    Swal.fire({
-                        title: 'Error',
-                        text: text || 'An error occurred while adding the supplier.',
-                        icon: 'error',
-                        confirmButtonText: 'Try Again'
-                    });
-                }
-            }
-        };
-
-        r.open("POST", "process_add_new_supplier.php", true);
-        r.send(form);
+      if (text === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "Supplier added successfully.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: text || "An error occurred while adding the supplier.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
     }
+  };
 
+  r.open("POST", "process_add_new_supplier.php", true);
+  r.send(form);
+}
 
+function mop_add_item_group() {
+  var item_group_code = document.getElementById("igc").value;
+  var item_group_name = document.getElementById("ign").value;
+  var form = new FormData();
+  form.append("c", item_group_code);
+  form.append("n", item_group_name);
 
-    function mop_add_item_group() {
-      var item_group_code = document.getElementById("igc").value;
-      var item_group_name = document.getElementById("ign").value;
+  var r = new XMLHttpRequest();
 
-      var form = new FormData();
-      form.append("c", item_group_code);
-      form.append("n", item_group_name);
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var text = r.responseText.trim();
+      console.log("Response from server:", text);
 
-      var r = new XMLHttpRequest();
+      if (text === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "Item Group added successfully.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: text || "An error occurred while adding the item group.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
+    }
+  };
 
-      r.onreadystatechange = function () {
-          if (r.readyState == 4) {
-              var text = r.responseText.trim();
-              console.log("Response from server:", text); // Debugging line
+  r.open("POST", "process_mop_add_item_group.php", true);
+  r.send(form);
+}
 
-              if (text === "success") {
-                  // Show success SweetAlert
-                  Swal.fire({
-                      title: 'Success!',
-                      text: 'Item Group added successfully.',
-                      icon: 'success',
-                      timer: 1500,
-                      showConfirmButton: false
-                  }).then(() => {
-                      window.location.reload();  // Reload the page after the alert is dismissed
-                  });
-              } else {
-                  // Show error SweetAlert
-                  Swal.fire({
-                      title: 'Error',
-                      text: text || 'An error occurred while adding the item group.',
-                      icon: 'error',
-                      confirmButtonText: 'Try Again'
-                  });
-              }
-          }
-      };
+function mop_add_item_sub_group() {
+  var item_group_code = document.getElementById("itmgp").value;
+  var item_sub_group_code = document.getElementById("igc1").value;
+  var item_sub_group_name = document.getElementById("ign1").value;
+  var form = new FormData();
+  form.append("g", item_group_code);
+  form.append("c", item_sub_group_code);
+  form.append("n", item_sub_group_name);
 
-      r.open("POST", "process_mop_add_item_group.php", true);
-      r.send(form);
-  }
+  var r = new XMLHttpRequest();
 
-  function mop_add_item_sub_group() {
-    var item_group_code = document.getElementById("itmgp").value;
-    var item_sub_group_code = document.getElementById("igc1").value;
-    var item_sub_group_name = document.getElementById("ign1").value;
+  r.onreadystatechange = function () {
+    if (r.readyState == 4) {
+      var text = r.responseText.trim();
+      console.log("Response from server:", text);
 
-    var form = new FormData();
-    form.append("g", item_group_code);
-    form.append("c", item_sub_group_code);
-    form.append("n", item_sub_group_name);
+      if (text === "success") {
+        Swal.fire({
+          title: "Success!",
+          text: "Item Sub Group added successfully.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: text || "An error occurred while adding the item sub group.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
+    }
+  };
 
-    var r = new XMLHttpRequest();
-
-    r.onreadystatechange = function () {
-        if (r.readyState == 4) {
-            var text = r.responseText.trim(); // Trim the response text
-            console.log("Response from server:", text); // Debugging line
-
-            if (text === "success") {
-                // Show success SweetAlert
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Item Sub Group added successfully.',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.reload();  // Reload the page after the alert is dismissed
-                });
-            } else {
-                // Show error SweetAlert
-                Swal.fire({
-                    title: 'Error',
-                    text: text || 'An error occurred while adding the item sub group.',
-                    icon: 'error',
-                    confirmButtonText: 'Try Again'
-                });
-            }
-        }
-    };
-
-    r.open("POST", "process_mop_add_item_sub_group.php", true);
-    r.send(form);
+  r.open("POST", "process_mop_add_item_sub_group.php", true);
+  r.send(form);
 }
 function load_item_sub_group() {
   var item_group_code = document.getElementById("item_group1").value;
-
   var r = new XMLHttpRequest();
 
   r.onreadystatechange = function () {
@@ -1314,9 +1180,7 @@ function load_item_sub_group() {
 
 function load_stock_update_report_table() {
   var item = document.getElementById("item3").value;
-
   var dateRange = $("#date_range_stock").val();
-
   var dates = dateRange.split(" - ");
   var startDate = dates[0];
   var endDate = dates[1];
@@ -1339,9 +1203,7 @@ function load_stock_update_report_table() {
 
 function load_issue_update_report_table() {
   var item = document.getElementById("item4").value;
-
   var dateRange = $("#date_range_issue").val();
-
   var dates = dateRange.split(" - ");
   var startDate = dates[0];
   var endDate = dates[1];
@@ -1364,9 +1226,7 @@ function load_issue_update_report_table() {
 
 function load_grn_update_report_table() {
   var item = document.getElementById("item5").value;
-
   var dateRange = $("#date_range_grn").val();
-
   var dates = dateRange.split(" - ");
   var startDate = dates[0];
   var endDate = dates[1];
@@ -1417,113 +1277,106 @@ function stockLiveSearch() {
 }
 
 function issueLiveSearch() {
+  var dateRange = $("#date_range_issue").val();
+  var dates = dateRange.split(" - ");
+  var startDate = dates[0];
+  var endDate = dates[1];
 
-    var dateRange = $("#date_range_issue").val();
-  
-    var dates = dateRange.split(" - ");
-    var startDate = dates[0];
-    var endDate = dates[1];
-  
-    var search = document.getElementById("issue_search").value;
-  
-    $.ajax({
-      url: "process_issue_update_live_search.php",
-      type: "POST",
-      data: {
-        start_date: startDate,
-        end_date: endDate,
-        search: search,
-      },
-      success: function (response) {
-        console.log("Response from server: " + response);
-        $("#reportsTable2 tbody").empty();
-        $("#reportsTable2 tbody").html(response);
-      },
-      error: function (xhr, status, error) {
-        console.error("AJAX Error: " + status + ", " + error);
-        alert("Error fetching data.");
-      },
-    });
-  }
+  var search = document.getElementById("issue_search").value;
 
-  function grnLiveSearch() {
+  $.ajax({
+    url: "process_issue_update_live_search.php",
+    type: "POST",
+    data: {
+      start_date: startDate,
+      end_date: endDate,
+      search: search,
+    },
+    success: function (response) {
+      console.log("Response from server: " + response);
+      $("#reportsTable2 tbody").empty();
+      $("#reportsTable2 tbody").html(response);
+    },
+    error: function (xhr, status, error) {
+      console.error("AJAX Error: " + status + ", " + error);
+      alert("Error fetching data.");
+    },
+  });
+}
 
-    var dateRange = $("#date_range_grn").val();
-  
-    var dates = dateRange.split(" - ");
-    var startDate = dates[0];
-    var endDate = dates[1];
-  
-    var search = document.getElementById("grn_search").value;
-  
-    $.ajax({
-      url: "process_grn_update_live_search.php",
-      type: "POST",
-      data: {
-        start_date: startDate,
-        end_date: endDate,
-        search: search,
-      },
-      success: function (response) {
-        console.log("Response from server: " + response);
-        $("#reportsTable3 tbody").empty();
-        $("#reportsTable3 tbody").html(response);
-      },
-      error: function (xhr, status, error) {
-        console.error("AJAX Error: " + status + ", " + error);
-        alert("Error fetching data.");
-      },
-    });
-  }
-  
-  function change_mop_issue_status(ref_no) {
-    var request = new XMLHttpRequest();
+function grnLiveSearch() {
+  var dateRange = $("#date_range_grn").val();
 
-    request.onreadystatechange = function () {
-        if (request.readyState == 4) {
-            var txt = request.responseText.trim();
-            console.log("Response from server:", txt); // Debugging line
+  var dates = dateRange.split(" - ");
+  var startDate = dates[0];
+  var endDate = dates[1];
+  var search = document.getElementById("grn_search").value;
 
-            if (txt === "viewed") {
-                document.getElementById("ub" + ref_no).innerHTML = "Approved";
-                document.getElementById("ub" + ref_no).classList = "btn btn-success";
+  $.ajax({
+    url: "process_grn_update_live_search.php",
+    type: "POST",
+    data: {
+      start_date: startDate,
+      end_date: endDate,
+      search: search,
+    },
+    success: function (response) {
+      console.log("Response from server: " + response);
+      $("#reportsTable3 tbody").empty();
+      $("#reportsTable3 tbody").html(response);
+    },
+    error: function (xhr, status, error) {
+      console.error("AJAX Error: " + status + ", " + error);
+      alert("Error fetching data.");
+    },
+  });
+}
 
-                // Show success SweetAlert for "Approved" status
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Status updated to Approved.',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.reload();  // Reload the page after the alert is dismissed
-                });
-            } else if (txt === "approved") {
-                document.getElementById("ub" + ref_no).innerHTML = "Viewed";
-                document.getElementById("ub" + ref_no).classList = "btn btn-danger";
+function change_mop_issue_status(ref_no) {
+  var request = new XMLHttpRequest();
 
-                // Show success SweetAlert for "Viewed" status
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Status updated to Viewed.',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.reload();  // Reload the page after the alert is dismissed
-                });
-            } else {
-                // Show error SweetAlert for any other response
-                Swal.fire({
-                    title: 'Error',
-                    text: txt || 'An error occurred while updating the status.',
-                    icon: 'error',
-                    confirmButtonText: 'Try Again'
-                });
-            }
-        }
+  request.onreadystatechange = function () {
+    if (request.readyState == 4) {
+      var txt = request.responseText.trim();
+      console.log("Response from server:", txt);
+
+      if (txt === "viewed") {
+        document.getElementById("ub" + ref_no).innerHTML = "Approved";
+        document.getElementById("ub" + ref_no).classList = "btn btn-success";
+
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated to Approved.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else if (txt === "approved") {
+        document.getElementById("ub" + ref_no).innerHTML = "Viewed";
+        document.getElementById("ub" + ref_no).classList = "btn btn-danger";
+
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated to Viewed.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: txt || "An error occurred while updating the status.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
     }
+  };
 
-    request.open("GET", "mop_issue_update_status.php?ref_no=" + ref_no, true);
-    request.send();
+  request.open("GET", "mop_issue_update_status.php?ref_no=" + ref_no, true);
+  request.send();
 }
