@@ -55,7 +55,7 @@ WHERE mop_inventory.status_status_id = '1' AND mop_inventory.item_code = '".$ite
                         <td><?php echo $item_data['qsystem']; ?></td>
                         <td><?php echo $item_data['qhand']; ?></td>
                         <td><?php echo $item_data['unit_name']; ?></td>
-                        <td><?php echo $item_data['remarks']; ?></td>
+                        <td><?php echo nl2br(htmlspecialchars($item_data['remarks'])) . "<br>";  ?></td>
                     </tr>
             </tbody>
         

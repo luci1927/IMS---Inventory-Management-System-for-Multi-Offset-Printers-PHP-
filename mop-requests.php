@@ -19,6 +19,15 @@ include 'connection.php';
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
+         body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+        }
         .fixed-date-time {
             position: fixed;
             top: 60px;
@@ -30,7 +39,11 @@ include 'connection.php';
             font-size: 14px;
             z-index: 9999;
         }
-
+        .table-container {
+            max-height: 700px; /* Set the max height for vertical scroll */
+            overflow-y: auto;  /* Enables vertical scrolling */
+            overflow-x: auto;  /* Enables horizontal scrolling */
+        }
         @media (max-width: 768px) {
             .fixed-date-time {
                 display: none;
@@ -101,7 +114,7 @@ include 'connection.php';
                 </div>
 
                 <h3 class="mt-5">Today Issue Request List</h3>
-                <div class="table-responsive">
+                <div class="table-responsive table-container">
                     <table class="table table-hover table-hover mt-3" id="issueRequestTable">
                         <thead>
                             <tr>
@@ -116,7 +129,7 @@ include 'connection.php';
                         </thead>
                         <?php
 
-                        $results_per_page = 10;
+                        $results_per_page = 100;
 
                         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                         if ($page <= 0) $page = 1;
@@ -221,6 +234,8 @@ include 'connection.php';
         </div>
 
     </main>
+
+    <?php include 'footer.php'; ?>
 
     <script src="assets/js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

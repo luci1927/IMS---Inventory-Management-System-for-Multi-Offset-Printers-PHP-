@@ -45,7 +45,7 @@ if (isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['s
                     <td>{$item_table_data['unit_name']}</td>
                     <td>{$item_table_data['GrnIssue']}</td>
                     <td>{$item_table_data['qty']}</td>
-                    <td>{$item_table_data['remarks']}</td>
+                    <td>" . nl2br(htmlspecialchars($item_table_data['remarks'])) . "</td>
                   </tr>";
         }
     } else {

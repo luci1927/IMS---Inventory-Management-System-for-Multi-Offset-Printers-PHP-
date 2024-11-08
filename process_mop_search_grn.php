@@ -7,6 +7,9 @@ if (isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['s
     $startDate = DateTime::createFromFormat('m/d/Y', $startDate)->format('Y-m-d');
     $endDate = DateTime::createFromFormat('m/d/Y', $endDate)->format('Y-m-d');
 
+   // echo "<script>console.log('Yesterday: " . $startDate . "');</script>";
+    //echo "<script>console.log('Today: " . $endDate . "');</script>";
+
     $query = "SELECT mop_inventory.item_code AS item_code, 
                     mop_inventory.`description` AS descr, 
                     mop_grn.qty AS grn_qty,
@@ -38,9 +41,8 @@ if (isset($_POST['start_date']) && isset($_POST['end_date']) && !empty($_POST['s
                     <td>{$item_table_data['descr']}</td>
                     <td>{$item_table_data['grn_qty']}</td>
                     <td>{$item_table_data['unit_name']}</td>
-                    <td>{$item_table_data['remarks']}</td>
+                    <td>" . nl2br(htmlspecialchars($item_table_data['remarks'])) . "</td>
                   </tr>";
-
         }
     } else {
         echo "<tr><td colspan='7'>No data available for the selected date.</td></tr>";

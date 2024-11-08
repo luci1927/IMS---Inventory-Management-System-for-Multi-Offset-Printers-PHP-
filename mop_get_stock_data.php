@@ -2,7 +2,7 @@
 
 require "connection2.php";
 
-// Prepare the SQL statement
+
 $sql = "SELECT 
     mop_inventory.description AS item_name, 
     mop_stock.qty_hand AS stock_quantity 
@@ -23,12 +23,12 @@ AND
 ORDER BY 
     mop_stock.date_time DESC;";
 
-// Prepare statement
+
 $stmt = $conn->prepare($sql);
 $status_id = 1;
 $stmt->bind_param("i", $status_id);
 
-// Execute statement
+
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -40,10 +40,8 @@ if ($result->num_rows > 0) {
     }
 }
 
-// Set the content type to JSON and output the data
 header('Content-Type: application/json');
 echo json_encode($data);
 
-// Close the statement and connection
 $stmt->close();
 $conn->close();

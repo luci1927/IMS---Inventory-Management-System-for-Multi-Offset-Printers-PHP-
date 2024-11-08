@@ -18,6 +18,11 @@ require "connection.php";
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
+        .table-container {
+            max-height: 700px; /* Set the max height for vertical scroll */
+            overflow-y: auto;  /* Enables vertical scrolling */
+            overflow-x: auto;  /* Enables horizontal scrolling */
+        }
         .fixed-date-time {
             position: fixed;
             top: 60px;
@@ -183,7 +188,7 @@ require "connection.php";
         <div class="card shadow mt-4">
             <div class="card-body">
                 <h3 class="mt-5">Inventory List</h3>
-                <div class="table-responsive mt-3">
+                <div class="table-responsive table-container mt-3">
                     <table class="table table-hover table-hover" id="inventoryTable">
                         <thead>
                             <tr>
@@ -199,7 +204,7 @@ require "connection.php";
                         </thead>
                         <?php
 
-                        $results_per_page = 20;
+                        $results_per_page = 100;
 
                         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                         if ($page <= 0) $page = 1;
@@ -207,37 +212,37 @@ require "connection.php";
                         $offset = ($page - 1) * $results_per_page;
 
                         $query_total = "SELECT COUNT(*) AS total FROM mop_inventory
-                INNER JOIN mop_stock ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                INNER JOIN units ON mop_inventory.units_id = units.id
-                INNER JOIN (
-                    SELECT mop_stock.mop_inventory_item_code, MAX(id) AS latest_id
-                    FROM mop_stock
-                    GROUP BY mop_inventory_item_code
-                ) latest_stock ON mop_stock.id = latest_stock.latest_id
-                WHERE mop_inventory.status_status_id = '1';";
-                        $total_result = Database::search($query_total);
-                        $total_row = $total_result->fetch_assoc();
-                        $total_records = $total_row['total'];
+                        INNER JOIN mop_stock ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                        INNER JOIN units ON mop_inventory.units_id = units.id
+                        INNER JOIN (
+                            SELECT mop_stock.mop_inventory_item_code, MAX(id) AS latest_id
+                            FROM mop_stock
+                            GROUP BY mop_inventory_item_code
+                        ) latest_stock ON mop_stock.id = latest_stock.latest_id
+                        WHERE mop_inventory.status_status_id = '1';";
+                                $total_result = Database::search($query_total);
+                                $total_row = $total_result->fetch_assoc();
+                                $total_records = $total_row['total'];
 
-                        $total_pages = ceil($total_records / $results_per_page);
+                                $total_pages = ceil($total_records / $results_per_page);
 
-                        $query = "SELECT mop_inventory.item_code AS item_code, 
-                    mop_inventory.`description` AS descr, 
-                    mop_inventory.`mop_item_group_code` AS item_grp, 
-                    mop_stock.qty_system AS qsystem, 
-                    mop_stock.qty_hand AS qhand, 
-                    units.`name` AS unit_name, 
-                    mop_stock.remarks AS remarks 
-                FROM mop_inventory
-                INNER JOIN mop_stock ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                INNER JOIN units ON mop_inventory.units_id = units.id
-                INNER JOIN (
-                    SELECT mop_stock.mop_inventory_item_code, MAX(id) AS latest_id
-                    FROM mop_stock
-                    GROUP BY mop_inventory_item_code
-                ) latest_stock ON mop_stock.id = latest_stock.latest_id
-                WHERE mop_inventory.status_status_id = '1'
-                LIMIT $results_per_page OFFSET $offset;";
+                                $query = "SELECT mop_inventory.item_code AS item_code, 
+                            mop_inventory.`description` AS descr, 
+                            mop_inventory.`mop_item_group_code` AS item_grp, 
+                            mop_stock.qty_system AS qsystem, 
+                            mop_stock.qty_hand AS qhand, 
+                            units.`name` AS unit_name, 
+                            mop_stock.remarks AS remarks 
+                        FROM mop_inventory
+                        INNER JOIN mop_stock ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                        INNER JOIN units ON mop_inventory.units_id = units.id
+                        INNER JOIN (
+                            SELECT mop_stock.mop_inventory_item_code, MAX(id) AS latest_id
+                            FROM mop_stock
+                            GROUP BY mop_inventory_item_code
+                        ) latest_stock ON mop_stock.id = latest_stock.latest_id
+                        WHERE mop_inventory.status_status_id = '1'
+                        LIMIT $results_per_page OFFSET $offset;";
 
                         $item_table_rs = Database::search($query);
                         $item_table_num = $item_table_rs->num_rows;

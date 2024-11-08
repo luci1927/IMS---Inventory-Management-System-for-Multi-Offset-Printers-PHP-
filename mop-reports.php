@@ -20,21 +20,13 @@ include 'mop_session_check.php';
 
     <style>
         body {
-
             display: flex;
-
             flex-direction: column;
-
             min-height: 100vh;
-
         }
 
-
-
         main {
-
             flex: 1;
-
         }
 
         .fixed-date-time {
@@ -47,6 +39,15 @@ include 'mop_session_check.php';
             border-radius: 5px;
             font-size: 14px;
             z-index: 9999;
+        }
+
+        .table-container {
+            max-height: 800px;
+            /* Set the max height for vertical scroll */
+            overflow-y: auto;
+            /* Enables vertical scrolling */
+            overflow-x: auto;
+            /* Enables horizontal scrolling */
         }
 
         @media (max-width: 768px) {
@@ -149,6 +150,10 @@ include 'mop_session_check.php';
                                     <?php
                                     $yesterday = date('m/d/Y', strtotime('-30 day'));
                                     $today = date('m/d/Y');
+
+                                    $upLastMonth = DateTime::createFromFormat('m/d/Y', $yesterday)->format('Y-m-d');
+                                    $upToday = DateTime::createFromFormat('m/d/Y', $today)->format('Y-m-d');
+
                                     ?>
                                     <input type="text" id="date_range_stock" name="daterange" value="<?php echo $yesterday . ' - ' . $today; ?>" class="form-control" />
                                 </div>
@@ -189,7 +194,7 @@ include 'mop_session_check.php';
 
 
                             <div class="col-auto">
-                                <button type="button" id="resetButton" class="btn btn-warning btn-sm" onclick="window.location.reload();">
+                                <button type="button" id="resetButton" class="btn btn-warning btn-sm" onclick="document.getElementById('item3').value='0'; document.getElementById('stock_search').value=''; stockLiveSearch();">
                                     <i class="fa-solid fa-arrows-rotate"></i> Reset
                                 </button>
 
@@ -224,7 +229,7 @@ include 'mop_session_check.php';
                         <!-- Modal -->
 
                         <!-- Report Table -->
-                        <div class="table-responsive mt-3">
+                        <div class="table-responsive table-container mt-3">
                             <table class="table table-hover mt-3" id="reportsTable1">
                                 <thead>
                                     <tr>
@@ -243,7 +248,7 @@ include 'mop_session_check.php';
                                 </thead>
                                 <?php
 
-                                $results_per_page = 20;
+                                $results_per_page = 100;
 
                                 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                                 if ($page <= 0) $page = 1;
@@ -251,11 +256,11 @@ include 'mop_session_check.php';
                                 $offset = ($page - 1) * $results_per_page;
 
                                 $query_total = "SELECT COUNT(*) AS total FROM mop_stock
-                    INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                    INNER JOIN units ON mop_inventory.units_id = units.id
-                    LEFT JOIN mop_grn ON mop_stock.mop_grn_grn_no = mop_grn.grn_no 
-                    LEFT JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
-                    WHERE mop_inventory.status_status_id = '1'";
+                                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                                INNER JOIN units ON mop_inventory.units_id = units.id
+                                LEFT JOIN mop_grn ON mop_stock.mop_grn_grn_no = mop_grn.grn_no 
+                                LEFT JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
+                                WHERE mop_inventory.status_status_id = '1'";
                                 $total_result = Database::search($query_total);
                                 $total_row = $total_result->fetch_assoc();
                                 $total_records = $total_row['total'];
@@ -263,23 +268,24 @@ include 'mop_session_check.php';
                                 $total_pages = ceil($total_records / $results_per_page);
 
                                 $query = "SELECT mop_inventory.item_code AS item_code, 
-                    mop_stock.date_time AS datetime,
-                    mop_inventory.`description` AS descr, 
-                    mop_stock.qty_system AS qsystem, 
-                    mop_stock.qty_hand AS qhand, 
-                    (mop_stock.qty_system - mop_stock.qty_hand) AS diff, 
-                    units.`name` AS unit_name, 
-                    COALESCE(mop_stock.mop_grn_grn_no, mop_issuing.ref_no) AS GrnIssue,
-                    COALESCE(mop_grn.qty, mop_issuing.qty) AS qty,
-                    mop_stock.remarks AS remarks
-                    FROM mop_stock
-                    INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                    INNER JOIN units ON mop_inventory.units_id = units.id
-                    LEFT JOIN mop_grn ON mop_stock.mop_grn_grn_no = mop_grn.grn_no
-                    LEFT JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
-                    WHERE mop_inventory.status_status_id = '1'
-                    ORDER BY mop_stock.date_time DESC 
-                    LIMIT $results_per_page OFFSET $offset";
+                                mop_stock.date_time AS datetime,
+                                mop_inventory.`description` AS descr, 
+                                mop_stock.qty_system AS qsystem, 
+                                mop_stock.qty_hand AS qhand, 
+                                (mop_stock.qty_system - mop_stock.qty_hand) AS diff, 
+                                units.`name` AS unit_name, 
+                                COALESCE(mop_stock.mop_grn_grn_no, mop_issuing.ref_no) AS GrnIssue,
+                                COALESCE(mop_grn.qty, mop_issuing.qty) AS qty,
+                                mop_stock.remarks AS remarks
+                                FROM mop_stock
+                                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                                INNER JOIN units ON mop_inventory.units_id = units.id
+                                LEFT JOIN mop_grn ON mop_stock.mop_grn_grn_no = mop_grn.grn_no
+                                LEFT JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
+                                WHERE mop_inventory.status_status_id = '1' 
+                                AND DATE(mop_stock.date_time)  BETWEEN '$upLastMonth' AND '$upToday' 
+                                ORDER BY mop_stock.date_time DESC 
+                                LIMIT $results_per_page OFFSET $offset";
 
                                 $item_table_rs = Database::search($query);
                                 $item_table_num = $item_table_rs->num_rows;
@@ -301,7 +307,7 @@ include 'mop_session_check.php';
                                             <td><?php echo $item_table_data['unit_name']; ?></td>
                                             <td><?php echo $item_table_data['GrnIssue']; ?></td>
                                             <td><?php echo $item_table_data['qty']; ?></td>
-                                            <td><?php echo $item_table_data['remarks']; ?></td>
+                                            <td><?php echo nl2br(htmlspecialchars($item_table_data['remarks'])) . "<br>";  ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -377,7 +383,7 @@ include 'mop_session_check.php';
                             </div>
 
                             <div class="col-auto">
-                                <button type="button" id="resetButton2" class="btn btn-warning btn-sm" onclick="window.location.reload();">
+                                <button type="button" id="resetButton2" class="btn btn-warning btn-sm" onclick="document.getElementById('item4').value='0'; document.getElementById('issue_search').value=''; issueLiveSearch();">
                                     <i class="fa-solid fa-arrows-rotate"></i> Reset
                                 </button>
                                 <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter2">
@@ -418,7 +424,7 @@ include 'mop_session_check.php';
 
 
                         <!-- Report Table -->
-                        <div class="table-responsive mt-3">
+                        <div class="table-responsive table-container mt-3">
                             <table class="table table-hover table-hover mt-3" id="reportsTable2">
                                 <thead>
                                     <tr>
@@ -437,7 +443,7 @@ include 'mop_session_check.php';
 
                                 <?php
 
-                                $results_per_page2 = 20;
+                                $results_per_page2 = 100;
 
                                 $page2 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                                 if ($page2 <= 0) $page2 = 1;
@@ -445,10 +451,10 @@ include 'mop_session_check.php';
                                 $offset2 = ($page2 - 1) * $results_per_page2;
 
                                 $query_total2 = "SELECT COUNT(*) AS total FROM mop_stock
-                            INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                            INNER JOIN units ON mop_inventory.units_id = units.id
-                            INNER JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
-                            WHERE mop_inventory.status_status_id = '1'";
+                                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                                INNER JOIN units ON mop_inventory.units_id = units.id
+                                INNER JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
+                                WHERE mop_inventory.status_status_id = '1'";
                                 $total_result2 = Database::search($query_total2);
                                 $total_row2 = $total_result2->fetch_assoc();
                                 $total_records2 = $total_row2['total'];
@@ -456,21 +462,22 @@ include 'mop_session_check.php';
                                 $total_pages2 = ceil($total_records2 / $results_per_page2);
 
                                 $query2 = "SELECT mop_inventory.item_code AS item_code, 
-                            mop_inventory.`description` AS descr, 
-                            mop_stock.qty_hand AS qhand, 
-                            units.`name` AS unit_name, 
-                            mop_stock.mop_issuing_issue_no AS issue_number, 
-                            mop_issuing.ref_no AS reff_no, 
-                            mop_issuing.qty AS issue_qty, 
-                            mop_issuing.date_time AS issue_date, 
-                            mop_stock.remarks AS remarks
-                            FROM mop_stock
-                            INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                            INNER JOIN units ON mop_inventory.units_id = units.id
-                            INNER JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
-                            WHERE mop_inventory.status_status_id = '1'
-                            ORDER BY mop_stock.date_time DESC
-                            LIMIT $results_per_page2 OFFSET $offset2";
+                                mop_inventory.`description` AS descr, 
+                                mop_stock.qty_hand AS qhand, 
+                                units.`name` AS unit_name, 
+                                mop_stock.mop_issuing_issue_no AS issue_number, 
+                                mop_issuing.ref_no AS reff_no, 
+                                mop_issuing.qty AS issue_qty, 
+                                mop_issuing.date_time AS issue_date, 
+                                mop_stock.remarks AS remarks
+                                FROM mop_stock
+                                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                                INNER JOIN units ON mop_inventory.units_id = units.id
+                                INNER JOIN mop_issuing ON mop_issuing.issue_no = mop_stock.mop_issuing_issue_no
+                                WHERE mop_inventory.status_status_id = '1' 
+                                AND DATE(mop_stock.date_time)  BETWEEN '$upLastMonth' AND '$upToday' 
+                                ORDER BY mop_stock.date_time DESC
+                                LIMIT $results_per_page2 OFFSET $offset2";
 
                                 $item_table_rs2 = Database::search($query2);
                                 $item_table_num2 = $item_table_rs2->num_rows;
@@ -491,7 +498,7 @@ include 'mop_session_check.php';
                                             <td><?php echo $item_table_data2['issue_qty']; ?></td>
                                             <td><?php echo $item_table_data2['qhand']; ?></td>
                                             <td><?php echo $item_table_data2['unit_name']; ?></td>
-                                            <td><?php echo $item_table_data2['remarks']; ?></td>
+                                            <td><?php echo nl2br(htmlspecialchars($item_table_data2['remarks'])) . "<br>";  ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -568,7 +575,7 @@ include 'mop_session_check.php';
 
                             </div>
                             <div class="col-auto">
-                                <button type="button" id="resetButton3" class="btn btn-warning btn-sm" onclick="window.location.reload();">
+                                <button type="button" id="resetButton3" class="btn btn-warning btn-sm" onclick="document.getElementById('item5').value='0'; document.getElementById('grn_search').value=''; grnLiveSearch();">
                                     <i class="fa-solid fa-arrows-rotate"></i> Reset
                                 </button>
                                 <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter3">
@@ -608,7 +615,7 @@ include 'mop_session_check.php';
 
 
                         <!-- Report Table -->
-                        <div class="table-responsive mt-3">
+                        <div class="table-responsive table-container mt-3">
                             <table class="table table-hover table-hover mt-3" id="reportsTable3">
                                 <thead>
                                     <tr>
@@ -624,7 +631,7 @@ include 'mop_session_check.php';
                                 </thead>
                                 <?php
 
-                                $results_per_page3 = 20;
+                                $results_per_page3 = 100;
 
                                 $page3 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                                 if ($page3 <= 0) $page = 1;
@@ -632,11 +639,11 @@ include 'mop_session_check.php';
                                 $offset3 = ($page3 - 1) * $results_per_page3;
 
                                 $query_total3 = "SELECT COUNT(*) AS total
-                            FROM mop_grn 
-                            INNER JOIN mop_stock ON mop_grn.id = mop_stock.id 
-                            INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                            INNER JOIN units ON mop_inventory.units_id = units.id
-                            WHERE mop_inventory.status_status_id = '1'";
+                                FROM mop_grn 
+                                INNER JOIN mop_stock ON mop_grn.id = mop_stock.id 
+                                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                                INNER JOIN units ON mop_inventory.units_id = units.id
+                                WHERE mop_inventory.status_status_id = '1'";
                                 $total_result3 = Database::search($query_total3);
                                 $total_row3 = $total_result3->fetch_assoc();
                                 $total_records3 = $total_row3['total'];
@@ -644,19 +651,20 @@ include 'mop_session_check.php';
                                 $total_pages3 = ceil($total_records3 / $results_per_page3);
 
                                 $query3 = "SELECT mop_inventory.item_code AS item_code, 
-                    mop_inventory.`description` AS descr, 
-                    mop_grn.qty AS grn_qty,
-                    units.`name` AS unit_name, 
-                    mop_grn.grn_no AS grn_number,
-                    mop_grn.date_time AS grn_date,
-                    mop_stock.remarks AS remarks
-                    FROM mop_grn
-                    INNER JOIN mop_stock ON mop_grn.id = mop_stock.id 
-                    INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
-                    INNER JOIN units ON mop_inventory.units_id = units.id
-                    WHERE mop_inventory.status_status_id = '1'
-                    ORDER BY grn_date DESC
-                    LIMIT $results_per_page3 OFFSET $offset3";
+                                mop_inventory.`description` AS descr, 
+                                mop_grn.qty AS grn_qty,
+                                units.`name` AS unit_name, 
+                                mop_grn.grn_no AS grn_number,
+                                mop_grn.date_time AS grn_date,
+                                mop_stock.remarks AS remarks
+                                FROM mop_grn
+                                INNER JOIN mop_stock ON mop_grn.id = mop_stock.id 
+                                INNER JOIN mop_inventory ON mop_inventory.item_code = mop_stock.mop_inventory_item_code
+                                INNER JOIN units ON mop_inventory.units_id = units.id
+                                WHERE mop_inventory.status_status_id = '1' 
+                                AND DATE(mop_grn.date_time)  BETWEEN '$upLastMonth' AND '$upToday' 
+                                ORDER BY grn_date DESC
+                                LIMIT $results_per_page3 OFFSET $offset3";
 
                                 $item_table_rs3 = Database::search($query3);
                                 $item_table_num3 = $item_table_rs3->num_rows;
@@ -677,7 +685,7 @@ include 'mop_session_check.php';
                                             <td><?php echo $item_table_data3['descr']; ?></td>
                                             <td><?php echo $item_table_data3['grn_qty']; ?></td>
                                             <td><?php echo $item_table_data3['unit_name']; ?></td>
-                                            <td><?php echo $item_table_data3['remarks']; ?></td>
+                                            <td><?php echo nl2br(htmlspecialchars($item_table_data3['remarks'])) . "<br>";  ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -701,6 +709,153 @@ include 'mop_session_check.php';
                     </div>
                 </div>
             </div>
+
+            <div class="card shadow mt-4">
+                <div class="card-header" id="headingFour">
+                    <h2 class="mb-0">
+                        <button class="btn btn-success collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Issue Request Report
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                    <div class="card card-body">
+                        <h2>Issue Request Report</h2>
+                        <p>Here you can view daily reports about your inventory activities.</p>
+
+                        <!-- Date Picker -->
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="form-group row align-items-center">
+                                <div class="col-auto">
+                                    <input type="text" id="date_range_issue_req" name="daterange" value="<?php echo $yesterday . ' - ' . $today; ?>" class="form-control" />
+                                </div>
+
+                                <hr class="vertical-line" />
+
+                                <div class="col-auto">
+                                    <select class="form-control" data-live-search="true" id="item6" onchange="load_issue_req_report_table();">
+                                        <option value="0" disabled selected>Select an User</option>
+                                        <?php
+
+                                        $item6_rs = Database::search("SELECT * FROM `request_user`");
+                                        $item6_num = $item6_rs->num_rows;
+
+
+                                        for ($x = 0; $x < $item6_num; $x++) {
+                                            $item6_data = $item6_rs->fetch_assoc();
+                                        ?>
+                                            <option value="<?php echo $item6_data['email']; ?>">
+                                                <?php echo $item6_data['name']; ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <hr class="vertical-line" />
+
+                                <div class="col-auto">
+                                    <input type="text" id="issue_req_search" placeholder="Search" class="form-control" onkeyup="ireqLiveSearch();" />
+                                </div>
+
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" id="resetButton4" class="btn btn-warning btn-sm" onclick="document.getElementById('item6').value='0'; document.getElementById('issue_req_search').value=''; ireqLiveSearch();">
+                                    <i class="fa-solid fa-arrows-rotate"></i> Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Date Picker -->
+
+                        <!-- Report Table -->
+                        <div class="table-responsive table-container mt-3">
+                            <table class="table table-hover table-hover mt-3" id="reportsTable4">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th scope="col">Ref No</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Requsted In</th>
+                                        <th scope="col">Approved In</th>
+                                        <th scope="col">Requester's Name</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <?php
+
+                                $results_per_page4 = 100;
+
+                                $page4 = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                                if ($page4 <= 0) $page = 1;
+
+                                $offset4 = ($page4 - 1) * $results_per_page4;
+
+                                $query_total4 = "SELECT COUNT(*) AS total
+                                FROM request INNER JOIN request_status ON
+                                request.request_status_id = request_status.id INNER JOIN request_user ON 
+                                request.request_user_email = request_user.email 
+                                WHERE DATE(request.time_requested)  BETWEEN '$upLastMonth' AND '$upToday' ";
+                                $total_result4 = Database::search($query_total4);
+                                $total_row4 = $total_result4->fetch_assoc();
+                                $total_records4 = $total_row4['total'];
+
+                                $total_pages4 = ceil($total_records4 / $results_per_page4);
+
+                                $query4 = "SELECT ref_no, `description` AS descr,time_requested,time_approved, 
+                                request_user.`name` AS user_name,request_status.`name` AS `status` 
+                                FROM request INNER JOIN request_status ON
+                                request.request_status_id = request_status.id INNER JOIN request_user ON 
+                                request.request_user_email = request_user.email 
+                                WHERE DATE(request.time_requested)  BETWEEN '$upLastMonth' AND '$upToday' 
+                                ORDER BY time_requested DESC
+                                LIMIT $results_per_page4 OFFSET $offset4";
+
+                                $item_table_rs4 = Database::search($query4);
+                                $item_table_num4 = $item_table_rs4->num_rows;
+                                ?>
+
+
+
+                                <tbody>
+                                    <?php
+                                    for ($x = 0; $x < $item_table_num4; $x++) {
+                                        $item_table_data4 = $item_table_rs4->fetch_assoc();
+                                    ?>
+                                        <tr>
+                                            <td><?php echo $x + 1; ?></td>
+                                            <td><?php echo $item_table_data4['ref_no']; ?></td>
+                                            <td><?php echo nl2br(htmlspecialchars($item_table_data4['descr'])) . "<br>"; ?></td>
+                                            <td><?php echo $item_table_data4['time_requested']; ?></td>
+                                            <td><?php echo $item_table_data4['time_approved']; ?></td>
+                                            <td><?php echo $item_table_data4['user_name']; ?></td>
+                                            <td><?php echo $item_table_data4['status']; ?></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+
+                                <nav>
+                                    <ul class="pagination justify-content-center mt-4">
+                                        <?php for ($page4 = 1; $page4 <= $total_pages4; $page4++) { ?>
+                                            <li class="page-item">
+                                                <a class="page-link" href="mop-reports.php?page=<?php echo $page4; ?>">
+                                                    <?php echo $page4; ?>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </nav>
+
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </main>
@@ -772,6 +927,13 @@ include 'mop_session_check.php';
         $(document).ready(function() {
             $('#date_range_grn').on('change', function() {
                 search_mop_grn();
+            });
+
+        });
+
+        $(document).ready(function() {
+            $('#date_range_issue_req').on('change', function() {
+                search_mop_issue_req();
             });
 
         });

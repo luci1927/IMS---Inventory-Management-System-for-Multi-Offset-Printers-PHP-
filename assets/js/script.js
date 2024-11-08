@@ -949,13 +949,43 @@ function search_mop_grn() {
   var endDate = dates[1];
 
   $.ajax({
-    url: "process_mop_search_issue.php",
+    url: "process_mop_search_grn.php",
     type: "POST",
     data: { start_date: startDate, end_date: endDate },
     success: function (response) {
       console.log("Response from server: " + response);
       $("#reportsTable3 tbody").empty();
       $("#reportsTable3 tbody").html(response);
+    },
+    error: function (xhr, status, error) {
+      console.error("AJAX Error: " + status + ", " + error);
+      alert("Error fetching data.");
+    },
+  });
+}
+
+function search_mop_issue_req() {
+  var dateRange = $("#date_range_issue_req").val();
+
+  console.log("Selected date range: " + dateRange);
+
+  if (!dateRange) {
+    alert("Please select a valid date range.");
+    return;
+  }
+
+  var dates = dateRange.split(" - ");
+  var startDate = dates[0];
+  var endDate = dates[1];
+
+  $.ajax({
+    url: "process_mop_search_issue_req.php",
+    type: "POST",
+    data: { start_date: startDate, end_date: endDate },
+    success: function (response) {
+      console.log("Response from server: " + response);
+      $("#reportsTable4 tbody").empty();
+      $("#reportsTable4 tbody").html(response);
     },
     error: function (xhr, status, error) {
       console.error("AJAX Error: " + status + ", " + error);
@@ -1247,6 +1277,29 @@ function load_grn_update_report_table() {
   });
 }
 
+function load_issue_req_report_table() {
+  var user = document.getElementById("item6").value;
+  var dateRange = $("#date_range_issue_req").val();
+  var dates = dateRange.split(" - ");
+  var startDate = dates[0];
+  var endDate = dates[1];
+
+  $.ajax({
+    url: "load_mop_issue_req_report_table.php",
+    type: "POST",
+    data: { user_email: user, start_date: startDate, end_date: endDate },
+    success: function (response) {
+      console.log("Response from server: " + response);
+      $("#reportsTable4 tbody").empty();
+      $("#reportsTable4 tbody").html(response);
+    },
+    error: function (xhr, status, error) {
+      console.error("AJAX Error: " + status + ", " + error);
+      alert("Error fetching data.");
+    },
+  });
+}
+
 function stockLiveSearch() {
   var dateRange = $("#date_range_stock").val();
 
@@ -1324,6 +1377,34 @@ function grnLiveSearch() {
       console.log("Response from server: " + response);
       $("#reportsTable3 tbody").empty();
       $("#reportsTable3 tbody").html(response);
+    },
+    error: function (xhr, status, error) {
+      console.error("AJAX Error: " + status + ", " + error);
+      alert("Error fetching data.");
+    },
+  });
+}
+
+function ireqLiveSearch() {
+  var dateRange = $("#date_range_issue_req").val();
+
+  var dates = dateRange.split(" - ");
+  var startDate = dates[0];
+  var endDate = dates[1];
+  var search = document.getElementById("issue_req_search").value;
+
+  $.ajax({
+    url: "process_issue_req_live_search.php",
+    type: "POST",
+    data: {
+      start_date: startDate,
+      end_date: endDate,
+      search: search,
+    },
+    success: function (response) {
+      console.log("Response from server: " + response);
+      $("#reportsTable4 tbody").empty();
+      $("#reportsTable4 tbody").html(response);
     },
     error: function (xhr, status, error) {
       console.error("AJAX Error: " + status + ", " + error);

@@ -33,6 +33,11 @@ include 'mop_session_check.php';
             font-size: 14px;
             z-index: 9999;
         }
+        .table-container {
+            max-height: 300px; /* Set the max height for vertical scroll */
+            overflow-y: auto;  /* Enables vertical scrolling */
+            overflow-x: auto;  /* Enables horizontal scrolling */
+        }
 
         @media (max-width: 768px) {
             .fixed-date-time {
@@ -105,7 +110,7 @@ include 'mop_session_check.php';
                 <div class="card-body">
                     <h3>Units</h3>
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 table-container">
                             <table class="table table-hover mt-3">
                                 <thead>
                                     <tr>
@@ -177,7 +182,7 @@ include 'mop_session_check.php';
                 <div class="card-body">
                     <h3>GRN Types</h3>
                     <div class="row">
-                        <div class="col-6">
+                        <div class="table-container col-12 col-lg-6 col-xl-6">
                             <table class="table table-hover mt-3">
                                 <thead>
                                     <tr>
@@ -215,7 +220,7 @@ include 'mop_session_check.php';
 
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-12 col-lg-6 col-xl-6 mt-3">
                             <p>
                                 <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseGRN" aria-expanded="false" aria-controls="collapseWidthExample">
                                     New GRN Type
@@ -249,7 +254,7 @@ include 'mop_session_check.php';
 
                     <h3>Suppliers</h3>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="table-container col-12 col-lg-8 col-xl-8">
                             <table class="table table-hover mt-3">
                                 <thead>
                                     <tr>
@@ -290,7 +295,7 @@ include 'mop_session_check.php';
 
                         </div>
 
-                        <div class="col-4">
+                        <div class="col-12 col-lg-4 col-xl-4 mt-3">
                             <p>
                                 <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseSupplier" aria-expanded="false" aria-controls="collapseWidthExample">
                                     New Supplier
@@ -331,7 +336,7 @@ include 'mop_session_check.php';
 
                     <h3>Item Group</h3>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="table-container col-12 col-lg-8 col-xl-8">
                             <table class="table table-hover mt-3">
                                 <thead>
                                     <tr>
@@ -371,7 +376,7 @@ include 'mop_session_check.php';
 
                         </div>
 
-                        <div class="col-4">
+                        <div class="col-12 col-lg-4 col-xl-4 mt-3">
                             <p>
                                 <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseig" aria-expanded="false" aria-controls="collapseWidthExample">
                                     New Item Group
@@ -408,7 +413,7 @@ include 'mop_session_check.php';
 
                     <h3>Item Sub Group</h3>
                     <div class="row">
-                        <div class="col-8">
+                        <div class="table-container col-12 col-lg-8 col-xl-8">
                             <table class="table table-hover mt-3">
                                 <thead>
                                     <tr>
@@ -450,7 +455,7 @@ include 'mop_session_check.php';
 
                         </div>
 
-                        <div class="col-4">
+                        <div class="col-12 col-lg-4 col-xl-4 mt-3">
                             <p>
                                 <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseisg" aria-expanded="false" aria-controls="collapseWidthExample">
                                     New Sub Item Group
