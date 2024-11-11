@@ -39,6 +39,12 @@ include 'mop_session_check.php';
             overflow-x: auto;  /* Enables horizontal scrolling */
         }
 
+        .table-container2 {
+            max-height: 600px; /* Set the max height for vertical scroll */
+            overflow-y: auto;  /* Enables vertical scrolling */
+            overflow-x: auto;  /* Enables horizontal scrolling */
+        }
+
         @media (max-width: 768px) {
             .fixed-date-time {
                 display: none;
@@ -110,7 +116,7 @@ include 'mop_session_check.php';
                 <div class="card-body">
                     <h3>Units</h3>
                     <div class="row">
-                        <div class="col-6 table-container">
+                        <div class="col-12 col-lg-6 col-xl-6 table-container">
                             <table class="table table-hover mt-3">
                                 <thead>
                                     <tr>
@@ -150,7 +156,7 @@ include 'mop_session_check.php';
 
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-12 col-lg-6 col-xl-6">
                             <p>
                                 <button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseUnit" aria-expanded="false" aria-controls="collapseWidthExample">
                                     New Unit
@@ -413,7 +419,7 @@ include 'mop_session_check.php';
 
                     <h3>Item Sub Group</h3>
                     <div class="row">
-                        <div class="table-container col-12 col-lg-8 col-xl-8">
+                        <div class="table-container2 col-12 col-lg-8 col-xl-8">
                             <table class="table table-hover mt-3">
                                 <thead>
                                     <tr>

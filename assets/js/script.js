@@ -1461,3 +1461,37 @@ function change_mop_issue_status(ref_no) {
   request.open("GET", "mop_issue_update_status.php?ref_no=" + ref_no, true);
   request.send();
 }
+
+function decline_mop_issue_request(ref_no) {
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (request.readyState == 4) {
+      var txt = request.responseText.trim();
+      console.log("Response from server:", txt);
+
+      if (txt === "declined") {
+
+        Swal.fire({
+          title: "Success!",
+          text: "Successfuly declined one request.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: txt || "An error occurred while updating the status.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
+    }
+  };
+
+  request.open("GET", "mop_issue_decline.php?ref_no=" + ref_no, true);
+  request.send();
+}

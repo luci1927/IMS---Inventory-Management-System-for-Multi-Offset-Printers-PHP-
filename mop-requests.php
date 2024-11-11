@@ -19,7 +19,7 @@ include 'connection.php';
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
-         body {
+        body {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -28,6 +28,7 @@ include 'connection.php';
         main {
             flex: 1;
         }
+
         .fixed-date-time {
             position: fixed;
             top: 60px;
@@ -39,11 +40,16 @@ include 'connection.php';
             font-size: 14px;
             z-index: 9999;
         }
+
         .table-container {
-            max-height: 700px; /* Set the max height for vertical scroll */
-            overflow-y: auto;  /* Enables vertical scrolling */
-            overflow-x: auto;  /* Enables horizontal scrolling */
+            max-height: 700px;
+            /* Set the max height for vertical scroll */
+            overflow-y: auto;
+            /* Enables vertical scrolling */
+            overflow-x: auto;
+            /* Enables horizontal scrolling */
         }
+
         @media (max-width: 768px) {
             .fixed-date-time {
                 display: none;
@@ -152,7 +158,7 @@ include 'connection.php';
                 FROM request
                 INNER JOIN request_status ON request.request_status_id = request_status.id 
                 INNER JOIN request_user ON request_user.email = request.request_user_email 
-                WHERE (request.request_status_id = '2' OR request.request_status_id = '3')
+                WHERE (request.request_status_id = '2' OR request.request_status_id = '3' OR request.request_status_id = '4')
                 AND DATE(request.time_requested) = CURDATE() 
                 ORDER BY request.time_approved DESC 
                 LIMIT $results_per_page OFFSET $offset;";
@@ -176,21 +182,44 @@ include 'connection.php';
                                     <td><?php
                                         if ($item_table_data["istatus_id"] == 2) {
                                         ?>
-                                            <button id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-danger" onclick="change_mop_issue_status('<?php echo $item_table_data['ref_no']; ?>', 'Viewed');">Approved</button>
+                                            <button id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-warning" onclick="confirmAction1('<?php echo $item_table_data['ref_no']; ?>', 'Viewed');">Approved</button>
                                         <?php
                                         } else if ($item_table_data["istatus_id"] == 3) {
                                         ?>
-                                            <button disabled id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-success" onclick="change_mop_issue_status('<?php echo $item_table_data['ref_no']; ?>', 'Approved');">Viewed</button>
+                                            <button disabled id="ub<?php echo $item_table_data['ref_no']; ?>" class="btn btn-success" onclick="confirmAction1('<?php echo $item_table_data['ref_no']; ?>', 'Approved');">Viewed</button>
+                                        <?php
+                                        } else if ($item_table_data["istatus_id"] == 4) {
+                                        ?>
+                                            <button disabled class="btn btn-danger">Declined</button>
                                         <?php
                                         } else {
                                             echo "No action available";
                                         }
+
+                                        if ($item_table_data["istatus_id"] == 2) {
+                                        ?>
+                                            <button id="ubd<?php echo $item_table_data['ref_no']; ?>" class="btn btn-danger" onclick="confirmAction2('<?php echo $item_table_data['ref_no']; ?>', 'Decline');"><i class="bi bi-x-lg"></i></i></button>
+                                        <?php
+                                        } else if ($item_table_data["istatus_id"] == 3) {
+                                        ?>
+                                            <button disabled id="ubd<?php echo $item_table_data['ref_no']; ?>" class="btn btn-success"><i class="bi bi-check2-all"></i></button>
+                                        <?php
+                                        } else {
+                                        }
                                         ?>
 
+
+
                                         <script>
-                                            function confirmAction(refNo, action) {
+                                            function confirmAction1(refNo, action) {
                                                 if (confirm('Are you sure you want to mark this request as ' + action + '?')) {
                                                     change_mop_issue_status(refNo);
+                                                }
+                                            }
+
+                                            function confirmAction2(refNo, action) {
+                                                if (confirm('Are you sure you want to mark this request as ' + action + '?')) {
+                                                    decline_mop_issue_request(refNo);
                                                 }
                                             }
                                         </script>

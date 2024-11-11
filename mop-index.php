@@ -89,49 +89,6 @@ include 'mop_session_check.php';
 
 <body>
 
-    <!-- Navigation -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="mop-index.php">Inventory System | Multi Offset Printers</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="mop-index.php">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mop-inventory.php">Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mop-inventory-out.php">Inventory Out</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mop-requests.php">Issue Request</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mop-reports.php">Reports</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mop-other.php">Others</a>
-                    </li>
-                    <li class="nav-item mt-1">
-                        <button id="logoutButton" onclick="confirmLogout()" class="btn btn-danger"
-                            style="font-weight: bold; cursor: pointer; border-radius: 50%; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
-                            <i class="bi bi-people-fill"></i>
-                        </button>
-
-
-                        
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Date and Time Display -->
     <div id="dateTimeDisplay" class="fixed-date-time"></div>
 
     <div class="d-flex">
@@ -185,15 +142,6 @@ include 'mop_session_check.php';
 
         <!-- Main Content -->
         <div id="content" class="w-100">
-            <!-- Top Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn btn-dark">
-                        <i class="fas fa-align-left"></i>
-                    </button>
-                    <h5 class="ml-auto">Welcome to the Inventory Management System</h5>
-                </div>
-            </nav>
 
             <?php
             require "connection.php";
