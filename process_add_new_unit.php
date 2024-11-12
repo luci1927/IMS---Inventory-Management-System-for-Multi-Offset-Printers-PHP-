@@ -6,9 +6,7 @@ $unit_name = $_POST["u"];
 
 if (empty($unit_name)) {
     echo ("Please enter unit name!");
-} elseif (preg_match('/\d/', $unit_name)) {
-    echo ("Unit name cannot contain numbers!");
-} else {
+}else {
 
     $rs = Database::search("SELECT * FROM `units` WHERE `name`='" . $unit_name . "'");
     $n = $rs->num_rows;

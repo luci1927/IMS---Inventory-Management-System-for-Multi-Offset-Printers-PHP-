@@ -16,6 +16,7 @@ include 'mop_session_check.php';
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
     <style>
         .selectpicker {
             width: 100%;
@@ -33,16 +34,23 @@ include 'mop_session_check.php';
             font-size: 14px;
             z-index: 9999;
         }
+
         .table-container {
-            max-height: 300px; /* Set the max height for vertical scroll */
-            overflow-y: auto;  /* Enables vertical scrolling */
-            overflow-x: auto;  /* Enables horizontal scrolling */
+            max-height: 300px;
+            /* Set the max height for vertical scroll */
+            overflow-y: auto;
+            /* Enables vertical scrolling */
+            overflow-x: auto;
+            /* Enables horizontal scrolling */
         }
 
         .table-container2 {
-            max-height: 600px; /* Set the max height for vertical scroll */
-            overflow-y: auto;  /* Enables vertical scrolling */
-            overflow-x: auto;  /* Enables horizontal scrolling */
+            max-height: 600px;
+            /* Set the max height for vertical scroll */
+            overflow-y: auto;
+            /* Enables vertical scrolling */
+            overflow-x: auto;
+            /* Enables horizontal scrolling */
         }
 
         @media (max-width: 768px) {
@@ -122,6 +130,7 @@ include 'mop_session_check.php';
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Unit Name</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -143,6 +152,60 @@ include 'mop_session_check.php';
                                         <tr>
                                             <th scope="row"><?php echo $x + 1; ?></th>
                                             <td><?php echo $units_table_data['name']; ?></td>
+                                            <td>
+                                                <button onclick="edit_unit_model('<?php echo $units_table_data['id']; ?>', '<?php echo $units_table_data['name']; ?>');"
+                                                    class="btn btn-warning btn-sm"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="Edit">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                                <!-- Edit Unit Modal -->
+                                                <div class="modal fade" id="editUnitModal" tabindex="-1" role="dialog" aria-labelledby="editUnitModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="editUnitModalLabel">Edit Unit</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form id="editUnitForm">
+                                                                    <div class="form-group">
+                                                                        <label for="editUnitName">Unit Name</label>
+                                                                        <input type="text" class="form-control" id="editUnitName" value="<?php echo $units_table_data['name']; ?>" required>
+                                                                    </div>
+                                                                    <input type="hidden" id="editUnitId" value="<?php echo $units_table_data['id']; ?>">
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary" onclick="saveUnitChanges()">Save changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                                if ($units_table_data["status_status_id"] == 1) {
+                                                ?>
+                                                    <button id="ub<?php echo $units_table_data['id']; ?>" class="btn btn-success btn-sm" onclick="confirmAction1('<?php echo $units_table_data['id']; ?>', 'Inactive');">Active</button>
+                                                <?php
+                                                } else if ($units_table_data["status_status_id"] == 2) {
+                                                ?>
+                                                    <button id="ub<?php echo $units_table_data['id']; ?>" class="btn btn-danger btn-sm" onclick="confirmAction1('<?php echo $units_table_data['id']; ?>', 'Active');">Inactive</button>
+                                                <?php
+                                                }
+                                                ?>
+                                                <script>
+                                                    function confirmAction1(uID, action) {
+                                                        if (confirm('Are you sure you want to mark this item as ' + action + '?')) {
+                                                            update_unit_status(uID);
+                                                        }
+                                                    }
+                                                </script>
+
+                                            </td>
                                         </tr>
 
                                     <?php
@@ -194,6 +257,7 @@ include 'mop_session_check.php';
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">GRN Type</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -213,6 +277,60 @@ include 'mop_session_check.php';
                                         <tr>
                                             <th scope="row"><?php echo $x + 1; ?></th>
                                             <td><?php echo $grn_table_data['name']; ?></td>
+                                            <td>
+                                                <button onclick="edit_unit_model('<?php echo $units_table_data['id']; ?>', '<?php echo $units_table_data['name']; ?>');"
+                                                    class="btn btn-warning btn-sm"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="Edit">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                                <!-- Edit Unit Modal -->
+                                                <div class="modal fade" id="editUnitModal" tabindex="-1" role="dialog" aria-labelledby="editUnitModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="editUnitModalLabel">Edit Unit</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form id="editUnitForm">
+                                                                    <div class="form-group">
+                                                                        <label for="editUnitName">Unit Name</label>
+                                                                        <input type="text" class="form-control" id="editUnitName" value="<?php echo $units_table_data['name']; ?>" required>
+                                                                    </div>
+                                                                    <input type="hidden" id="editUnitId" value="<?php echo $units_table_data['id']; ?>">
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary" onclick="saveUnitChanges()">Save changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                                if ($units_table_data["status_status_id"] == 1) {
+                                                ?>
+                                                    <button id="ub<?php echo $units_table_data['id']; ?>" class="btn btn-success btn-sm" onclick="confirmAction2('<?php echo $units_table_data['id']; ?>', 'Inactive');">Active</button>
+                                                <?php
+                                                } else if ($units_table_data["status_status_id"] == 2) {
+                                                ?>
+                                                    <button id="ub<?php echo $units_table_data['id']; ?>" class="btn btn-danger btn-sm" onclick="confirmAction2('<?php echo $units_table_data['id']; ?>', 'Active');">Inactive</button>
+                                                <?php
+                                                }
+                                                ?>
+                                                <script>
+                                                    function confirmAction2(uID, action) {
+                                                        if (confirm('Are you sure you want to mark this item as ' + action + '?')) {
+                                                            update_unit_status(uID);
+                                                        }
+                                                    }
+                                                </script>
+
+                                            </td>
                                         </tr>
 
                                     <?php
@@ -234,7 +352,7 @@ include 'mop_session_check.php';
                             </p>
                             <div style="min-height: 120px;">
                                 <div class="collapse width" id="collapseGRN">
-                                    <div class="card card-body shadow" >
+                                    <div class="card card-body shadow">
                                         <form>
                                             <h4>Add New GRN Type</h4>
                                             <div class="form-group">
@@ -309,7 +427,7 @@ include 'mop_session_check.php';
                             </p>
                             <div style="min-height: 120px;">
                                 <div class="collapse width" id="collapseSupplier">
-                                    <div class="card card-body shadow" >
+                                    <div class="card card-body shadow">
                                         <form>
                                             <h4>Add New Supplier</h4>
                                             <div class="form-group">
@@ -531,6 +649,7 @@ include 'mop_session_check.php';
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="assets/js/script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
     <script>
         function updateDateTime() {
@@ -554,6 +673,38 @@ include 'mop_session_check.php';
         setInterval(updateDateTime, 1000);
 
         updateDateTime();
+
+        function edit_unit_model(unitId, unitName) {
+            $('#editUnitId').val(unitId);
+            $('#editUnitName').val(unitName);
+            $('#editUnitModal').modal('show');
+        }
+
+        function saveUnitChanges() {
+            var unitId = $('#editUnitId').val();
+            var unitName = $('#editUnitName').val();
+
+            console.log('Unit ID:', unitId);
+            console.log('Unit Name:', unitName);
+            // Perform AJAX request to save changes
+            $.ajax({
+                url: 'process_update_unit.php',
+                type: 'POST',
+                data: {
+                    id: unitId,
+                    name: unitName
+                },
+                success: function(response) {
+                    // Handle success response
+                    $('#editUnitModal').modal('hide');
+                    location.reload();
+                },
+                error: function(error) {
+                    // Handle error response
+                    console.error(error);
+                }
+            });
+        };
     </script>
 </body>
 

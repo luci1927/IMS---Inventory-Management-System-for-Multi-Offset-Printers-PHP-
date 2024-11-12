@@ -1495,3 +1495,53 @@ function decline_mop_issue_request(ref_no) {
   request.open("GET", "mop_issue_decline.php?ref_no=" + ref_no, true);
   request.send();
 }
+
+
+function update_unit_status(uID) {
+  var request = new XMLHttpRequest();
+console.log(uID);
+  request.onreadystatechange = function () {
+    if (request.readyState == 4) {
+      var txt = request.responseText.trim();
+      console.log("Response from server:", txt);
+
+      if (txt === "active") {
+        document.getElementById("ub" + uID).innerHTML = "Active";
+        document.getElementById("ub" + uID).classList = "btn btn-success btn-sm";
+
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated to Approved.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else if (txt === "inactive") {
+        document.getElementById("ub" + uID).innerHTML = "Inactive";
+        document.getElementById("ub" + uID).classList = "btn btn-danger btn-sm";
+
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated to Viewed.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: txt || "An error occurred while updating the status.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
+    }
+  };
+
+  request.open("GET", "update_unit_status.php?id=" + uID, true);
+  request.send();
+}
