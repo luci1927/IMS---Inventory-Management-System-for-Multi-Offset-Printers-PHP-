@@ -17,8 +17,8 @@ if (empty($unit_name)) {
     } else {
 
         Database::iud("INSERT INTO `units` 
-    (`name`)
-    VALUES ('" . $unit_name . "')");
+    (`name`, `status_status_id`)
+    VALUES ('" . $unit_name . "','1')");
 
         echo ("success");
     }

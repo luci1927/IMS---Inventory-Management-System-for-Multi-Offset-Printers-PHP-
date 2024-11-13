@@ -1545,3 +1545,150 @@ console.log(uID);
   request.open("GET", "update_unit_status.php?id=" + uID, true);
   request.send();
 }
+
+function update_grn_status(gID) {
+  var request = new XMLHttpRequest();
+console.log(gID);
+  request.onreadystatechange = function () {
+    if (request.readyState == 4) {
+      var txt = request.responseText.trim();
+      console.log("Response from server:", txt);
+
+      if (txt === "active") {
+        document.getElementById("gb" + gID).innerHTML = "Active";
+        document.getElementById("gb" + gID).classList = "btn btn-success btn-sm";
+
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated to Approved.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else if (txt === "inactive") {
+        document.getElementById("gb" + gID).innerHTML = "Inactive";
+        document.getElementById("gb" + gID).classList = "btn btn-danger btn-sm";
+
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated to Viewed.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: txt || "An error occurred while updating the status.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
+    }
+  };
+
+  request.open("GET", "update_grn_status.php?id=" + gID, true);
+  request.send();
+}
+
+function update_sup_status(sID) {
+  var request = new XMLHttpRequest();
+console.log(sID);
+  request.onreadystatechange = function () {
+    if (request.readyState == 4) {
+      var txt = request.responseText.trim();
+      console.log("Response from server:", txt);
+
+      if (txt === "active") {
+        document.getElementById("sb" + sID).innerHTML = "Active";
+        document.getElementById("sb" + sID).classList = "btn btn-success btn-sm";
+
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated to Approved.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else if (txt === "inactive") {
+        document.getElementById("sb" + sID).innerHTML = "Inactive";
+        document.getElementById("sb" + sID).classList = "btn btn-danger btn-sm";
+
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated to Viewed.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: txt || "An error occurred while updating the status.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
+    }
+  };
+
+  request.open("GET", "update_supplier_status.php?id=" + sID, true);
+  request.send();
+}
+
+function update_item_group_status(igID) {
+  var request = new XMLHttpRequest();
+console.log(igID);
+  request.onreadystatechange = function () {
+    if (request.readyState == 4) {
+      var txt = request.responseText.trim();
+      console.log("Response from server:", txt);
+
+      if (txt === "active") {
+        document.getElementById("igb" + igID).innerHTML = "Active";
+        document.getElementById("igb" + sID).classList = "btn btn-success btn-sm";
+
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated to Approved.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else if (txt === "inactive") {
+        document.getElementById("igb" + igID).innerHTML = "Inactive";
+        document.getElementById("igb" + igID).classList = "btn btn-danger btn-sm";
+
+        Swal.fire({
+          title: "Success!",
+          text: "Status updated to Viewed.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: txt || "An error occurred while updating the status.",
+          icon: "error",
+          confirmButtonText: "Try Again",
+        });
+      }
+    }
+  };
+
+  request.open("GET", "update_item_group_status.php?id=" + igID, true);
+  request.send();
+}

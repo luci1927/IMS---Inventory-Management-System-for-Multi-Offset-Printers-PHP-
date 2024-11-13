@@ -20,8 +20,8 @@ if (empty($item_group_code)) {
     } else {
 
         Database::iud("INSERT INTO `mop_item_group` 
-    (`code`,`name`)
-    VALUES ('" . $item_group_code . "','" . $item_group_name . "')");
+    (`code`,`name`,`status_status_id`)
+    VALUES ('" . $item_group_code . "','" . $item_group_name . "','1')");
 
         echo ("success");
     }

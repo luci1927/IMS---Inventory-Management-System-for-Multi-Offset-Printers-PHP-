@@ -19,8 +19,8 @@ if ($n > 1) {
 } else {
 
     Database::iud("INSERT INTO `grn_type` 
-    (`name`)
-    VALUES ('" . $grn_type . "')");
+    (`name`, `status_status_id`)
+    VALUES ('" . $grn_type . "','1')");
 
     echo ("success");
 }

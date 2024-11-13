@@ -21,8 +21,8 @@ if (empty($supplier_name)) {
 } else {
 
     Database::iud("INSERT INTO `supplier` 
-    (`name`,`contact`,`sup_name`)
-    VALUES ('" . $company_name . "','" . $mobile . "','" . $supplier_name . "')");
+    (`name`,`contact`,`sup_name`,`status_status_id`)
+    VALUES ('" . $company_name . "','" . $mobile . "','" . $supplier_name . "','1')");
 
     echo ("success");
 }

@@ -26,13 +26,13 @@ if ($item_group_code == "0") {
 
             // First insert
             Database::iud("INSERT INTO `mop_item_sub_group` 
-                (`sub_code`, `name`, `mop_item_group_code`)
-                VALUES ('" . $item_sub_group_code . "', '" . $item_sub_group_name . "', '" . $item_group_code . "')");
+                (`sub_code`, `name`, `mop_item_group_code`,`status_status_id`)
+                VALUES ('" . $item_sub_group_code . "', '" . $item_sub_group_name . "', '" . $item_group_code . "','1')");
 
             // Second insert
             Database::iud("INSERT INTO `mop_item_group_has_mop_item_sub_group` 
-                (`mop_item_group_code`, `mop_item_sub_group_sub_code`) 
-                VALUES ('" . $item_group_code . "', '" . $item_sub_group_code . "')");
+                (`mop_item_group_code`, `mop_item_sub_group_sub_code`,`status_status_id`) 
+                VALUES ('" . $item_group_code . "', '" . $item_sub_group_code . "','1')");
 
             // Commit the transaction
             Database::iud("COMMIT");

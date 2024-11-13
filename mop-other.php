@@ -278,54 +278,54 @@ include 'mop_session_check.php';
                                             <th scope="row"><?php echo $x + 1; ?></th>
                                             <td><?php echo $grn_table_data['name']; ?></td>
                                             <td>
-                                                <button onclick="edit_unit_model('<?php echo $units_table_data['id']; ?>', '<?php echo $units_table_data['name']; ?>');"
+                                                <button onclick="edit_grn_model('<?php echo $grn_table_data['id']; ?>', '<?php echo $grn_table_data['name']; ?>');"
                                                     class="btn btn-warning btn-sm"
                                                     data-toggle="tooltip"
                                                     data-placement="top"
                                                     title="Edit">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
-                                                <!-- Edit Unit Modal -->
-                                                <div class="modal fade" id="editUnitModal" tabindex="-1" role="dialog" aria-labelledby="editUnitModalLabel" aria-hidden="true">
+                                                <!-- Edit Grn Modal -->
+                                                <div class="modal fade" id="editGrnModal" tabindex="-1" role="dialog" aria-labelledby="editGrnModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="editUnitModalLabel">Edit Unit</h5>
+                                                                <h5 class="modal-title" id="editGrnModalLabel">Edit Grn</h5>
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form id="editUnitForm">
+                                                                <form id="editGrnForm">
                                                                     <div class="form-group">
-                                                                        <label for="editUnitName">Unit Name</label>
-                                                                        <input type="text" class="form-control" id="editUnitName" value="<?php echo $units_table_data['name']; ?>" required>
+                                                                        <label for="editGrnName">Grn Name</label>
+                                                                        <input type="text" class="form-control" id="editGrnName" value="<?php echo $grn_table_data['name']; ?>" required>
                                                                     </div>
-                                                                    <input type="hidden" id="editUnitId" value="<?php echo $units_table_data['id']; ?>">
+                                                                    <input type="hidden" id="editGrnId" value="<?php echo $grn_table_data['id']; ?>">
                                                                 </form>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary" onclick="saveUnitChanges()">Save changes</button>
+                                                                <button type="button" class="btn btn-primary" onclick="saveGrnChanges()">Save changes</button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <?php
-                                                if ($units_table_data["status_status_id"] == 1) {
+                                                if ($grn_table_data["status_status_id"] == 1) {
                                                 ?>
-                                                    <button id="ub<?php echo $units_table_data['id']; ?>" class="btn btn-success btn-sm" onclick="confirmAction2('<?php echo $units_table_data['id']; ?>', 'Inactive');">Active</button>
+                                                    <button id="gb<?php echo $grn_table_data['id']; ?>" class="btn btn-success btn-sm" onclick="confirmAction2('<?php echo $grn_table_data['id']; ?>', 'Inactive');">Active</button>
                                                 <?php
-                                                } else if ($units_table_data["status_status_id"] == 2) {
+                                                } else if ($grn_table_data["status_status_id"] == 2) {
                                                 ?>
-                                                    <button id="ub<?php echo $units_table_data['id']; ?>" class="btn btn-danger btn-sm" onclick="confirmAction2('<?php echo $units_table_data['id']; ?>', 'Active');">Inactive</button>
+                                                    <button id="gb<?php echo $grn_table_data['id']; ?>" class="btn btn-danger btn-sm" onclick="confirmAction2('<?php echo $grn_table_data['id']; ?>', 'Active');">Inactive</button>
                                                 <?php
                                                 }
                                                 ?>
                                                 <script>
-                                                    function confirmAction2(uID, action) {
+                                                    function confirmAction2(gID, action) {
                                                         if (confirm('Are you sure you want to mark this item as ' + action + '?')) {
-                                                            update_unit_status(uID);
+                                                            update_grn_status(gID);
                                                         }
                                                     }
                                                 </script>
@@ -386,6 +386,7 @@ include 'mop_session_check.php';
                                         <th scope="col">Name</th>
                                         <th scope="col">Mobile</th>
                                         <th scope="col">Company</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -406,6 +407,68 @@ include 'mop_session_check.php';
                                             <td><?php echo $sup_table_data['sup_name']; ?></td>
                                             <td><?php echo $sup_table_data['contact']; ?></td>
                                             <td><?php echo $sup_table_data['name']; ?></td>
+                                            <td>
+                                                <button onclick="edit_sup_model('<?php echo $sup_table_data['id']; ?>', '<?php echo $sup_table_data['sup_name']; ?>' , '<?php echo $sup_table_data['contact']; ?>','<?php echo $sup_table_data['name']; ?>');"
+                                                    class="btn btn-warning btn-sm"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="Edit">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                                <!-- Edit Sup Modal -->
+                                                <div class="modal fade" id="editSupModal" tabindex="-1" role="dialog" aria-labelledby="editSupModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="editSupModalLabel">Edit Supplier</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form id="editSupForm">
+                                                                    <div class="form-group">
+                                                                        <label for="editSupName">Supplier Name</label>
+                                                                        <input type="text" class="form-control" id="editSupName" value="<?php echo $sup_table_data['sup_name']; ?>" required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="editSupMobile">Supplier Mobile</label>
+                                                                        <input type="text" class="form-control" id="editSupMobile" value="<?php echo $sup_table_data['contact']; ?>" required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="editComName">Company</label>
+                                                                        <input type="text" class="form-control" id="editComName" value="<?php echo $sup_table_data['name']; ?>" required>
+                                                                    </div>
+                                                                    <input type="hidden" id="editSupId" value="<?php echo $sup_table_data['id']; ?>">
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary" onclick="saveSupChanges()">Save changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                                if ($sup_table_data["status_status_id"] == 1) {
+                                                ?>
+                                                    <button id="sb<?php echo $sup_table_data['id']; ?>" class="btn btn-success btn-sm" onclick="confirmAction3('<?php echo $sup_table_data['id']; ?>', 'Inactive');">Active</button>
+                                                <?php
+                                                } else if ($sup_table_data["status_status_id"] == 2) {
+                                                ?>
+                                                    <button id="sb<?php echo $sup_table_data['id']; ?>" class="btn btn-danger btn-sm" onclick="confirmAction3('<?php echo $sup_table_data['id']; ?>', 'Active');">Inactive</button>
+                                                <?php
+                                                }
+                                                ?>
+                                                <script>
+                                                    function confirmAction3(sID, action) {
+                                                        if (confirm('Are you sure you want to mark this item as ' + action + '?')) {
+                                                            update_sup_status(sID);
+                                                        }
+                                                    }
+                                                </script>
+
+                                            </td>
                                         </tr>
 
                                     <?php
@@ -467,6 +530,7 @@ include 'mop_session_check.php';
                                         <th scope="col">#</th>
                                         <th scope="col">Item Group ID</th>
                                         <th scope="col">Item Group Name</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -487,6 +551,63 @@ include 'mop_session_check.php';
                                             <th scope="row"><?php echo $x + 1; ?></th>
                                             <td><?php echo $item_group_data['code']; ?></td>
                                             <td><?php echo $item_group_data['name']; ?></td>
+                                            <td>
+                                                <button onclick="edit_item_group_model('<?php echo $item_group_data['code']; ?>', '<?php echo $item_group_data['name']; ?>');"
+                                                    class="btn btn-warning btn-sm"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="Edit">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                                <!-- Edit Item Group Modal -->
+                                                <div class="modal fade" id="editItemGroupModal" tabindex="-1" role="dialog" aria-labelledby="editItemGroupModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="editItemGroupModalLabel">Edit Item Group</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form id="editItemGroupForm">
+                                                                    <div class="form-group">
+                                                                        <label for="editItemGroupId">Item Group Name</label>
+                                                                        <input type="text" class="form-control" id="editItemGroupId" value="<?php echo $item_group_data['code']; ?>" disabled>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="editItemGroupName">Item Group Name</label>
+                                                                        <input type="text" class="form-control" id="editItemGroupName" value="<?php echo $item_group_data['name']; ?>" required>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary" onclick="saveItemGroupChanges()">Save changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                                if ($item_group_data["status_status_id"] == 1) {
+                                                ?>
+                                                    <button id="igb<?php echo $item_group_data['code']; ?>" class="btn btn-success btn-sm" onclick="confirmAction4('<?php echo $item_group_data['code']; ?>', 'Inactive');">Active</button>
+                                                <?php
+                                                } else if ($item_group_data["status_status_id"] == 2) {
+                                                ?>
+                                                    <button id="igb<?php echo $item_group_data['code']; ?>" class="btn btn-danger btn-sm" onclick="confirmAction4('<?php echo $item_group_data['code']; ?>', 'Active');">Inactive</button>
+                                                <?php
+                                                }
+                                                ?>
+                                                <script>
+                                                    function confirmAction4(igID, action) {
+                                                        if (confirm('Are you sure you want to mark this item as ' + action + '?')) {
+                                                            update_item_group_status(igID);
+                                                        }
+                                                    }
+                                                </script>
+
+                                            </td>
                                         </tr>
 
                                     <?php
@@ -541,10 +662,12 @@ include 'mop_session_check.php';
                             <table class="table table-hover mt-3">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Item Sub Group ID</th>
-                                        <th scope="col">Item Sub Group Name</th>
-                                        <th scope="col">Item Group ID</th>
+                                        <th scope="col" style="width: 3%;">#</th>
+                                        <th scope="col" style="width: 20%;">Sub Group ID</th>
+                                        <th scope="col" style="width: 45%;">Sub Group Name</th>
+                                        <th scope="col" style="width: 11%;">ID</th>
+                                        <th scope="col" style="width: 11%;">Action</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -566,6 +689,11 @@ include 'mop_session_check.php';
                                             <td><?php echo $item_sub_group_data['sub_code']; ?></td>
                                             <td><?php echo $item_sub_group_data['name']; ?></td>
                                             <td><?php echo $item_sub_group_data['mop_item_group_code']; ?></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-info">
+                                                <i class="bi bi-eye-fill"></i>
+                                                </button>
+                                            </td>
                                         </tr>
 
                                     <?php
@@ -696,14 +824,143 @@ include 'mop_session_check.php';
                 },
                 success: function(response) {
                     // Handle success response
-                    $('#editUnitModal').modal('hide');
-                    location.reload();
+                    if (response == "success") {
+                        $('#editUnitModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert(response);
+                    }
+
                 },
                 error: function(error) {
                     // Handle error response
                     console.error(error);
                 }
             });
+        };
+
+
+        function edit_grn_model(grnId, grnName) {
+            $('#editGrnId').val(grnId);
+            $('#editGrnName').val(grnName);
+            $('#editGrnModal').modal('show');
+        }
+
+        function saveGrnChanges() {
+            var grnId = $('#editGrnId').val();
+            var grnName = $('#editGrnName').val();
+
+            console.log('Grn ID:', grnId);
+            console.log('Grn Name:', grnName);
+            // Perform AJAX request to save changes
+            $.ajax({
+                url: 'process_update_grn.php',
+                type: 'POST',
+                data: {
+                    id: grnId,
+                    name: grnName
+                },
+                success: function(response) {
+                    // Handle success response
+                    if (response == "success") {
+                        $('#editGrnModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert(response);
+                    }
+                },
+                error: function(error) {
+                    // Handle error response
+                    console.error(error);
+                }
+            });
+        };
+
+        function edit_sup_model(supId, supName, supMobile, comName) {
+            $('#editSupId').val(supId);
+            $('#editSupName').val(supName);
+            $('#editSupMobile').val(supMobile);
+            $('#editComName').val(comName);
+            $('#editSupModal').modal('show');
+        }
+
+        function saveSupChanges() {
+            var supId = $('#editSupId').val();
+            var supName = $('#editSupName').val();
+            var supMobile = $('#editSupMobile').val();
+            var comName = $('#editComName').val();
+
+            console.log('Sup ID:', supId);
+            console.log('Sup Name:', supName);
+            console.log('Sup Mob:', supMobile);
+            console.log('Com Name:', comName);
+            // Perform AJAX request to save changes
+            $.ajax({
+                url: 'process_update_sup.php',
+                type: 'POST',
+                data: {
+                    id: supId,
+                    name: supName,
+                    mobile: supMobile,
+                    company: comName
+                },
+                success: function(response) {
+                    // Handle success response
+
+
+                    if (response == "success") {
+                        $('#editSupModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert(response);
+                    }
+                },
+                error: function(error) {
+                    // Handle error response
+                    alert(error);
+                    console.error(error);
+                }
+            });
+        };
+
+        function edit_item_group_model(itemGroupId, itemGroupName) {
+            $('#editItemGroupId').val(itemGroupId);
+            $('#editItemGroupName').val(itemGroupName);
+            $('#editItemGroupModal').modal('show');
+
+            console.log('itemGroup ID:', itemGroupId);
+            console.log('itemGroup Name:', itemGroupName);
+        }
+
+        function saveItemGroupChanges() {
+            var itemGroupId = $('#editItemGroupId').val();
+            var itemGroupName = $('#editItemGroupName').val();
+
+            console.log('itemGroup ID:', itemGroupId);
+            console.log('itemGroup Name:', itemGroupName);
+            // Perform AJAX request to save changes
+            $.ajax({
+                url: 'process_update_item_group.php',
+                type: 'POST',
+                data: {
+                    id: itemGroupId,
+                    name: itemGroupName
+                },
+                success: function(response) {
+                    // Handle success response
+                    if (response == "success") {
+                        $('#editItemGroupModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert(response);
+                    }
+                },
+                error: function(error) {
+                    // Handle error response
+                    console.error(error);
+                }
+            });
+
         };
     </script>
 </body>
