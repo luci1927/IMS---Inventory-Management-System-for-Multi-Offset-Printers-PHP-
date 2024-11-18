@@ -55,35 +55,36 @@ include 'mop_session_check.php';
         }
 
         .custom-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border-radius: 0.5rem;
-        padding: 1.5rem;
-    }
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
 
-    .custom-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
+        .custom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
 
-    /* Icon Styling */
-    .custom-icon i {
-        font-size: 2.5rem;
-    }
+        /* Icon Styling */
+        .custom-icon i {
+            font-size: 2.5rem;
+        }
 
-    /* Text Styling */
-    .card-title {
-        font-size: 1rem;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-    }
+        /* Text Styling */
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
 
-    .display-6 {
-        font-size: 2rem;
-        font-weight: 700;
-    }
-    .mousep {
-        cursor: pointer;
-    }
+        .display-6 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .mousep {
+            cursor: pointer;
+        }
     </style>
 </head>
 
