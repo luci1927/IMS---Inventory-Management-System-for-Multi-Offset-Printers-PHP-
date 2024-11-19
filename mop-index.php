@@ -259,8 +259,7 @@ include 'mop_session_check.php';
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 
-    <script>
-        // Sample Chart.js script for stockChart and reportChart
+    <script>tabizoobot
 
 
         // Fetch stock data from the PHP file
