@@ -259,9 +259,7 @@ include 'mop_session_check.php';
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 
-    <script>tabizoobot
-
-
+    <script>
         // Fetch stock data from the PHP file
         fetch('mop_get_stock_data.php')
             .then(response => response.json())
