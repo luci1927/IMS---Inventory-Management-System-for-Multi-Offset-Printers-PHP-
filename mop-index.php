@@ -225,7 +225,7 @@ include 'mop_session_check.php';
                             </div>
                         </div>
 
-                        <!-- Card 4: Total Items -->
+                        <!-- Card 4: Total Itemsz -->
                         <div class="col-lg-3 col-md-6 mb-4 mousep">
                             <div class="card custom-card shadow border-0 rounded">
                                 <div class="card-body text-center">
