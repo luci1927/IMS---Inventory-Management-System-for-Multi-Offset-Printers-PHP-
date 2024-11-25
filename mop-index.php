@@ -243,7 +243,7 @@ include 'mop_session_check.php';
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title text-center">Stock Level Overview</h5>
-                                <canvas id="stockChart"></canvas> <!-- Placeholder for a chart -->
+                                <canvas id="stockChart"></canvas>
                             </div>
                         </div>
                     </div>
