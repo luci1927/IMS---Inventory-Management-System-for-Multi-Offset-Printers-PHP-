@@ -5,7 +5,8 @@ require "connection2.php";
 
 $sql = "SELECT 
     mop_inventory.description AS item_name, 
-    mop_stock.qty_hand AS stock_quantity 
+    mop_stock.qty_hand AS stock_quantity,
+    mop_stock.qty_system AS system_quantity  
 FROM 
     mop_inventory 
 INNER JOIN 

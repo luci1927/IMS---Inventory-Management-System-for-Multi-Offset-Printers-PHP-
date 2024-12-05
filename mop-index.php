@@ -140,6 +140,7 @@ include 'mop_session_check.php';
                 </div>
             </nav>
         </header>
+        <!-- Sidebar -->
 
         <!-- Main Content -->
         <div id="content" class="w-100">
@@ -260,39 +261,49 @@ include 'mop_session_check.php';
     <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
 
     <script>
-        // Fetch stock data from the PHP file
-        fetch('mop_get_stock_data.php')
-            .then(response => response.json())
-            .then(data => {
-                // Prepare data for the chart
-                const labels = data.map(item => item.item_name); // Item names for x-axis
-                const stockData = data.map(item => item.stock_quantity); // Stock levels for y-axis
+    // Fetch stock data from the PHP file
+    fetch('mop_get_stock_data.php')
+        .then(response => response.json())
+        .then(data => {
+            // Prepare data for the chart
+            const labels = data.map(item => item.item_name); // Item names for x-axis
+            const stockData = data.map(item => item.stock_quantity); // Stock levels for y-axis
+            const sysData = data.map(item => item.system_quantity); // Sales levels for y-axis (assuming sales_quantity is available in the data)
 
-                // Initialize the chart
-                const ctx1 = document.getElementById('stockChart').getContext('2d');
-                const stockChart = new Chart(ctx1, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
+            // Initialize the chart
+            const ctx1 = document.getElementById('stockChart').getContext('2d');
+            const stockChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
                             label: 'Stock Levels',
                             data: stockData,
                             backgroundColor: 'rgba(75, 192, 192, 0.2)',
                             borderColor: 'rgba(75, 192, 192, 1)',
                             borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
+                        },
+                        {
+                            label: 'System Stock Levels',
+                            data: sysData,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
                         }
                     }
-                });
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    </script>
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+</script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
